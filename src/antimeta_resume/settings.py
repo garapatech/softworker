@@ -2,8 +2,11 @@ from pathlib import Path
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
+    # General
+    locale: str = "pt_BR"
+
     # Paths
-    ROOT: Path = Path(__file__).resolve().parents[2]
-    THEME: Path = ROOT / "theme"
+    root: Path = Path(__file__).resolve().parents[2]
+    theme: Path = root / "theme"
 
 settings = Settings()

@@ -3,7 +3,6 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, minimal-ui">
-        <meta name="author" content="{{ resume.basics.name | d('') }}">
         <title>{{ resume.basics.name | d('') }}</title>
         <style>
             {% include 'style.css' %}
@@ -18,25 +17,37 @@
                 {% include 'views/work.html' %}
             </div>
             <div class="section">
-                {% include 'views/education.html' %}
-            </div>
-            <div class="section">
                 {% include 'views/skills.html' %}
-            </div>
-            <div class="section">
-                {% include 'views/certifications.html' %}
-            </div>
-            <div class="section">
-                {% include 'views/volunteer.html' %}
             </div>
             <div class="section">
                 {% include 'views/projects.html' %}
             </div>
             <div class="section">
-                {% include 'views/profiles.html' %}
+                {% include 'views/certifications.html' %}
             </div>
             <div class="section">
                 {% include 'views/awards.html' %}
+            </div>
+            <div class="section">
+                {% include 'views/education.html' %}
+            </div>
+            <div class="section">
+                {% include 'views/languages.html' %}
+            </div>
+            <div class="section">
+                {% include 'views/profiles.html' %}
+            </div>
+            <div class="section">
+                {% include 'views/publications.html' %}
+            </div>
+            <div class="section">
+                {% include 'views/volunteer.html' %}
+            </div>
+            <div class="section">
+                {% include 'views/interests.html' %}
+            </div>
+            <div class="section">
+                {% include 'views/references.html' %}
             </div>
         </div>
     </body>

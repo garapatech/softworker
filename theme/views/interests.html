@@ -1,0 +1,12 @@
+{% if resume.interests %}
+<section id="interests">
+    <h2>Interesses</h2>
+    <ul class="item">
+        {% for item in resume.interests %}
+        <li>
+            <strong>{{ item.name }}</strong>{% if item.keywords %}: {{ item.keywords | join(', ') }}{% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}

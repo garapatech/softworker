@@ -1,18 +1,22 @@
-{% macro render_item_details(location=None, start_date=None, end_date=None, url=None, main_url=False) -%}
+{% macro render_item_details(location=None, date=None, start_date=None, end_date=None, url=None, main_url=False) -%}
 <div class="item-details">
     {% if location %}
     <div class="item-details-title">
         {{ location }}
     </div>
     {% endif %}
-    {% if start_date %}
+    {% if date %}
     <div class="date">
-        {{ format_date(start_date) }} — {{ format_date(end_date) if end_date else 'Atual' }}
+        {{ format_date(date) }}
+    </div>
+    {% elif start_date %}
+    <div class="date">
+        {{ format_date(start_date) }} — {{ format_date(end_date) }}
     </div>
     {% endif %}
     {% if main_url and url %}
     <div class="url">
-        [{{ wrap_url(url) }}]
+        [{{ format_url(url) }}]
     </div>
     {% endif %}
 </div>

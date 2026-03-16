@@ -2,25 +2,25 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from resume_pycli import html as resume_html
 from weasyprint import HTML, CSS
+from antimeta_resume.render_utils import format_date
+from antimeta_resume.render_utils import format_mail
+from antimeta_resume.render_utils import format_url
 from antimeta_resume.schemas.resume_schema import ResumeSchema
 from antimeta_resume.settings import settings
-from antimeta_resume.utils.rendering_format_utils import format_date
-from antimeta_resume.utils.rendering_wrap_utils import wrap_mail
-from antimeta_resume.utils.rendering_wrap_utils import wrap_url
 
 def render_pdf(resume: ResumeSchema) -> bytes:
     context = {
         "resume": resume.model_dump(mode="python", by_alias=True),
         "format_date": format_date,
-        "wrap_mail": wrap_mail,
-        "wrap_url": wrap_url,
+        "format_mail": format_mail,
+        "format_url": format_url,
     }
 
     with TemporaryDirectory() as tmpdir:
         output: Path = Path(tmpdir)
         resume_html.export(
             resume=context,
-            theme=settings.THEME,
+            theme=settings.theme,
             output=output,
         )
 

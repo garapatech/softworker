@@ -1,28 +1,30 @@
 {% from 'partials/item.html' import render_item with context %}
 
 {% if resume.volunteer %}
-    <section id="volunteer">
-        <h2>Voluntariado</h2>
-        {% for item in resume.volunteer %}
-            {% call render_item(
-                title=item.organization,
-                subtitle=item.position,
-                start_date=item.startDate,
-                end_date=item.endDate
-            ) %}
-                {% if item.summary %}
-                    <div class="summary">
-                        <p>{{ item.summary }}</p>
-                    </div>
-                {% endif %}
-                {% if item.highlights %}
-                    <ul class="highlights">
-                        {% for highlight in item.highlights %}
-                            <li>{{ highlight }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endcall %}
+<section id="volunteer">
+    <h2>Trabalho Voluntário</h2>
+    {% for item in resume.volunteer %}
+    {% call render_item(
+        title=item.organization,
+        subtitle=item.position,
+        url=item.url,
+        start_date=item.startDate,
+        end_date=item.endDate,
+        main_url=item.url
+    ) %}
+    {% if item.summary %}
+    <div class="summary">
+        <p>{{ item.summary }}</p>
+    </div>
+    {% endif %}
+    {% if item.highlights %}
+    <ul class="highlights">
+        {% for highlight in item.highlights %}
+        <li>{{ highlight }}</li>
         {% endfor %}
-    </section>
+    </ul>
+    {% endif %}
+    {% endcall %}
+    {% endfor %}
+</section>
 {% endif %}

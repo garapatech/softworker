@@ -1,20 +1,66 @@
-{% from 'partials/item.html' import render_item with context %}
-
 {% if resume.projects %}
-    <section id="projects">
-        <h2>Projetos</h2>
-        <div class="item">
-            {% for item in resume.projects %}
-                {% if item.name and item.description %}
-                    {% call render_item(
-                        title=item.name,
-                        subtitle=item.description,
-                        url=item.url,
-                        main_url=item.url
-                    ) %}
-                    {% endcall %}
+<section id="projects">
+    <h2>Projetos</h2>
+    {% for item in resume.projects %}
+    {% if item.name or item.description or item.highlights or item.keywords or item.startDate or item.endDate or item.url or item.roles or item.entity or item.type %}
+    {% set project_url = item.url or '' %}
+    {% set project_title = item.name or item.entity or item.type or 'Projeto' %}
+    <div class="project-item">
+        <div class="project-title-row">
+            <div class="project-head-main">
+                <span class="project-title">{{ project_title }}</span>
+            </div>
+            {% if item.startDate or item.endDate %}
+            <div class="project-head-date">
+                {% if item.startDate and item.endDate and item.startDate != item.endDate %}
+                {{ format_date(item.startDate) }} — {{ format_date(item.endDate) }}
+                {% else %}
+                {{ format_date(item.startDate or item.endDate) }}
                 {% endif %}
-            {% endfor %}
+            </div>
+            {% endif %}
         </div>
-    </section>
+        {% if item.entity or item.roles or item.type %}
+        <div class="project-meta">
+            {% if item.entity %}
+            <span class="project-entity">{{ item.entity }}</span>
+            {% endif %}
+            {% if item.roles %}
+            {% if item.entity %}
+            <span class="project-separator">•</span>
+            {% endif %}
+            <span class="project-role">{{ item.roles | join(', ') }}</span>
+            {% endif %}
+            {% if item.type %}
+            {% if item.entity or item.roles %}
+            <span class="project-separator">•</span>
+            {% endif %}
+            <span class="project-type">{{ item.type }}</span>
+            {% endif %}
+        </div>
+        {% endif %}
+        {% if project_url %}
+        <div class="project-link">
+            <span class="project-url">[{{ format_url(project_url) }}]</span>
+        </div>
+        {% endif %}
+        {% if item.description %}
+        <div class="project-description">{{ item.description }}</div>
+        {% endif %}
+        {% if item.keywords %}
+        <div class="keywords-line">
+            Tecnologias: {{ item.keywords | join(', ') }}
+        </div>
+        {% endif %}
+        {% if item.highlights %}
+        <ul class="highlights">
+            {% for highlight in item.highlights %}
+            <li>{{ highlight }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% endfor %}
+</section>
 {% endif %}

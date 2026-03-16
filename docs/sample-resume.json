@@ -1,147 +1,402 @@
 {
-  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
   "basics": {
-    "name": "Richard Hendriks",
-    "label": "Software Engineer",
-    "picture": "http://www.piedpiper.com/app/themes/pied-piper/dist/images/richard.png",
-    "email": "richard.hendriks@piedpiper.com",
-    "phone": "(912) 555-4321",
-    "website": "http://piedpiper.com",
-    "summary": "Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and Stanford. (Go Sooners and Cardinals!) Before starting Pied Piper, he worked for Hooli as a part time software developer. While his work focuses on applied information theory, mostly optimizing lossless compression schema of both the length-limited and adaptive variants, his non-work interests range widely, everything from quantum computing to chaos theory. He could tell you about it, but THAT would NOT be a “length-limited” conversation!",
+    "name": "Marina Costa Ribeiro",
+    "label": "Desenvolvedora de Software Sênior | Staff Engineer",
+    "email": "marina.ribeiro@exemplo.dev",
+    "phone": "+55 11 98888-7766",
+    "url": "https://marinaribeiro.dev",
+    "summary": "Desenvolvedora de software com mais de 13 anos de experiência em produtos SaaS, fintech, varejo digital e plataformas internas de engenharia. Atua da definição de arquitetura e padrões de desenvolvimento até a entrega contínua, observabilidade, governança técnica e formação de times. Tem histórico consistente liderando migrações críticas, acelerando a capacidade de entrega e reduzindo risco operacional em ambientes distribuídos de alta escala.",
     "location": {
-      "address": "Newell Road",
-      "postalCode": "94303",
-      "city": "Palo Alto",
-      "countryCode": "US",
-      "region": "CA"
+      "address": "Avenida Brigadeiro Faria Lima, 3500",
+      "postalCode": "04538-132",
+      "city": "São Paulo",
+      "countryCode": "Brasil",
+      "region": "São Paulo"
     },
     "profiles": [
       {
-        "network": "Twitter",
-        "username": "siliconHBO",
-        "url": "https://twitter.com/siliconHBO"
+        "network": "LinkedIn",
+        "username": "marinacostadev",
+        "url": "https://www.linkedin.com/in/marinacostadev"
       },
       {
-        "network": "Facebook",
-        "username": "SiliconHBO",
-        "url": "https://www.facebook.com/SiliconHBO"
+        "network": "GitHub",
+        "username": "marinacostadev",
+        "url": "https://github.com/marinacostadev"
       },
       {
-        "network": "Instagram",
-        "username": "siliconhbo",
-        "url": "https://www.instagram.com/siliconhbo/"
+        "network": "Site",
+        "username": "marinaribeiro.dev",
+        "url": "https://marinaribeiro.dev"
+      },
+      {
+        "network": "Blog",
+        "username": "blog.marinaribeiro.dev",
+        "url": "https://blog.marinaribeiro.dev"
       }
     ]
   },
   "work": [
     {
-      "company": "Pied Piper",
-      "position": "CEO/President",
-      "website": "http://piedpiper.com",
-      "startDate": "2014-04-13",
-      "summary": "Pied Piper is a multi-platform technology based on a proprietary universal compression algorithm that has consistently fielded high Weisman Scores™ that are not merely competitive, but approach the theoretical limit of lossless compression.",
+      "name": "Nuvem Atlas",
+      "location": "São Paulo, SP",
+      "description": "Plataforma SaaS para operações logísticas e roteirização inteligente.",
+      "position": "Engenheira de Software Staff",
+      "url": "https://nuvematlas.exemplo",
+      "startDate": "2021-08-01",
+      "summary": "Liderança técnica transversal para a modernização da plataforma principal, definição de padrões de arquitetura e evolução de práticas de excelência operacional em múltiplos times de produto.",
       "highlights": [
-        "Build an algorithm for artist to detect if their music was violating copy right infringement laws",
-        "Successfully won Techcrunch Disrupt",
-        "Optimized an algorithm that holds the current world record for Weisman Scores"
+        "Liderou a modernização da plataforma principal de um monólito Python para serviços orientados a eventos, reduzindo em 42% o tempo médio de deploy.",
+        "Estruturou trilha de engenharia para 18 desenvolvedores, com RFCs técnicos, revisões de design e padrões compartilhados de implementação.",
+        "Implantou observabilidade com OpenTelemetry, métricas de SLO e playbooks de incidentes, reduzindo em 55% o MTTR em 12 meses.",
+        "Criou uma camada compartilhada de autenticação, auditoria e feature flags para mais de 30 serviços internos."
       ]
     },
     {
-      "company": "Hooli",
-      "position": "Senior Software Engineer",
-      "website": "http://www.hooli.xyz/",
-      "startDate": "2014-01-01",
-      "endDate": "2014-04-06",
+      "name": "Paggo Cloud",
+      "location": "Remoto",
+      "description": "Fintech focada em processamento de pagamentos, conciliação e produtos financeiros B2B.",
+      "position": "Engenheira Backend Sênior",
+      "url": "https://paggocloud.exemplo",
+      "startDate": "2017-03-01",
+      "endDate": "2021-07-31",
+      "summary": "Atuação em arquitetura backend, serviços transacionais críticos e integração com áreas de produto, risco e operações.",
       "highlights": [
-        "Worked on optimizing the backend algorithms for Hooli"
+        "Desenhou e implementou serviços de pagamentos e conciliação com Python, Go e PostgreSQL, processando mais de 20 milhões de transações por mês.",
+        "Conduziu migração de filas e jobs críticos para arquitetura resiliente com retries idempotentes e DLQ, eliminando perdas silenciosas de processamento.",
+        "Encurtou o ciclo de entrega de 15 para 5 dias por meio de CI/CD, testes automatizados e revisão do fluxo de release.",
+        "Reescreveu o motor de tarifação para suportar multiproduto e regras configuráveis sem dependências manuais de deploy."
       ]
     },
     {
-      "company": "Hooli",
-      "position": "Software Engineer",
-      "website": "http://www.hooli.xyz/",
-      "startDate": "2013-01-01",
-      "endDate": "2014-01-01",
+      "name": "Studio Varejo Digital",
+      "location": "Recife, PE",
+      "description": "Consultoria de tecnologia para e-commerce, backoffice e operações omnichannel.",
+      "position": "Engenheira Full Stack",
+      "url": "https://studiovarejo.exemplo",
+      "startDate": "2012-01-01",
+      "endDate": "2017-02-28",
+      "summary": "Participação em produtos digitais de varejo com foco em integrações, performance web e estabilidade de operação em datas sazonais.",
       "highlights": [
-        "Contributed bugfixes and smaller features for Hooli"
+        "Construiu módulos de e-commerce e backoffice com Node.js, React e MySQL para redes nacionais de varejo.",
+        "Melhorou o desempenho das páginas críticas e elevou em 28% a taxa de conversão em campanhas sazonais.",
+        "Atuou como referência técnica em integrações com ERP, gateways de pagamento e catálogo.",
+        "Participou de implantações de alta criticidade em Black Friday e grandes campanhas promocionais."
       ]
     }
   ],
   "volunteer": [
     {
-      "organization": "CoderDojo",
-      "position": "Teacher",
-      "website": "http://coderdojo.com/",
-      "startDate": "2012-01-01",
-      "endDate": "2013-01-01",
-      "summary": "Global movement of free coding clubs for young people.",
+      "organization": "Programa Elas em Código",
+      "position": "Mentora de Carreira e Engenharia",
+      "url": "https://elasemcodigo.exemplo",
+      "startDate": "2019-04-01",
+      "summary": "Mentoria técnica e de carreira para mulheres em transição para tecnologia e para desenvolvedoras em início de jornada.",
       "highlights": [
-        "Awarded 'Teacher of the Month'"
+        "Apoiou mais de 60 mentoradas em planejamento de estudos, portfólio e preparação para entrevistas.",
+        "Estruturou encontros sobre currículo, carreira técnica e fundamentos de backend."
+      ]
+    },
+    {
+      "organization": "Comunidade Python SP",
+      "position": "Organizadora e Palestrante",
+      "url": "https://pythonsp.exemplo",
+      "startDate": "2016-05-01",
+      "summary": "Participação na organização de encontros técnicos e no compartilhamento de práticas sobre engenharia de software e arquitetura backend.",
+      "highlights": [
+        "Facilitou encontros sobre testes, observabilidade, desenho de APIs e carreira técnica para comunidades locais."
       ]
     }
   ],
   "education": [
     {
-      "institution": "Stanford",
-      "area": "Computer Science",
-      "studyType": "B.S",
-      "location": "Palo Alto, CA",
-      "specialization": "Machine Learning",
-      "startDate": "2011-06-01",
-      "endDate": "2014-01-01",
-      "gpa": "GPA 4.0",
+      "institution": "PUC Minas",
+      "url": "https://www.pucminas.br",
+      "area": "Arquitetura de Software Distribuído",
+      "studyType": "Pós-graduação",
+      "startDate": "2018-03-01",
+      "endDate": "2019-12-01",
+      "score": "Especialização concluída com foco em microsserviços, integração assíncrona, resiliência e padrões de arquitetura.",
       "courses": [
-        "DB1101 - Basic SQL",
-        "CS2011 - Java Introduction"
+        "Arquitetura de Microsserviços",
+        "Integração Assíncrona",
+        "Resiliência e Tolerância a Falhas"
+      ]
+    },
+    {
+      "institution": "Universidade Federal de Pernambuco",
+      "url": "https://www.ufpe.br",
+      "area": "Ciência da Computação",
+      "studyType": "Bacharelado",
+      "startDate": "2007-02-01",
+      "endDate": "2011-12-01",
+      "score": "Graduação com ênfase em sistemas distribuídos, engenharia de software e estruturas de dados.",
+      "courses": [
+        "Sistemas Distribuídos",
+        "Banco de Dados",
+        "Engenharia de Software",
+        "Compiladores"
       ]
     }
   ],
   "awards": [
     {
-      "title": "Digital Compression Pioneer Award",
-      "date": "2014-11-01",
-      "awarder": "Techcrunch",
-      "summary": "There is no spoon."
+      "title": "Prêmio Interno de Excelência Técnica",
+      "date": "2023-11-01",
+      "awarder": "Nuvem Atlas",
+      "summary": "Reconhecimento pela liderança técnica na migração de arquitetura e pela redução consistente de incidentes em produção."
+    },
+    {
+      "title": "Destaque em Liderança Técnica",
+      "date": "2020-10-01",
+      "awarder": "Paggo Cloud",
+      "summary": "Reconhecimento por mentoria, evolução da maturidade de entrega e estruturação de processos técnicos do time."
+    }
+  ],
+  "publications": [
+    {
+      "name": "Observabilidade como Produto Interno de Plataforma",
+      "publisher": "Revista Engenharia em Escala",
+      "releaseDate": "2024-08-01",
+      "url": "https://marinaribeiro.dev/publicacoes/observabilidade-plataforma",
+      "summary": "Artigo sobre como transformar telemetria, SLOs e padrões de instrumentação em capacidades reutilizáveis para múltiplos times."
+    },
+    {
+      "name": "Padrões de Evolução de APIs em Ecossistemas Distribuídos",
+      "publisher": "Portal Backend Brasil",
+      "releaseDate": "2022-05-01",
+      "url": "https://marinaribeiro.dev/publicacoes/evolucao-de-apis",
+      "summary": "Texto técnico sobre versionamento, compatibilidade, contratos e redução de risco em integrações entre serviços."
     }
   ],
   "skills": [
     {
-      "name": "Web Development",
-      "level": "Master",
+      "name": "Back-end",
+      "level": "Avançado",
       "keywords": [
-        "HTML",
-        "CSS",
-        "Javascript"
+        "Python",
+        "Go",
+        "Node.js",
+        "APIs REST",
+        "Arquitetura orientada a eventos"
       ]
     },
     {
-      "name": "Compression",
-      "level": "Master",
+      "name": "Dados e Infra",
+      "level": "Avançado",
       "keywords": [
-        "Mpeg",
-        "MP4",
-        "GIF"
+        "PostgreSQL",
+        "Redis",
+        "Kafka",
+        "Docker",
+        "Kubernetes"
+      ]
+    },
+    {
+      "name": "Qualidade e Operação",
+      "level": "Avançado",
+      "keywords": [
+        "CI/CD",
+        "Testes automatizados",
+        "Observabilidade",
+        "OpenTelemetry",
+        "SLOs"
+      ]
+    },
+    {
+      "name": "Front-end e Produto",
+      "level": "Intermediário",
+      "keywords": [
+        "React",
+        "TypeScript",
+        "Web performance",
+        "Design systems"
+      ]
+    },
+    {
+      "name": "Liderança técnica",
+      "level": "Avançado",
+      "keywords": [
+        "Mentoria",
+        "Design reviews",
+        "Roadmap técnico",
+        "Tech lead"
+      ]
+    },
+    {
+      "name": "Arquitetura e Plataforma",
+      "level": "Avançado",
+      "keywords": [
+        "Microsserviços",
+        "Plataforma interna",
+        "Segurança aplicacional",
+        "Governança técnica"
       ]
     }
   ],
   "languages": [
     {
-      "language": "English",
-      "fluency": "Native speaker"
+      "language": "Português",
+      "fluency": "Nativo"
+    },
+    {
+      "language": "Inglês",
+      "fluency": "Profissional"
+    },
+    {
+      "language": "Espanhol",
+      "fluency": "Intermediário"
     }
   ],
-  "certificates": [
+  "interests": [
     {
-      "name": "AWS Certified Solutions Architect",
-      "issuer": "Amazon Web Services",
-      "url": "https://aws.amazon.com/certification/"
+      "name": "Comunidades técnicas",
+      "keywords": [
+        "Mentoria",
+        "Palestras",
+        "Eventos locais"
+      ]
+    },
+    {
+      "name": "Arquitetura de software",
+      "keywords": [
+        "Sistemas distribuídos",
+        "Resiliência",
+        "Plataformas para desenvolvedores"
+      ]
+    },
+    {
+      "name": "Escrita técnica",
+      "keywords": [
+        "Artigos",
+        "Documentação",
+        "Guias internos"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "name": "Ana Paula Menezes, Diretora de Engenharia na Nuvem Atlas",
+      "reference": "Marina combina profundidade técnica, pragmatismo e ótima capacidade de elevar o nível de execução do time sem perder velocidade de entrega."
+    },
+    {
+      "name": "Rafael Siqueira, Gerente de Produto na Paggo Cloud",
+      "reference": "Foi peça central em iniciativas críticas de arquitetura e sempre traduziu trade-offs técnicos de forma clara para produto e operação."
     }
   ],
   "projects": [
     {
-      "name": "Pied Piper Platform",
-      "description": "Distributed compression platform for media processing",
-      "url": "http://piedpiper.com/platform"
+      "name": "Plataforma de Telemetria de Entregas",
+      "description": "Sistema de observabilidade operacional para times de produto e SRE.",
+      "highlights": [
+        "Unificou métricas, tracing e logs em um painel orientado a jornadas críticas.",
+        "Reduziu o tempo de diagnóstico de incidentes com alertas e runbooks contextualizados."
+      ],
+      "keywords": [
+        "OpenTelemetry",
+        "Prometheus",
+        "Grafana",
+        "Python"
+      ],
+      "startDate": "2023-01-01",
+      "url": "https://marinaribeiro.dev/projetos/telemetria",
+      "roles": [
+        "Líder técnica",
+        "Arquiteta de solução"
+      ],
+      "entity": "Nuvem Atlas",
+      "type": "Plataforma interna"
+    },
+    {
+      "name": "Framework Interno de Serviços",
+      "description": "Base compartilhada para APIs com padrões de segurança, tracing, autenticação e deploy.",
+      "highlights": [
+        "Padronizou bootstrap de serviços e reduziu retrabalho entre squads.",
+        "Acelerou a adoção de boas práticas de observabilidade e segurança por default."
+      ],
+      "keywords": [
+        "Python",
+        "FastAPI",
+        "Docker",
+        "CI/CD"
+      ],
+      "startDate": "2022-04-01",
+      "endDate": "2023-09-01",
+      "url": "https://marinaribeiro.dev/projetos/framework-servicos",
+      "roles": [
+        "Maintainer",
+        "Tech lead"
+      ],
+      "entity": "Nuvem Atlas",
+      "type": "Framework"
+    },
+    {
+      "name": "Portal de Engenharia",
+      "description": "Hub interno para documentação, automações de onboarding e catálogo de serviços.",
+      "highlights": [
+        "Consolidou links operacionais, RFCs e catálogos de ownership em um único ponto de acesso.",
+        "Reduziu dependência de conhecimento tácito em processos de onboarding."
+      ],
+      "keywords": [
+        "React",
+        "TypeScript",
+        "Node.js"
+      ],
+      "startDate": "2021-10-01",
+      "endDate": "2022-06-01",
+      "url": "https://marinaribeiro.dev/projetos/portal-engenharia",
+      "roles": [
+        "Product engineer"
+      ],
+      "entity": "Nuvem Atlas",
+      "type": "Aplicação interna"
+    },
+    {
+      "name": "Motor de Tarifação Configurável",
+      "description": "Serviço backend para composição de regras de precificação e cobrança em tempo real.",
+      "highlights": [
+        "Separou regras de negócio de ciclos de deploy por meio de configuração controlada.",
+        "Suportou múltiplas linhas de produto com maior previsibilidade operacional."
+      ],
+      "keywords": [
+        "Go",
+        "PostgreSQL",
+        "Kafka",
+        "Clean Architecture"
+      ],
+      "startDate": "2019-02-01",
+      "endDate": "2020-11-01",
+      "url": "https://marinaribeiro.dev/projetos/motor-tarifacao",
+      "roles": [
+        "Backend engineer"
+      ],
+      "entity": "Paggo Cloud",
+      "type": "Serviço backend"
     }
-  ]
+  ],
+  "certificates": [
+    {
+      "name": "AWS Certified Solutions Architect - Associate",
+      "date": "2024-03-01",
+      "url": "https://aws.amazon.com/certification/",
+      "issuer": "Amazon Web Services"
+    },
+    {
+      "name": "CKAD - Certified Kubernetes Application Developer",
+      "date": "2023-06-01",
+      "url": "https://training.linuxfoundation.org/",
+      "issuer": "The Linux Foundation"
+    },
+    {
+      "name": "HashiCorp Terraform Associate",
+      "date": "2022-09-01",
+      "url": "https://www.hashicorp.com/certification",
+      "issuer": "HashiCorp"
+    }
+  ],
+  "meta": {
+    "canonical": "https://marinaribeiro.dev/resume",
+    "version": "v2.4.0",
+    "lastModified": "2026-03-16T09:30:00-03:00"
+  }
 }

@@ -1,0 +1,24 @@
+{% if resume.publications %}
+<section id="publications">
+    <h2>Publicações</h2>
+    {% for item in resume.publications %}
+    <div class="publication-item">
+        <div class="publication-head">
+            <div class="publication-title">{{ item.name }}</div>
+            {% if item.releaseDate %}
+            <div class="publication-date">{{ format_date(item.releaseDate) }}</div>
+            {% endif %}
+        </div>
+        {% if item.publisher %}
+        <div class="publication-publisher">{{ item.publisher }}</div>
+        {% endif %}
+    {% if item.url %}
+        <div class="publication-url">[{{ format_url(item.url) }}]</div>
+    {% endif %}
+    {% if item.summary %}
+        <div class="publication-summary">{{ item.summary }}</div>
+    {% endif %}
+    </div>
+    {% endfor %}
+</section>
+{% endif %}

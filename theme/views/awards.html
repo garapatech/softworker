@@ -1,18 +1,20 @@
+{% from 'partials/item.html' import render_item with context %}
+
 {% if resume.awards %}
-    <section id="awards">
-        <h2>Prêmios e Reconhecimentos</h2>
-        <ul class="item">
-            {% for award in resume.awards %}
-                <li>
-                    {% if award.title %}
-                        {% if award.summary %}
-                            <strong>{{ award.title }}</strong>: {{ award.summary }}
-                        {% else %}
-                            <strong>{{ award.title }}</strong>
-                        {% endif %}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    </section>
+<section id="awards">
+    <h2>Prêmios &amp; Reconhecimentos</h2>
+    {% for award in resume.awards %}
+    {% call render_item(
+        title=award.title,
+        subtitle=award.awarder,
+        date=award.date
+    ) %}
+    {% if award.summary %}
+    <div class="summary">
+        <p>{{ award.summary }}</p>
+    </div>
+    {% endif %}
+    {% endcall %}
+    {% endfor %}
+</section>
 {% endif %}

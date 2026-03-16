@@ -1,10 +1,10 @@
 {% from 'partials/item-header.html' import render_item_header with context %}
 {% from 'partials/item-details.html' import render_item_details with context %}
 
-{% macro render_item(title=None, subtitle=None, extra=None, location=None, start_date=None, end_date=None, url=None, main_url=False) -%}
+{% macro render_item(title=None, subtitle=None, location=None, date=None, start_date=None, end_date=None, url=None, main_url=False) -%}
 <div class="item">
-    {{ render_item_header(title=title, subtitle=subtitle, extra=extra) }}
-    {{ render_item_details(location=location, start_date=start_date, end_date=end_date, url=url, main_url=main_url) }}
+    {{ render_item_header(title=title, subtitle=subtitle) }}
+    {{ render_item_details(location=location, date=date, start_date=start_date, end_date=end_date, url=url, main_url=main_url) }}
     <div class="clearfix"></div>
     {{ caller() if caller else '' }}
 </div>

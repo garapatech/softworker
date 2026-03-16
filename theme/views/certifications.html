@@ -1,14 +1,20 @@
+{% from 'partials/item.html' import render_item with context %}
+
 {% if resume.certificates %}
-    <section id="certifications">
-        <h2>Certificações</h2>
-        <ul class="item">
-            {% for certificate in resume.certificates %}
-                <li>
-                    {% if certificate.name %}
-                        <strong>{{ certificate.name }}</strong>{% if certificate.issuer %}: {{ certificate.issuer }}{% endif %}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    </section>
+<section id="certifications">
+    <h2>Certificações</h2>
+    {% for certificate in resume.certificates %}
+    {% call render_item(
+        title=certificate.name,
+        subtitle=certificate.issuer,
+        date=certificate.date
+    ) %}
+    {% if certificate.url %}
+    <div class="external-url-line">
+        [{{ format_url(certificate.url) }}]
+    </div>
+    {% endif %}
+    {% endcall %}
+    {% endfor %}
+</section>
 {% endif %}

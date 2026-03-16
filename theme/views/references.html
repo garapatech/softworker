@@ -1,0 +1,14 @@
+{% from 'partials/item.html' import render_item with context %}
+
+{% if resume.references %}
+<section id="references">
+    <h2>Referências</h2>
+    {% for item in resume.references %}
+    {% call render_item(
+        title=item.name
+    ) %}
+    <div class="reference-text">“{{ item.reference }}”</div>
+    {% endcall %}
+    {% endfor %}
+</section>
+{% endif %}

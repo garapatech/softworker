@@ -1,26 +1,30 @@
-{% if resume.basics.profiles %}
-    <section id="profiles">
-        <h2>Perfis</h2>
-        <div class="item">
-            {% for row in resume.basics.profiles | batch(2, none) %}
-                <div class="row">
-                    {% for profile in row %}
-                        <div class="col">
-                            {% if profile and profile.network and profile.username and profile.url %}
-                                <div class="profile-details">
-                                    <div class="profile-meta">
-                                        <div class="profile-network">{{ profile.network }}</div>
-                                        <div class="profile-username">{{ profile.username }}</div>
-                                    </div>
-                                    <div class="profile-url">
-                                        {{ wrap_url(profile.url) }}
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+{% from 'partials/item-header.html' import render_item_header with context %}
+
+{% if resume.basics and resume.basics.profiles %}
+{% set profiles = resume.basics.profiles | selectattr('network') | selectattr('username') | selectattr('url') | list %}
+{% if profiles %}
+<section id="profiles">
+    <h2>Perfis</h2>
+    <div class="item">
+        {% for profile_row in profiles | batch(2, none) %}
+        <div class="row">
+            {% for profile in profile_row %}
+            <div class="col">
+                {% if profile %}
+                <div class="profile-details">
+                    <div class="title-subtitle">
+                        {{ render_item_header(title=profile.network, subtitle=profile.username) }}
+                    </div>
+                    <div class="url">
+                        {{ format_url(profile.url) }}
+                    </div>
                 </div>
+                {% endif %}
+            </div>
             {% endfor %}
         </div>
-    </section>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
 {% endif %}

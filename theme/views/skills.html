@@ -1,18 +1,20 @@
 {% if resume.skills %}
-    <section id="skills">
-        <h2>Habilidades</h2>
-        <ul class="item">
-            {% for skill in resume.skills %}
-                <li>
-                    {% if skill.name %}
-                        {% if skill.keywords %}
-                            <strong>{{ skill.name }}</strong>: {{ skill.keywords | map('safe') | join(', ') }}
-                        {% else %}
-                            <strong>{{ skill.name }}</strong>
-                        {% endif %}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    </section>
+<section id="skills">
+    <h2>Habilidades</h2>
+    <ul class="item">
+        {% for skill in resume.skills %}
+        <li>
+            {% if skill.name %}
+            {% if skill.level %}
+            <strong>{{ skill.name }}</strong> ({{ skill.level }}){% if skill.keywords %}: {{ skill.keywords | map('safe') | join(', ') }}{% endif %}
+            {% elif skill.keywords %}
+            <strong>{{ skill.name }}</strong>: {{ skill.keywords | map('safe') | join(', ') }}
+            {% else %}
+            <strong>{{ skill.name }}</strong>
+            {% endif %}
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</section>
 {% endif %}

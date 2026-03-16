@@ -1,4 +1,4 @@
-{% macro render_item_header(title=None, subtitle=None, extra=None) -%}
+{% macro render_item_header(title=None, subtitle=None) -%}
 <div class="item-header">
     {% if title %}
     <div class="item-header-title">
@@ -8,11 +8,6 @@
     {% if subtitle %}
     <div class="item-header-subtitle">
         {{ subtitle }}
-    </div>
-    {% endif %}
-    {% if extra %}
-    <div class="item-header-extra">
-        {{ extra }}
     </div>
     {% endif %}
 </div>
