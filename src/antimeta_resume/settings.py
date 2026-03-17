@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     locale: str = "pt_BR"
 
     # Paths
-    root: Path = Path(__file__).resolve().parents[2]
-    theme: Path = root / "theme"
+    module_root: Path = Path(__file__).resolve().parent
+    theme: Path = module_root / "theme"
 
 settings: Settings = Settings()

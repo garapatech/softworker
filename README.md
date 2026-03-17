@@ -55,7 +55,7 @@ uv run python -m antimeta_resume docs/sample-resume.json /tmp/currículo.pdf
 - `docs/sample-resume-full.json`: exemplo mais completo
 - `docs/schema.json`: referência do formato esperado
 - `src/antimeta_resume/`: código Python da renderização
-- `theme/`: templates HTML e CSS do currículo
+- `src/antimeta_resume/theme/`: templates HTML e CSS do currículo
 
 ## Como o fluxo funciona
 
