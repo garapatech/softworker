@@ -1,7 +1,7 @@
 [project]
 name = "antimeta-resume"
 version = "1.0.0"
-description = ""
+description = "Biblioteca Python para gerar currículos ATS-friendly em PDF a partir de dados estruturados em JSON."
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [

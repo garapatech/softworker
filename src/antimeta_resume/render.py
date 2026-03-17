@@ -1,6 +1,6 @@
-import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Dict, Any
 from resume_pycli import html as resume_html
 from weasyprint import HTML, CSS
 from antimeta_resume.render_utils import format_date, format_url, format_mail
@@ -36,6 +36,6 @@ def render_pdf(resume: ResumeSchema) -> bytes:
 
         return pdf_path.read_bytes()
 
-def render_pdf_from_json(json_path: Path) -> bytes:
-    resume: ResumeSchema = ResumeSchema.model_validate(json.loads(json_path.read_text(encoding="utf-8")))
+def render_pdf_from_dict(resume_dict: Dict[str, Any]) -> bytes:
+    resume: ResumeSchema = ResumeSchema.model_validate(resume_dict)
     return render_pdf(resume)

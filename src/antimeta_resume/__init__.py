@@ -1,6 +1,6 @@
-from antimeta_resume.render import render_pdf, render_pdf_from_json
+from antimeta_resume.render import render_pdf, render_pdf_from_dict
 
 __all__ = [
     "render_pdf",
-    "render_pdf_from_json"
+    "render_pdf_from_dict"
 ]
