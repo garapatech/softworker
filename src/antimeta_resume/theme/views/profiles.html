@@ -1,4 +1,4 @@
-{% if resume.basics and resume.basics.profiles %}
+{% if resume.basics %}
 {% set profiles = resume.basics.profiles | selectattr('network') | selectattr('username') | selectattr('url') | list %}
 {% if profiles %}
 <section id="profiles">

@@ -1,0 +1,8 @@
+{% if resume.basics and resume.basics.summary %}
+<section id="summary" class="resume-section">
+    <div class="summary" aria-labelledby="summary-heading">
+        <h2 id="summary-heading">Resumo</h2>
+        <p>{{ resume.basics.summary | safe }}</p>
+    </div>
+</section>
+{% endif %}

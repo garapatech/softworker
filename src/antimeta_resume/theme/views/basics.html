@@ -38,11 +38,5 @@
         </address>
         {% endif %}
     </header>
-    {% if resume.basics.summary %}
-    <div class="summary" aria-labelledby="summary-heading">
-        <h2 id="summary-heading">Resumo</h2>
-        <p>{{ resume.basics.summary | safe }}</p>
-    </div>
-    {% endif %}
 </section>
 {% endif %}
