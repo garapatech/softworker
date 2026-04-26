@@ -1,7 +1,7 @@
 from typing import List, Optional
 from pydantic import AliasChoices, Field
-from antimeta_resume.schemas.base_schema import ResumeBaseModel
-from antimeta_resume.schemas.highlight_schema import HighlightSchema
+from softworker.schemas.base_schema import ResumeBaseModel
+from softworker.schemas.highlight_schema import HighlightSchema
 
 class VolunteerSchema(ResumeBaseModel):
     organization: str

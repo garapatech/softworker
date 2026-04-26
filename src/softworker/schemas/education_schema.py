@@ -1,7 +1,7 @@
 from typing import List, Optional
 from pydantic import Field, AliasChoices
-from antimeta_resume.schemas.base_schema import ResumeBaseModel
-from antimeta_resume.schemas.course_schema import CourseSchema
+from softworker.schemas.base_schema import ResumeBaseModel
+from softworker.schemas.course_schema import CourseSchema
 
 class EducationSchema(ResumeBaseModel):
     institution: str

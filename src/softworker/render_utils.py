@@ -4,7 +4,7 @@ from babel.dates import format_date as babel_format_date
 from markupsafe import Markup
 from markupsafe import escape
 from yarl import URL
-from antimeta_resume.settings import settings
+from softworker.settings import settings
 
 def format_date(date: Any) -> str:
     default_value: str = "presente"
@@ -20,13 +20,13 @@ def format_date(date: Any) -> str:
         ):
             try:
                 dt = datetime.strptime(text, input_format)
-                return babel_format_date(dt, format=output_format, locale=settings.locale)
+                return babel_format_date(dt, format=output_format, locale=settings.LOCALE)
             except ValueError:
                 pass
         dt = datetime.fromisoformat(text)
     except ValueError:
         return default_value
-    return babel_format_date(dt, format="MMM y", locale=settings.locale)
+    return babel_format_date(dt, format="MMM y", locale=settings.LOCALE)
 
 def format_url(url: Any) -> Markup:
     if not url:

@@ -1,7 +1,7 @@
 from typing import List, Optional
 from pydantic import Field
-from antimeta_resume.schemas.base_schema import ResumeBaseModel
-from antimeta_resume.schemas.keyword_schema import KeywordSchema
+from softworker.schemas.base_schema import ResumeBaseModel
+from softworker.schemas.keyword_schema import KeywordSchema
 
 class SkillSchema(ResumeBaseModel):
     name: str

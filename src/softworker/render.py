@@ -3,9 +3,9 @@ from tempfile import TemporaryDirectory
 from typing import Dict, Any
 from resume_pycli import html as resume_html
 from weasyprint import HTML, CSS
-from antimeta_resume.render_utils import format_date, format_url, format_mail
-from antimeta_resume.schemas import ResumeSchema
-from antimeta_resume.settings import settings
+from softworker.render_utils import format_date, format_url, format_mail
+from softworker.schemas import ResumeSchema
+from softworker.settings import settings
 
 def render_pdf(resume: ResumeSchema) -> bytes:
     context = {
@@ -13,14 +13,14 @@ def render_pdf(resume: ResumeSchema) -> bytes:
         "format_date": format_date,
         "format_url": format_url,
         "format_mail": format_mail,
-        "lang": settings.locale.replace("_", "-")
+        "lang": settings.LOCALE.replace("_", "-")
     }
 
     with TemporaryDirectory() as tmpdir:
         output_directory: Path = Path(tmpdir)
         resume_html.export(
             resume=context,
-            theme=settings.theme,
+            theme=settings.THEME_PATH,
             output=output_directory
         )
 

@@ -1,8 +1,8 @@
 from typing import List, Optional
 from pydantic import AliasChoices, Field
-from antimeta_resume.schemas.base_schema import ResumeBaseModel
-from antimeta_resume.schemas.basics_location_schema import BasicsLocationSchema
-from antimeta_resume.schemas.basics_profile_schema import BasicsProfileSchema
+from softworker.schemas.base_schema import ResumeBaseModel
+from softworker.schemas.basics_location_schema import BasicsLocationSchema
+from softworker.schemas.basics_profile_schema import BasicsProfileSchema
 
 class BasicsSchema(ResumeBaseModel):
     name: str

@@ -26,7 +26,7 @@ wheels = [
 ]
 
 [[package]]
-name = "antimeta-resume"
+name = "softworker"
 version = "1.0.0"
 source = { editable = "." }
 dependencies = [

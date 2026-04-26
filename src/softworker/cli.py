@@ -2,7 +2,7 @@ import json
 from typing import Optional
 from pathlib import Path
 from typer import Typer, Argument
-from antimeta_resume import render_pdf_from_dict
+from softworker import render_pdf_from_dict
 
 app: Typer = Typer(no_args_is_help=True)
 

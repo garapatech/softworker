@@ -1,4 +1,4 @@
-# Antimeta Resume
+# Softworker
 
 Biblioteca Python para gerar currículos ATS-friendly em PDF a partir de dados estruturados em JSON.
 
@@ -28,7 +28,7 @@ uv sync
 Gere o PDF usando o exemplo principal:
 
 ```bash
-uv run python -m antimeta_resume docs/sample-resume.json
+uv run python -m softworker docs/sample-resume.json
 ```
 
 O arquivo gerado fica no diretório atual com o mesmo nome do JSON:
@@ -40,7 +40,7 @@ sample-resume.pdf
 Se quiser escolher o nome ou o caminho de saída:
 
 ```bash
-uv run python -m antimeta_resume docs/sample-resume.json /tmp/currículo.pdf
+uv run python -m softworker docs/sample-resume.json /tmp/currículo.pdf
 ```
 
 ## O que você precisa ter
@@ -54,8 +54,8 @@ uv run python -m antimeta_resume docs/sample-resume.json /tmp/currículo.pdf
 - `docs/sample-resume.json`: exemplo principal para testar
 - `docs/sample-resume-full.json`: exemplo mais completo
 - `docs/schema.json`: referência do formato esperado
-- `src/antimeta_resume/`: código Python da renderização
-- `src/antimeta_resume/theme/`: templates HTML e CSS do currículo
+- `src/softworker/`: código Python da renderização
+- `theme/`: templates HTML e CSS do currículo
 
 ## Como o fluxo funciona
 
@@ -71,7 +71,7 @@ Também dá para usar direto no Python:
 import json
 from pathlib import Path
 from typing import Dict, Any
-from antimeta_resume import render_pdf_from_dict
+from softworker import render_pdf_from_dict
 
 resume_path, output_path = Path("docs/sample-resume.json"), Path("resume.pdf")
 resume: Dict[str, Any] = json.loads(resume_path.read_text(encoding="utf-8"))

@@ -1,5 +1,5 @@
 [project]
-name = "antimeta-resume"
+name = "softworker"
 version = "1.0.0"
 description = "Biblioteca Python para gerar currículos ATS-friendly em PDF a partir de dados estruturados em JSON."
 readme = "README.md"
@@ -25,10 +25,14 @@ include-package-data = true
 [tool.setuptools.packages.find]
 where = ["src"]
 
-[tool.setuptools.package-data]
-antimeta_resume = [
+[tool.setuptools.data-files]
+"share/softworker/theme" = [
     "theme/*.html",
     "theme/*.css",
+]
+"share/softworker/theme/partials" = [
     "theme/partials/*.html",
+]
+"share/softworker/theme/views" = [
     "theme/views/*.html",
 ]

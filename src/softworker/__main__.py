@@ -1,4 +1,4 @@
-from antimeta_resume.cli import app
+from softworker.cli import app
 
 if __name__ == "__main__":
     app()

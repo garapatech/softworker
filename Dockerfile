@@ -35,4 +35,4 @@ WORKDIR /app
 COPY --from=builder /app .
 
 VOLUME ["/app/data", "/app/generated"]
-CMD ["python", "-m", "antimeta_resume", "data/resume.json", "generated/resume.pdf"]
+CMD ["python", "-m", "softworker", "data/resume.json", "generated/resume.pdf"]

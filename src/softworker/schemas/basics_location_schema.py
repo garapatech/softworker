@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import Field
-from antimeta_resume.schemas.base_schema import ResumeBaseModel
+from softworker.schemas.base_schema import ResumeBaseModel
 
 class BasicsLocationSchema(ResumeBaseModel):
     address: Optional[str] = None
