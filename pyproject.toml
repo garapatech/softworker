@@ -3,6 +3,10 @@ name = "softworker"
 version = "1.0.0"
 description = "Biblioteca Python para gerar currículos ATS-friendly em PDF a partir de dados estruturados em JSON."
 readme = "README.md"
+license = "GPL-3.0-or-later"
+authors = [
+    { name = "nayetdet", email = "jpmoreiracampos21@gmail.com" }
+]
 requires-python = ">=3.14"
 dependencies = [
     "babel>=2.17.0",
