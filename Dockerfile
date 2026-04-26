@@ -1,5 +1,5 @@
 # Build Stage
-FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim AS builder
+FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim AS builder
 ENV UV_NO_DEV=1 \
     UV_PYTHON_DOWNLOADS=0 \
     UV_COMPILE_BYTECODE=1 \
@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked
 
 # Runtime Stage
-FROM python:3.13-slim-trixie
+FROM python:3.14-slim-trixie
 ENV DEBIAN_FRONTEND=noninteractive \
     PATH="/app/.venv/bin:$PATH"
 
