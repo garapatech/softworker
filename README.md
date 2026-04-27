@@ -1,25 +1,31 @@
 # SoftWorker
 
-Biblioteca Python para gerar currículos ATS-friendly em PDF a partir de dados estruturados em JSON.
+Biblioteca Python para gerar currículos ATS-friendly em PDF a partir de dados estruturados em JSON Resume.
 
-Em termos simples: você preenche os dados do currículo em um arquivo estruturado, roda um comando e o projeto cria um PDF pronto para usar. O layout foi pensado para ser legível por pessoas e por sistemas de triagem de currículos (ATS).
+Você fornece um arquivo JSON com os dados do currículo, executa a CLI e o projeto renderiza um PDF A4 pronto para uso. O tema foi pensado para ser legível tanto por recrutadores quanto por sistemas de triagem (ATS).
 
 ## Prévia
 
-Primeira página do PDF gerado com o exemplo do projeto:
+Primeira página do PDF gerado com o exemplo principal do projeto:
 
 ![Primeira página do currículo gerado](docs/examples/images/resume.png)
 
 ## O que o projeto faz
 
-- Lê um arquivo JSON no formato JSON Resume.
-- Monta o currículo em HTML com templates separados por seção.
-- Converte esse HTML em um PDF A4.
-- Gera o PDF com tags de acessibilidade (`pdf/ua-1`).
+- Lê currículos no formato JSON Resume.
+- Renderiza o conteúdo em HTML usando templates Jinja.
+- Converte o HTML para PDF A4 com WeasyPrint.
+- Gera PDF acessível com `pdf/ua-1`.
 
-## Como testar rápido
+## Requisitos
 
-Instale as dependências:
+- Python 3.14+
+- `uv`
+- Dependências nativas do WeasyPrint instaladas no sistema
+
+## Uso rápido
+
+Instale as dependências do projeto:
 
 ```bash
 uv sync
@@ -28,59 +34,54 @@ uv sync
 Gere o PDF usando o exemplo principal:
 
 ```bash
-uv run python -m softworker docs/sample-resume.json
+uv run python -m softworker docs/examples/resume.json
 ```
 
-O arquivo gerado fica no diretório atual com o mesmo nome do JSON:
+Por padrão, o arquivo é salvo no diretório atual com o mesmo nome base do JSON:
 
 ```text
-sample-resume.pdf
+resume.pdf
 ```
 
-Se quiser escolher o nome ou o caminho de saída:
+Se quiser definir o caminho de saída:
 
 ```bash
-uv run python -m softworker docs/sample-resume.json /tmp/currículo.pdf
+uv run python -m softworker docs/examples/resume.json /tmp/curriculo.pdf
 ```
 
-Se quiser renderizar o tema em outro idioma:
+Se quiser renderizar em outro idioma:
 
 ```bash
-uv run python -m softworker docs/sample-resume.json /tmp/resume.pdf --resume-language en_US
+uv run python -m softworker docs/examples/resume.json /tmp/resume-en.pdf --resume-language en_US
 ```
 
-## O que você precisa ter
+## Estrutura principal
 
-- Python 3.13+
-- `uv`
-- Dependências nativas do WeasyPrint instaladas no sistema
-
-## Arquivos mais importantes
-
-- `docs/sample-resume.json`: exemplo principal para testar
-- `docs/sample-resume-full.json`: exemplo mais completo
+- `docs/examples/resume.json`: exemplo principal
+- `docs/examples/resume_full.json`: exemplo mais completo
 - `docs/schema.json`: referência do formato esperado
-- `src/softworker/`: código Python da renderização
-- `theme/`: templates HTML e CSS do currículo
+- `src/softworker/`: código da CLI, validação e renderização
+- `theme/`: templates HTML, parciais e estilos CSS
 
-## Como o fluxo funciona
+## Como funciona
 
-1. Você passa um arquivo JSON com os dados do currículo.
-2. O projeto renderiza esse conteúdo com o tema HTML.
-3. O HTML é convertido em PDF.
+1. A CLI lê um arquivo JSON com os dados do currículo.
+2. O conteúdo é validado e renderizado com o tema HTML.
+3. O HTML final é convertido em PDF.
 
 ## Uso como biblioteca
 
-Também dá para usar direto no Python:
+Também é possível gerar o PDF diretamente em Python:
 
 ```python
 import json
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
 from softworker import render_pdf_from_dict
 from softworker.enums import ResumeLanguage
 
-resume_path, output_path = Path("docs/examples/resume.json"), Path("resume.pdf")
+resume_path = Path("docs/examples/resume.json")
+output_path = Path("resume.pdf")
 resume: Dict[str, Any] = json.loads(resume_path.read_text(encoding="utf-8"))
 pdf: bytes = render_pdf_from_dict(resume, resume_language=ResumeLanguage.PT_BR)
 output_path.write_bytes(pdf)
