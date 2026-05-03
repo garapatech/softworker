@@ -188,10 +188,6 @@ cython_debug/
 #  you could uncomment the following to ignore the entire vscode folder
 .vscode/
 
-# Codex
-#  Local Codex state, prompts, and workspace metadata should not be versioned.
-.codex
-
 # Ruff stuff:
 .ruff_cache/
 
