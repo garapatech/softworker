@@ -1,12 +1,12 @@
 {{#if resume.languages}}
 <section id="languages" class="resume-section" aria-labelledby="languages-heading">
-    <h2 id="languages-heading">{{i18n.sections.languages}}</h2>
-    <ul class="item">
-        {{#each resume.languages}}
-        <li>
-            <span class="list-bullet">• </span><span class="list-text"><strong>{{language}}</strong>{{#if fluency}}: {{fluency}}{{/if}}</span>
-        </li>
-        {{/each}}
-    </ul>
+  <h2 id="languages-heading">{{i18n.sections.languages}}</h2>
+  <ul class="item">
+    {{#each resume.languages}}
+      <li>
+        <span class="list-bullet">• </span><span class="list-text"><strong>{{language}}</strong>{{#if fluency}}: {{fluency}}{{/if}}</span>
+      </li>
+    {{/each}}
+  </ul>
 </section>
 {{/if}}

@@ -2,474 +2,474 @@
 h2,
 section,
 .resume-section {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: Georgia, serif;
-    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0;
-    font-variant-ligatures: none;
-    font-size: 11px;
-    margin: 24px 48px;
+  font-family: Georgia, serif;
+  font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0;
+  font-variant-ligatures: none;
+  font-size: 11px;
+  margin: 24px 48px;
 }
 
 h1 {
-    font-size: 26px;
-    margin: 5px;
-    text-align: center;
+  font-size: 26px;
+  margin: 5px;
+  text-align: center;
 }
 
 img {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 h2 {
-    border-style: none none solid none;
-    border-width: 1px;
-    clear: both;
-    display: block;
-    margin: 10px 0 2.5px 0;
-    width: 100%;
+  border-style: none none solid none;
+  border-width: 1px;
+  clear: both;
+  display: block;
+  margin: 10px 0 2.5px 0;
+  width: 100%;
 }
 
 section {
-    clear: both;
-    display: block;
-    margin: 3px 0;
+  clear: both;
+  display: block;
+  margin: 3px 0;
 }
 
 section::after {
-    clear: both;
-    content: "";
-    display: block;
+  clear: both;
+  content: "";
+  display: block;
 }
 
 #resume {
-    width: 100%;
+  width: 100%;
 }
 
 .resume-section {
-    clear: both;
-    display: block;
-    width: 100%;
+  clear: both;
+  display: block;
+  width: 100%;
 }
 
 .resume-section + .resume-section {
-    margin-top: 12px;
+  margin-top: 12px;
 }
 
 ul {
-    margin: 0;
-    padding-left: 20px;
+  margin: 0;
+  padding-left: 20px;
 }
 
 ul.item,
 ul.highlights {
-    list-style: none;
+  list-style: none;
 }
 
 a {
-    color: black;
-    text-decoration: none;
+  color: black;
+  text-decoration: none;
 }
 
 .url-link {
-    display: inline-block;
-    font-family: inherit;
-    font-size: 0.92em;
-    hyphens: none;
-    letter-spacing: 0;
-    line-height: 1.15;
-    overflow-wrap: anywhere;
-    text-decoration: none;
-    white-space: normal;
-    word-break: break-word;
+  display: inline-block;
+  font-family: inherit;
+  font-size: 0.92em;
+  hyphens: none;
+  letter-spacing: 0;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .text-link {
-    color: inherit;
+  color: inherit;
 }
 
 .list-bullet,
 .list-text {
-    display: inline;
+  display: inline;
 }
 
 .item {
-    margin-top: 8px;
+  margin-top: 8px;
 }
 
 .item-topline {
-    align-items: flex-start;
-    display: flex;
-    gap: 12px;
-    justify-content: space-between;
+  align-items: flex-start;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
 }
 
 .item-header {
-    display: block;
-    flex: 1 1 auto;
-    min-width: 0;
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .item-header > .item-header-title {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .item-header > .item-header-subtitle {
-    font-style: italic;
+  font-style: italic;
 }
 
 .item-details {
-    display: block;
-    flex: 0 0 auto;
-    max-width: 42%;
-    text-align: right;
+  display: block;
+  flex: 0 0 auto;
+  max-width: 42%;
+  text-align: right;
 }
 
 .item-details > .item-details-title {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .item-details > .url {
-    font-size: 9px;
-    line-height: 1.15;
-    max-width: 250px;
+  font-size: 9px;
+  line-height: 1.15;
+  max-width: 250px;
 }
 
 .item-details > .url .url-link {
-    max-width: 100%;
-    text-align: right;
-    vertical-align: top;
+  max-width: 100%;
+  text-align: right;
+  vertical-align: top;
 }
 
 .clearfix {
-    clear: both;
+  clear: both;
 }
 
 .centered {
-    text-align: center;
+  text-align: center;
 }
 
 .summary p,
 .reference-text {
-    margin: 4px 0 0 0;
+  margin: 4px 0 0 0;
 }
 
 .external-url-line {
-    font-size: 9px;
-    line-height: 1.15;
-    margin-top: 2px;
+  font-size: 9px;
+  line-height: 1.15;
+  margin-top: 2px;
 }
 
 .external-url-line .url-link {
-    max-width: 100%;
-    overflow-wrap: anywhere;
-    white-space: normal;
-    word-break: break-word;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .entry-meta,
 .keywords-line {
-    font-size: 10px;
-    margin-top: 3px;
+  font-size: 10px;
+  margin-top: 3px;
 }
 
 .entry-meta {
-    font-style: italic;
+  font-style: italic;
 }
 
 .reference-text {
-    font-style: italic;
+  font-style: italic;
 }
 
 .highlights {
-    margin-top: 3px;
+  margin-top: 3px;
 }
 
 /* Section specific */
 /* basics */
 .resume-header {
-    display: block;
+  display: block;
 }
 
 .basics-image-wrap {
-    margin-bottom: 6px;
+  margin-bottom: 6px;
 }
 
 .basics-image {
-    border: 1px solid #000;
-    display: inline-block;
-    height: 64px;
-    object-fit: cover;
-    width: 64px;
+  border: 1px solid #000;
+  display: inline-block;
+  height: 64px;
+  object-fit: cover;
+  width: 64px;
 }
 
 .vertical-separator {
-    padding: 0 10px;
-    text-align: center;
+  padding: 0 10px;
+  text-align: center;
 }
 
 .vertical-separator:not(:first-child) {
-    border-left: 1px solid #000;
-    text-align: center;
+  border-left: 1px solid #000;
+  text-align: center;
 }
 
 .contact[role="list"] {
-    display: block;
+  display: block;
 }
 
 #basics address {
-    font-style: normal;
+  font-style: normal;
 }
 
 #basics .address {
-    font-size: 10px;
-    margin-top: 4px;
+  font-size: 10px;
+  margin-top: 4px;
 }
 
 #basics .address-postal {
-    margin-top: 1px;
+  margin-top: 1px;
 }
 
 #profiles .item {
-    box-sizing: border-box;
-    display: flex;
-    flex-wrap: wrap;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 #profiles .profile-details {
-    box-sizing: border-box;
-    display: block;
-    margin-top: 8px;
-    padding-right: 18px;
-    width: 50%;
+  box-sizing: border-box;
+  display: block;
+  margin-top: 8px;
+  padding-right: 18px;
+  width: 50%;
 }
 
 #profiles .profile-details:nth-child(-n + 2) {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 #profiles .profile-details:nth-child(2n) {
-    padding-right: 0;
+  padding-right: 0;
 }
 
 #profiles .profile-details {
-    box-sizing: border-box;
-    display: block;
+  box-sizing: border-box;
+  display: block;
 }
 
 #profiles .profile-line {
-    align-items: flex-start;
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
-    width: 100%;
+  align-items: flex-start;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  width: 100%;
 }
 
 #profiles .profile-network {
-    font-weight: bold;
-    min-width: 0;
+  font-weight: bold;
+  min-width: 0;
 }
 
 #profiles .profile-username {
-    font-style: italic;
-    margin-top: 1px;
+  font-style: italic;
+  margin-top: 1px;
 }
 
 #profiles .url {
-    flex: 0 0 auto;
-    font-size: 9px;
-    line-height: 1.15;
-    max-width: 58%;
-    text-align: right;
+  flex: 0 0 auto;
+  font-size: 9px;
+  line-height: 1.15;
+  max-width: 58%;
+  text-align: right;
 }
 
 #profiles .url .url-link {
-    display: inline-block;
-    max-width: 100%;
-    text-align: right;
-    vertical-align: top;
+  display: inline-block;
+  max-width: 100%;
+  text-align: right;
+  vertical-align: top;
 }
 
 #projects .project-item {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 #projects .project-header {
-    display: flex;
-    gap: 12px;
-    justify-content: space-between;
-    line-height: 1.2;
-    width: 100%;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  line-height: 1.2;
+  width: 100%;
 }
 
 #projects .project-head-main {
-    flex: 1 1 auto;
-    min-width: 0;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 #projects .project-head-date {
-    flex: 0 0 auto;
-    text-align: right;
-    white-space: nowrap;
-    width: 28%;
+  flex: 0 0 auto;
+  text-align: right;
+  white-space: nowrap;
+  width: 28%;
 }
 
 #projects .project-title {
-    display: inline;
-    font-weight: bold;
+  display: inline;
+  font-weight: bold;
 }
 
 #projects .project-url-row {
-    margin-top: 1px;
+  margin-top: 1px;
 }
 
 #projects .project-description {
-    margin-top: 3px;
+  margin-top: 3px;
 }
 
 #projects .project-meta,
 #projects .project-link {
-    font-size: 9.5px;
-    margin-top: 3px;
+  font-size: 9.5px;
+  margin-top: 3px;
 }
 
 #projects .project-meta,
 #projects .project-link {
-    color: #111;
-    line-height: 1.35;
+  color: #111;
+  line-height: 1.35;
 }
 
 #projects .project-entity {
-    font-weight: normal;
+  font-weight: normal;
 }
 
 #projects .project-role {
-    font-style: normal;
+  font-style: normal;
 }
 
 #projects .project-type {
-    color: #111;
-    font-size: 9px;
-    font-style: normal;
-    font-weight: normal;
+  color: #111;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: normal;
 }
 
 #projects .project-separator {
-    color: #111;
-    margin: 0 4px;
+  color: #111;
+  margin: 0 4px;
 }
 
 #projects .project-url {
-    display: inline;
-    font-size: 9px;
-    max-width: 100%;
+  display: inline;
+  font-size: 9px;
+  max-width: 100%;
 }
 
 #projects .project-url .url-link {
-    display: inline;
-    overflow-wrap: anywhere;
-    white-space: normal;
-    word-break: break-word;
+  display: inline;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  word-break: break-word;
 }
 
 #publications .publication-item {
-    margin-top: 8px;
+  margin-top: 8px;
 }
 
 #publications .publication-head {
-    display: flex;
-    gap: 12px;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  width: 100%;
 }
 
 #publications .publication-title {
-    flex: 1 1 auto;
-    font-weight: bold;
-    min-width: 0;
+  flex: 1 1 auto;
+  font-weight: bold;
+  min-width: 0;
 }
 
 #publications .publication-date {
-    flex: 0 0 auto;
-    text-align: right;
-    white-space: nowrap;
-    width: 24%;
+  flex: 0 0 auto;
+  text-align: right;
+  white-space: nowrap;
+  width: 24%;
 }
 
 #publications .publication-publisher {
-    font-style: italic;
-    margin-top: 1px;
+  font-style: italic;
+  margin-top: 1px;
 }
 
 #publications .publication-url {
-    font-size: 9px;
-    line-height: 1.15;
-    margin-top: 2px;
+  font-size: 9px;
+  line-height: 1.15;
+  margin-top: 2px;
 }
 
 #publications .publication-url .url-link {
-    max-width: 100%;
-    overflow-wrap: anywhere;
-    white-space: normal;
-    word-break: break-word;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  word-break: break-word;
 }
 
 #publications .publication-summary {
-    margin-top: 3px;
+  margin-top: 3px;
 }
 
 /* Set some print settings. */
 @media print {
-    @page {
-        margin: 10mm 25mm;
-        size: portrait;
-    }
+  @page {
+    margin: 10mm 25mm;
+    size: portrait;
+  }
 
-    .resume {
-        -webkit-box-shadow: none;
-        background: #fff;
-        border: 0px;
-        box-shadow: none;
-        max-width: 100%;
-    }
+  .resume {
+    -webkit-box-shadow: none;
+    background: #fff;
+    border: 0px;
+    box-shadow: none;
+    max-width: 100%;
+  }
 
-    body,
-    html,
-    .resume {
-        margin: 0px;
-        padding: 0px;
-    }
+  body,
+  html,
+  .resume {
+    margin: 0px;
+    padding: 0px;
+  }
 
-    .controls {
-        display: none;
-    }
+  .controls {
+    display: none;
+  }
 
-    .resume-section {
-        margin-bottom: 12px;
-    }
+  .resume-section {
+    margin-bottom: 12px;
+  }
 
-    .resume-section h2 {
-        page-break-after: avoid;
-    }
+  .resume-section h2 {
+    page-break-after: avoid;
+  }
 
-    .item,
-    .item-topline,
-    .item-details,
-    .summary,
-    .entry-meta,
-    .keywords-line,
-    .reference-text,
-    .highlights,
-    ul.item li,
-    #profiles .row,
-    #profiles .col,
-    #publications .publication-item,
-    #publications .publication-head,
-    #projects .project-item,
-    #projects .project-header {
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
+  .item,
+  .item-topline,
+  .item-details,
+  .summary,
+  .entry-meta,
+  .keywords-line,
+  .reference-text,
+  .highlights,
+  ul.item li,
+  #profiles .row,
+  #profiles .col,
+  #publications .publication-item,
+  #publications .publication-head,
+  #projects .project-item,
+  #projects .project-header {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 }

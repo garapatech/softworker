@@ -1,24 +1,24 @@
 {{#if resume.publications}}
 <section id="publications" class="resume-section" aria-labelledby="publications-heading">
-    <h2 id="publications-heading">{{i18n.sections.publications}}</h2>
-    {{#each resume.publications}}
+  <h2 id="publications-heading">{{i18n.sections.publications}}</h2>
+  {{#each resume.publications}}
     <article class="publication-item">
-        <header class="publication-head">
-            <div class="publication-title">{{name}}</div>
-            {{#if displayDate}}
-            <div class="publication-date">{{displayDate}}</div>
-            {{/if}}
-        </header>
-        {{#if publisher}}
+      <header class="publication-head">
+        <div class="publication-title">{{name}}</div>
+        {{#if displayDate}}
+          <div class="publication-date">{{displayDate}}</div>
+        {{/if}}
+      </header>
+      {{#if publisher}}
         <div class="publication-publisher">{{publisher}}</div>
-        {{/if}}
-        {{#if urlHref}}
+      {{/if}}
+      {{#if urlHref}}
         <div class="publication-url">[<a class="url-link" href="{{urlHref}}">{{urlLabel}}</a>]</div>
-        {{/if}}
-        {{#if summary}}
+      {{/if}}
+      {{#if summary}}
         <div class="publication-summary">{{summary}}</div>
-        {{/if}}
+      {{/if}}
     </article>
-    {{/each}}
+  {{/each}}
 </section>
 {{/if}}

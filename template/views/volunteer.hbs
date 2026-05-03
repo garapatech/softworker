@@ -1,25 +1,25 @@
 {{#if resume.volunteer}}
 <section id="volunteer" class="resume-section" aria-labelledby="volunteer-heading">
-    <h2 id="volunteer-heading">{{i18n.sections.volunteer}}</h2>
-    {{#each resume.volunteer}}
+  <h2 id="volunteer-heading">{{i18n.sections.volunteer}}</h2>
+  {{#each resume.volunteer}}
     <article class="item">
-        <div class="item-topline">
-            {{#with header}}{{> partials/item-header}}{{/with}}
-            {{#with details}}{{> partials/item-details}}{{/with}}
-        </div>
-        {{#if summary}}
+      <div class="item-topline">
+        {{#with header}}{{> partials/item-header}}{{/with}}
+        {{#with details}}{{> partials/item-details}}{{/with}}
+      </div>
+      {{#if summary}}
         <div class="summary">
-            <p>{{summary}}</p>
+          <p>{{summary}}</p>
         </div>
-        {{/if}}
-        {{#if highlights}}
+      {{/if}}
+      {{#if highlights}}
         <ul class="highlights">
-            {{#each highlights}}
+          {{#each highlights}}
             <li><span class="list-bullet">• </span><span class="list-text">{{this}}</span></li>
-            {{/each}}
+          {{/each}}
         </ul>
-        {{/if}}
+      {{/if}}
     </article>
-    {{/each}}
+  {{/each}}
 </section>
 {{/if}}

@@ -1,18 +1,18 @@
 {{#if resume.awards}}
 <section id="awards" class="resume-section" aria-labelledby="awards-heading">
-    <h2 id="awards-heading">{{i18n.sections.awards}}</h2>
-    {{#each resume.awards}}
+  <h2 id="awards-heading">{{i18n.sections.awards}}</h2>
+  {{#each resume.awards}}
     <article class="item">
-        <div class="item-topline">
-            {{#with header}}{{> partials/item-header}}{{/with}}
-            {{#with details}}{{> partials/item-details}}{{/with}}
-        </div>
-        {{#if summary}}
+      <div class="item-topline">
+        {{#with header}}{{> partials/item-header}}{{/with}}
+        {{#with details}}{{> partials/item-details}}{{/with}}
+      </div>
+      {{#if summary}}
         <div class="summary">
-            <p>{{summary}}</p>
+          <p>{{summary}}</p>
         </div>
-        {{/if}}
+      {{/if}}
     </article>
-    {{/each}}
+  {{/each}}
 </section>
 {{/if}}

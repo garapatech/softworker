@@ -24,17 +24,17 @@
         $monthNumber := $number($substring($text, 5, 2));
 
         $monthNumber >= 1 and $monthNumber <= 12
-          ? i18n.months[$monthNumber - 1] & " " & $year
+          ? i18n.date.months[$monthNumber - 1] & " " & $year
           : $year
       ) : $year
-    ) : i18n.present
+    ) : i18n.date.present
   };
 
   $formatPeriod := function($startDate, $endDate) {
     $isNonEmpty($startDate) and $isNonEmpty($endDate) and $startDate != $endDate
       ? $formatDate($startDate) & " — " & $formatDate($endDate) :
     $isNonEmpty($startDate) and $not($isNonEmpty($endDate))
-      ? $formatDate($startDate) & " — " & i18n.present :
+      ? $formatDate($startDate) & " — " & i18n.date.present :
     $isNonEmpty($startDate)
       ? $formatDate($startDate) :
     $isNonEmpty($endDate)
@@ -105,7 +105,7 @@
     "i18n": $merge([
       i18n,
       {
-        "html_lang": $replace(i18n.babel_locale, "_", "-")
+        "lang": $replace(i18n.meta.locale, "_", "-")
       }
     ]),
 
@@ -174,7 +174,7 @@
       "education": $formatMap(resume.education, function($item) {(
         $subtitle := $formatJoin([
           $item.studyType,
-          $isNonEmpty($item.area) ? i18n.education_in & " " & $item.area : null
+          $isNonEmpty($item.area) ? i18n.labels.education_in & " " & $item.area : null
         ], " ");
 
         $formatBlock(
@@ -253,7 +253,7 @@
                 ? $item.entity :
                 $isNonEmpty($item.type)
                 ? $item.type :
-                i18n.project,
+                i18n.terms.project.one,
               "displayDate": $formatPeriod($item.startDate, $item.endDate),
               "rolesText": $formatJoin($item.roles, ", "),
               "keywordsText": $formatJoin($item.keywords, ", "),

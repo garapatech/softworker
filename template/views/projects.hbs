@@ -1,47 +1,47 @@
 {{#if resume.projects}}
 <section id="projects" class="resume-section" aria-labelledby="projects-heading">
-    <h2 id="projects-heading">{{i18n.sections.projects}}</h2>
-    {{#each resume.projects}}
+  <h2 id="projects-heading">{{i18n.sections.projects}}</h2>
+  {{#each resume.projects}}
     <article class="project-item">
-        <header class="project-header">
-            <div class="project-head-main">
-                <span class="project-title">{{displayTitle}}</span>
-            </div>
-            {{#if displayDate}}
-            <div class="project-head-date">
-                {{displayDate}}
-            </div>
-            {{/if}}
-        </header>
-        {{#if metaParts}}
+      <header class="project-header">
+        <div class="project-head-main">
+          <span class="project-title">{{displayTitle}}</span>
+        </div>
+        {{#if displayDate}}
+          <div class="project-head-date">
+            {{displayDate}}
+          </div>
+        {{/if}}
+      </header>
+      {{#if metaParts}}
         <div class="project-meta">
-            {{#each metaParts}}
+          {{#each metaParts}}
             {{#if @index}}<span class="project-separator">•</span>{{/if}}
             <span>{{this}}</span>
-            {{/each}}
+          {{/each}}
         </div>
-        {{/if}}
-        {{#if urlHref}}
+      {{/if}}
+      {{#if urlHref}}
         <div class="project-link">
-            <span class="project-url">[<a class="url-link" href="{{urlHref}}">{{urlLabel}}</a>]</span>
+          <span class="project-url">[<a class="url-link" href="{{urlHref}}">{{urlLabel}}</a>]</span>
         </div>
-        {{/if}}
-        {{#if description}}
+      {{/if}}
+      {{#if description}}
         <div class="project-description">{{description}}</div>
-        {{/if}}
-        {{#if keywordsText}}
+      {{/if}}
+      {{#if keywordsText}}
         <div class="keywords-line">
-            {{../i18n.technologies}}: {{keywordsText}}
+          {{../i18n.technologies}}: {{keywordsText}}
         </div>
-        {{/if}}
-        {{#if highlights}}
+      {{/if}}
+      {{#if highlights}}
         <ul class="highlights">
-            {{#each highlights}}
+          {{#each highlights}}
             <li><span class="list-bullet">• </span><span class="list-text">{{this}}</span></li>
-            {{/each}}
+          {{/each}}
         </ul>
-        {{/if}}
+      {{/if}}
     </article>
-    {{/each}}
+  {{/each}}
 </section>
 {{/if}}

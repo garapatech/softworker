@@ -1,12 +1,12 @@
 {{#if resume.interests}}
 <section id="interests" class="resume-section" aria-labelledby="interests-heading">
-    <h2 id="interests-heading">{{i18n.sections.interests}}</h2>
-    <ul class="item">
-        {{#each resume.interests}}
-        <li>
-            <span class="list-bullet">• </span><span class="list-text"><strong>{{name}}</strong>{{#if keywordsText}}: {{keywordsText}}{{/if}}</span>
-        </li>
-        {{/each}}
-    </ul>
+  <h2 id="interests-heading">{{i18n.sections.interests}}</h2>
+  <ul class="item">
+    {{#each resume.interests}}
+      <li>
+        <span class="list-bullet">• </span><span class="list-text"><strong>{{name}}</strong>{{#if keywordsText}}: {{keywordsText}}{{/if}}</span>
+      </li>
+    {{/each}}
+  </ul>
 </section>
 {{/if}}

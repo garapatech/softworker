@@ -1,21 +1,21 @@
 {{#if resume.education}}
 <section id="education">
-    <h2>{{i18n.sections.education}}</h2>
-    {{#each resume.education}}
+  <h2>{{i18n.sections.education}}</h2>
+  {{#each resume.education}}
     <article class="item">
-        <div class="item-topline">
-            {{#with header}}{{> partials/item-header}}{{/with}}
-            {{#with details}}{{> partials/item-details}}{{/with}}
-        </div>
-        {{#if score}}
+      <div class="item-topline">
+        {{#with header}}{{> partials/item-header}}{{/with}}
+        {{#with details}}{{> partials/item-details}}{{/with}}
+      </div>
+      {{#if score}}
         <div class="entry-meta">{{score}}</div>
-        {{/if}}
-        {{#if coursesText}}
+      {{/if}}
+      {{#if coursesText}}
         <div class="keywords-line">
-            <strong>{{../i18n.courses}}:</strong> {{coursesText}}
+          <strong>{{../i18n.courses}}:</strong> {{coursesText}}
         </div>
-        {{/if}}
+      {{/if}}
     </article>
-    {{/each}}
+  {{/each}}
 </section>
 {{/if}}

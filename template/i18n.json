@@ -1,7 +1,12 @@
 {
   "pt_BR": {
-    "babel_locale": "pt_BR",
-    "months": ["jan.", "fev.", "mar.", "abr.", "mai.", "jun.", "jul.", "ago.", "set.", "out.", "nov.", "dez."],
+    "meta": {
+      "locale": "pt_BR"
+    },
+    "date": {
+      "months": ["jan.", "fev.", "mar.", "abr.", "mai.", "jun.", "jul.", "ago.", "set.", "out.", "nov.", "dez."],
+      "present": "presente"
+    },
     "sections": {
       "awards": "Prêmios & Reconhecimentos",
       "certificates": "Certificações",
@@ -17,16 +22,27 @@
       "volunteer": "Voluntariado",
       "work": "Experiência Profissional"
     },
-    "contact_info": "Informações de contato",
-    "courses": "Cursos",
-    "education_in": "em",
-    "present": "presente",
-    "project": "Projeto",
-    "technologies": "Tecnologias"
+    "labels": {
+      "contact_info": "Informações de contato",
+      "courses": "Cursos",
+      "education_in": "em",
+      "technologies": "Tecnologias"
+    },
+    "terms": {
+      "project": {
+        "one": "Projeto",
+        "other": "Projetos"
+      }
+    }
   },
   "en_US": {
-    "babel_locale": "en_US",
-    "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "meta": {
+      "locale": "en_US"
+    },
+    "date": {
+      "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      "present": "present"
+    },
     "sections": {
       "awards": "Awards & Recognition",
       "certificates": "Certificates",
@@ -42,11 +58,17 @@
       "volunteer": "Volunteer Work",
       "work": "Work Experience"
     },
-    "contact_info": "Contact information",
-    "courses": "Courses",
-    "education_in": "in",
-    "present": "present",
-    "project": "Project",
-    "technologies": "Technologies"
+    "labels": {
+      "contact_info": "Contact information",
+      "courses": "Courses",
+      "education_in": "in",
+      "technologies": "Technologies"
+    },
+    "terms": {
+      "project": {
+        "one": "Project",
+        "other": "Projects"
+      }
+    }
   }
 }
