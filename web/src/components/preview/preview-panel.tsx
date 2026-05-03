@@ -1,19 +1,10 @@
-import type { RefObject } from 'react'
 import { PreviewFrame } from '@/components/preview/preview-frame'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { usePreviewPanel } from '@/hooks/use-preview-panel'
 
-export function PreviewPanel({
-  iframeId,
-  onPrintPdf,
-  previewFrameRef,
-}: {
-  iframeId: string
-  onPrintPdf: () => void
-  previewFrameRef: RefObject<HTMLIFrameElement | null>
-}) {
-  const { onDownloadJson, previewHtml } = usePreviewPanel()
+export function PreviewPanel() {
+  const { iframeId, onDownloadJson, onPrintPdf, previewFrameRef, previewHtml } = usePreviewPanel()
 
   return (
     <Card className="min-h-0 overflow-hidden border-border/80 bg-card xl:sticky xl:top-4 xl:grid xl:h-[calc(100vh-2rem)] xl:grid-rows-[auto_minmax(0,1fr)]">

@@ -1,6 +1,7 @@
 import type { ValidationState } from '@/mappers/resume.mapper'
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
+import { buildValidationIssueCounts, type ValidationIssueCounts } from '@/services/resume-form.service'
 import {
   formatJson,
   insertArrayItem,
@@ -33,6 +34,7 @@ interface ResumeState {
   resumeDraft: JsonObject
   language: ResumeLanguage
   validationState: ValidationState
+  validationIssueCounts: ValidationIssueCounts
   previewHtml: string
   previewStatusMessage: string
   setLanguage: (language: ResumeLanguage) => void
@@ -45,77 +47,85 @@ interface ResumeState {
 }
 
 const initialResume = DEFAULT_RESUME
+const initialValidationState = validateResume(initialResume)
+
+function getValidationSnapshot(resumeDraft: JsonObject) {
+  const validationState = validateResume(resumeDraft)
+
+  return {
+    validationState,
+    validationIssueCounts: buildValidationIssueCounts(validationState.byPath),
+  }
+}
 
 export const useResumeStore = create<ResumeState>()(
-  immer((set, get) => ({
-    resumeDraft: initialResume,
-    language: DEFAULT_LANGUAGE,
-    validationState: validateResume(initialResume),
-    previewHtml: '',
-    previewStatusMessage: '',
-
-    setLanguage: (language) => {
-      set(() => ({
-        language,
-      }))
-    },
-
-    setResumeDraft: (next) => {
-      set(() => ({
-        resumeDraft: next,
-        validationState: validateResume(next),
-      }))
-    },
-
-    updateField: (path, value) => {
-      const next = setAtPath(get().resumeDraft, path, value)
+  immer((set, get) => {
+    const commitResumeDraft = (resumeDraft: JsonObject) => {
+      const validation = getValidationSnapshot(resumeDraft)
 
       set(() => ({
-        resumeDraft: next,
-        validationState: validateResume(next),
+        resumeDraft,
+        ...validation,
       }))
-    },
+    }
 
-    addArrayItem: (path, item) => {
-      const next = insertArrayItem(get().resumeDraft, path, item)
+    const updateResumeDraft = (transform: (resumeDraft: JsonObject) => JsonObject) => {
+      commitResumeDraft(transform(get().resumeDraft))
+    }
 
-      set(() => ({
-        resumeDraft: next,
-        validationState: validateResume(next),
-      }))
-    },
+    return {
+      resumeDraft: initialResume,
+      language: DEFAULT_LANGUAGE,
+      validationState: initialValidationState,
+      validationIssueCounts: buildValidationIssueCounts(initialValidationState.byPath),
+      previewHtml: '',
+      previewStatusMessage: '',
 
-    removeArrayItem: (path, index) => {
-      const next = removeArrayItem(get().resumeDraft, path, index)
-
-      set(() => ({
-        resumeDraft: next,
-        validationState: validateResume(next),
-      }))
-    },
-
-    renderPreview: async () => {
-      const { language, resumeDraft } = get()
-
-      try {
-        const html = await renderResumeDocument(resumeDraft, language)
-
+      setLanguage: (language) => {
         set(() => ({
-          previewHtml: html,
-          previewStatusMessage: '',
+          language,
         }))
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'Falha ao renderizar a pré-visualização.'
+      },
 
-        set(() => ({
-          previewStatusMessage: message,
-        }))
-      }
-    },
+      setResumeDraft: (next) => {
+        commitResumeDraft(next)
+      },
 
-    downloadJson: () => {
-      const { resumeDraft } = get()
-      downloadTextFile(JSON_DOWNLOAD_FILENAME, formatJson(resumeDraft), 'application/json;charset=utf-8')
-    },
-  })),
+      updateField: (path, value) => {
+        updateResumeDraft((resumeDraft) => setAtPath(resumeDraft, path, value))
+      },
+
+      addArrayItem: (path, item) => {
+        updateResumeDraft((resumeDraft) => insertArrayItem(resumeDraft, path, item))
+      },
+
+      removeArrayItem: (path, index) => {
+        updateResumeDraft((resumeDraft) => removeArrayItem(resumeDraft, path, index))
+      },
+
+      renderPreview: async () => {
+        const { language, resumeDraft } = get()
+
+        try {
+          const html = await renderResumeDocument(resumeDraft, language)
+
+          set(() => ({
+            previewHtml: html,
+            previewStatusMessage: '',
+          }))
+        } catch (error) {
+          const message = error instanceof Error ? error.message : 'Falha ao renderizar a pré-visualização.'
+
+          set(() => ({
+            previewStatusMessage: message,
+          }))
+        }
+      },
+
+      downloadJson: () => {
+        const { resumeDraft } = get()
+        downloadTextFile(JSON_DOWNLOAD_FILENAME, formatJson(resumeDraft), 'application/json;charset=utf-8')
+      },
+    }
+  }),
 )

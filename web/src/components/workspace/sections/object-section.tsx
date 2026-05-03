@@ -1,68 +1,35 @@
 import { ResumeFieldList } from '@/components/workspace/fields/resume-field-list'
+import { CollapsibleSectionPanel } from '@/components/workspace/sections/collapsible-section-panel'
 import { NestedSection } from '@/components/workspace/sections/nested-section'
-import { SectionHeader } from '@/components/workspace/sections/section-header'
-import { Card, CardContent } from '@/components/ui/card'
-import type { PathPart, JsonObject, JsonValue } from '@/services/resume.service'
-import { countValidationIssues, getSectionDomId, type ObjectSectionDefinition } from '@/services/resume-form.service'
+import { useSectionPanel } from '@/hooks/use-section-panel'
+import type { ObjectSectionDefinition } from '@/services/resume-form.service'
 
-export function ObjectSection({
-  isOpen,
-  onChange,
-  onToggle,
-  resume,
-  section,
-  validationErrors,
-}: {
-  isOpen: boolean
-  onChange: (path: PathPart[], value: JsonValue) => void
-  onToggle: (open: boolean) => void
-  resume: JsonObject
-  section: ObjectSectionDefinition
-  validationErrors: Record<string, string[]>
-}) {
-  const values = (resume[section.key] as JsonObject | undefined) ?? {}
-  const sectionId = getSectionDomId(section.key)
-  const headingId = `${sectionId}-heading`
-  const contentId = `${sectionId}-content`
-  const errorCount = countValidationIssues(validationErrors, section.key)
+export function ObjectSection({ section }: { section: ObjectSectionDefinition }) {
+  const { contentId, errorCount, headingId, isOpen, onToggle, sectionId } = useSectionPanel(section.key)
 
   return (
-    <Card id={sectionId} className="scroll-mt-4 overflow-hidden border-border/70">
-      <SectionHeader
-        title={section.title}
-        subtitle={errorCount > 0 ? `${errorCount} ${errorCount === 1 ? 'ajuste pendente' : 'ajustes pendentes'}` : undefined}
-        headingId={headingId}
-        contentId={contentId}
-        isOpen={isOpen}
-        onToggle={() => onToggle(!isOpen)}
+    <CollapsibleSectionPanel
+      title={section.title}
+      subtitle={errorCount > 0 ? `${errorCount} ${errorCount === 1 ? 'ajuste pendente' : 'ajustes pendentes'}` : undefined}
+      sectionId={sectionId}
+      headingId={headingId}
+      contentId={contentId}
+      isOpen={isOpen}
+      onToggle={onToggle}
+      contentClassName="space-y-4 border-t border-border/70 bg-muted/10 pt-5"
+    >
+      <ResumeFieldList
+        fields={section.fields}
+        pathPrefix={[section.key]}
       />
 
-      {isOpen ? (
-        <CardContent
-          id={contentId}
-          aria-labelledby={headingId}
-          className="space-y-4 border-t border-border/70 bg-muted/10 pt-5"
-        >
-          <ResumeFieldList
-            fields={section.fields}
-            onChange={onChange}
-            pathPrefix={[section.key]}
-            validationErrors={validationErrors}
-            values={values}
-          />
-
-          {section.nested?.map((nested) => (
-            <NestedSection
-              key={`${section.key}.${nested.key}`}
-              parentKey={section.key}
-              section={nested}
-              values={(values[nested.key] as JsonObject | undefined) ?? {}}
-              validationErrors={validationErrors}
-              onChange={onChange}
-            />
-          ))}
-        </CardContent>
-      ) : null}
-    </Card>
+      {section.nested?.map((nested) => (
+        <NestedSection
+          key={`${section.key}.${nested.key}`}
+          parentKey={section.key}
+          section={nested}
+        />
+      ))}
+    </CollapsibleSectionPanel>
   )
 }

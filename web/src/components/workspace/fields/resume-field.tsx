@@ -1,25 +1,49 @@
-import { getFieldValue, parseLines } from '@/mappers/resume.mapper'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import type { JsonValue, PathPart } from '@/services/resume.service'
+import { useResumeField } from '@/hooks/use-resume-field'
+import type { PathPart } from '@/services/resume.service'
 import type { FieldDefinition } from '@/services/resume-form.service'
 
+function renderFieldControl({
+  currentValue,
+  fieldId,
+  inputKind,
+  inputType,
+  onValueChange,
+}: Pick<ReturnType<typeof useResumeField>, 'currentValue' | 'fieldId' | 'inputKind' | 'inputType' | 'onValueChange'>) {
+  if (inputKind === 'input') {
+    return (
+      <Input
+        id={fieldId}
+        type={inputType}
+        value={currentValue}
+        onChange={(event) => onValueChange(event.target.value)}
+        spellCheck={false}
+        className="bg-background"
+      />
+    )
+  }
+
+  return (
+    <Textarea
+      id={fieldId}
+      value={currentValue}
+      spellCheck={inputKind === 'textarea'}
+      onChange={(event) => onValueChange(event.target.value)}
+      className="min-h-28 bg-background"
+    />
+  )
+}
+
 export function ResumeField({
-  error,
   field,
-  onChange,
   path,
-  value,
 }: {
-  error?: string
   field: FieldDefinition
-  onChange: (path: PathPart[], value: JsonValue) => void
   path: PathPart[]
-  value: JsonValue | undefined
 }) {
-  const fieldId = path.join('.')
-  const currentValue = getFieldValue(value, field)
+  const { currentValue, error, fieldId, inputKind, inputType, onValueChange } = useResumeField(field, path)
 
   return (
     <div className={field.full ? 'grid gap-2.5 md:col-span-2' : 'grid gap-2.5'}>
@@ -27,36 +51,7 @@ export function ResumeField({
         {field.label}
         {field.required ? <span className="ml-1 text-destructive">*</span> : null}
       </Label>
-      {field.type === 'textarea' ? (
-        <Textarea
-          id={fieldId}
-          value={currentValue}
-          spellCheck
-          onChange={(event) => onChange(path, event.target.value)}
-          className="min-h-28 bg-background"
-        />
-      ) : null}
-
-      {field.type === 'list' ? (
-        <Textarea
-          id={fieldId}
-          value={currentValue}
-          spellCheck={false}
-          onChange={(event) => onChange(path, parseLines(event.target.value))}
-          className="min-h-28 bg-background"
-        />
-      ) : null}
-
-      {field.type !== 'textarea' && field.type !== 'list' ? (
-        <Input
-          id={fieldId}
-          type={field.type === 'email' || field.type === 'url' ? field.type : 'text'}
-          value={currentValue}
-          onChange={(event) => onChange(path, event.target.value)}
-          spellCheck={false}
-          className="bg-background"
-        />
-      ) : null}
+      {renderFieldControl({ currentValue, fieldId, inputKind, inputType, onValueChange })}
 
       {error ? <p className="text-xs font-medium text-destructive">{error}</p> : null}
     </div>

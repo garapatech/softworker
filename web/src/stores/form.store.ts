@@ -1,9 +1,8 @@
 import { enableMapSet } from 'immer'
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { formatJson, parseResumeJson, type JsonObject } from '@/services/resume.service'
+import { formatJson, type JsonObject } from '@/services/resume.service'
 import { DEFAULT_RESUME } from '@/services/preview.service'
-import { useResumeStore } from '@/stores/resume.store'
 
 enableMapSet()
 
@@ -15,10 +14,10 @@ interface FormState {
   jsonStatusMessage: string
   openSections: Set<string>
   setMode: (mode: EditorMode) => void
-  toggleSections: (keys: string[], open: boolean) => void
   toggleSection: (key: string, open: boolean) => void
   syncJsonDraftFromResume: (resumeDraft: JsonObject) => void
-  applyJsonDraft: (value: string) => void
+  setJsonDraft: (value: string) => void
+  setJsonStatusMessage: (message: string) => void
   clearJsonStatus: () => void
 }
 
@@ -33,10 +32,6 @@ export const useFormStore = create<FormState>()(
       set((state) => {
         state.mode = mode
       })
-
-      if (mode === 'source') {
-        useFormStore.getState().syncJsonDraftFromResume(useResumeStore.getState().resumeDraft)
-      }
     },
 
     toggleSection: (key, open) => {
@@ -49,43 +44,22 @@ export const useFormStore = create<FormState>()(
       })
     },
 
-    toggleSections: (keys, open) => {
-      set((state) => {
-        for (const key of keys) {
-          if (open) {
-            state.openSections.add(key)
-          } else {
-            state.openSections.delete(key)
-          }
-        }
-      })
-    },
-
     syncJsonDraftFromResume: (resumeDraft) => {
       set((state) => {
         state.jsonDraft = formatJson(resumeDraft)
       })
     },
 
-    applyJsonDraft: (value) => {
+    setJsonDraft: (value) => {
       set((state) => {
         state.jsonDraft = value
       })
+    },
 
-      try {
-        const nextResume = parseResumeJson(value)
-        useResumeStore.getState().setResumeDraft(nextResume)
-
-        set((state) => {
-          state.jsonStatusMessage = ''
-        })
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'JSON inválido.'
-
-        set((state) => {
-          state.jsonStatusMessage = `JSON inválido: ${message}`
-        })
-      }
+    setJsonStatusMessage: (message) => {
+      set((state) => {
+        state.jsonStatusMessage = message
+      })
     },
 
     clearJsonStatus: () => {

@@ -33,7 +33,7 @@ export interface ArraySectionDefinition {
 
 export type SectionDefinition = ObjectSectionDefinition | ArraySectionDefinition
 
-export type SectionFilterMode = 'all' | 'open' | 'pending'
+export type ValidationIssueCounts = Record<string, number>
 
 export const OBJECT_SECTIONS: ObjectSectionDefinition[] = [
   {
@@ -269,21 +269,36 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
   },
 ]
 
-export const FORM_SECTIONS: SectionDefinition[] = [
-  OBJECT_SECTIONS[0],
-  ARRAY_SECTIONS[0],
-  ARRAY_SECTIONS[1],
-  ARRAY_SECTIONS[2],
-  ARRAY_SECTIONS[3],
-  ARRAY_SECTIONS[4],
-  ARRAY_SECTIONS[5],
-  ARRAY_SECTIONS[6],
-  ARRAY_SECTIONS[7],
-  ARRAY_SECTIONS[8],
-  ARRAY_SECTIONS[9],
-  ARRAY_SECTIONS[10],
-  OBJECT_SECTIONS[1],
-]
+const FORM_SECTION_ORDER = [
+  'basics',
+  'basics.profiles',
+  'skills',
+  'work',
+  'volunteer',
+  'projects',
+  'education',
+  'certificates',
+  'languages',
+  'awards',
+  'publications',
+  'interests',
+  'references',
+  'meta',
+] as const
+
+const SECTION_DEFINITIONS_BY_KEY = new Map(
+  [...OBJECT_SECTIONS, ...ARRAY_SECTIONS].map((section) => [sectionKey(section), section]),
+)
+
+export const FORM_SECTIONS: SectionDefinition[] = FORM_SECTION_ORDER.map((key) => {
+  const section = SECTION_DEFINITIONS_BY_KEY.get(key)
+
+  if (!section) {
+    throw new Error(`Seção de formulário não encontrada para a chave "${key}".`)
+  }
+
+  return section
+})
 
 export function sectionKey(section: Pick<ObjectSectionDefinition, 'key'> | Pick<ArraySectionDefinition, 'path'>) {
   return 'key' in section ? section.key : section.path.join('.')
@@ -293,28 +308,25 @@ export function getSectionDomId(key: string) {
   return `section-${key.replaceAll('.', '-')}`
 }
 
-export function countValidationIssues(validationErrors: Record<string, string[]>, pathPrefix: string) {
-  return Object.entries(validationErrors).reduce((count, [path, messages]) => {
-    if (path === pathPrefix || path.startsWith(`${pathPrefix}.`)) {
-      return count + messages.length
+export function buildValidationIssueCounts(validationErrors: Record<string, string[]>): ValidationIssueCounts {
+  const issueCounts: ValidationIssueCounts = {}
+
+  for (const [path, messages] of Object.entries(validationErrors)) {
+    if (messages.length === 0) {
+      continue
     }
 
-    return count
-  }, 0)
-}
+    const segments = path.split('.')
 
-export function getSectionSearchText(section: SectionDefinition) {
-  if ('key' in section) {
-    return [
-      section.title,
-      ...section.fields.map((field) => field.label),
-      ...(section.nested?.flatMap((nested) => [nested.title, ...nested.fields.map((field) => field.label)]) ?? []),
-    ]
-      .join(' ')
-      .toLocaleLowerCase('pt-BR')
+    for (let index = 0; index < segments.length; index += 1) {
+      const prefix = segments.slice(0, index + 1).join('.')
+      issueCounts[prefix] = (issueCounts[prefix] ?? 0) + messages.length
+    }
   }
 
-  return [section.title, section.itemTitle, ...section.fields.map((field) => field.label)]
-    .join(' ')
-    .toLocaleLowerCase('pt-BR')
+  return issueCounts
+}
+
+export function getValidationIssueCount(issueCounts: ValidationIssueCounts, path: string) {
+  return issueCounts[path] ?? 0
 }

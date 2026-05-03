@@ -1,116 +1,107 @@
 import { ItemCard } from '@/components/workspace/cards/item-card'
 import { ResumeFieldList } from '@/components/workspace/fields/resume-field-list'
-import { SectionHeader } from '@/components/workspace/sections/section-header'
+import { CollapsibleSectionPanel } from '@/components/workspace/sections/collapsible-section-panel'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { getAtPath, type JsonObject, type JsonValue, type PathPart } from '@/services/resume.service'
+import { useArraySectionActions } from '@/hooks/use-array-section-actions'
+import { useResumeArrayLength } from '@/hooks/use-resume-array-length'
+import { useSectionPanel } from '@/hooks/use-section-panel'
+import { useValidationIssueCount } from '@/hooks/use-validation-issue-count'
 import {
-  countValidationIssues,
-  getSectionDomId,
   sectionKey,
   type ArraySectionDefinition,
 } from '@/services/resume-form.service'
 
-export function ArraySection({
-  isOpen,
-  onAdd,
-  onChange,
+function ArraySectionItem({
+  index,
+  itemTitle,
+  path,
+  fields,
   onRemove,
-  onToggle,
-  resume,
-  section,
-  validationErrors,
 }: {
-  isOpen: boolean
-  onAdd: (path: string[], item: JsonObject) => void
-  onChange: (path: PathPart[], value: JsonValue) => void
-  onRemove: (path: string[], index: number) => void
-  onToggle: (open: boolean) => void
-  resume: JsonObject
-  section: ArraySectionDefinition
-  validationErrors: Record<string, string[]>
+  index: number
+  itemTitle: string
+  path: string[]
+  fields: ArraySectionDefinition['fields']
+  onRemove: () => void
 }) {
-  const items = (getAtPath(resume, section.path) as JsonObject[] | undefined) ?? []
-  const key = sectionKey(section)
-  const sectionId = getSectionDomId(key)
-  const headingId = `${sectionId}-heading`
-  const contentId = `${sectionId}-content`
-  const errorCount = countValidationIssues(validationErrors, key)
+  const itemErrorCount = useValidationIssueCount(`${path.join('.')}.${index}`)
 
   return (
-    <Card id={sectionId} className="scroll-mt-4 overflow-hidden border-border/70">
-      <SectionHeader
-        title={section.title}
-        subtitle={
-          errorCount > 0
-            ? `${items.length} ${items.length === 1 ? 'item' : 'itens'} com ajuste`
-            : `${items.length} ${items.length === 1 ? 'item' : 'itens'}`
-        }
-        headingId={headingId}
-        contentId={contentId}
-        isOpen={isOpen}
-        onToggle={() => onToggle(!isOpen)}
-        status={errorCount > 0 ? <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700">Revisão pendente</span> : undefined}
-        actions={
-          <Button
-            variant="outline"
-            size="sm"
-            className="size-8 rounded-full border-border/80 bg-background p-0 text-base leading-none text-muted-foreground shadow-none hover:border-border hover:bg-accent/50 hover:text-foreground"
-            aria-label={`Adicionar ${section.itemTitle.toLocaleLowerCase('pt-BR')}`}
-            onClick={() => onAdd(section.path, section.createItem())}
-          >
-            +
-          </Button>
-        }
+    <ItemCard
+      hasErrors={itemErrorCount > 0}
+      title={itemTitle}
+      index={index}
+      onRemove={onRemove}
+    >
+      <ResumeFieldList
+        fields={fields}
+        pathPrefix={[...path, index]}
       />
+    </ItemCard>
+  )
+}
 
-      {isOpen ? (
-        <CardContent
-          id={contentId}
-          aria-labelledby={headingId}
-          className={
-            items.length === 0
-              ? 'space-y-4 bg-muted/10 pt-4'
-              : 'space-y-4 border-t border-border/70 bg-muted/10 pt-5'
-          }
+export function ArraySection({ section }: { section: ArraySectionDefinition }) {
+  const { onAdd, onRemove } = useArraySectionActions()
+  const key = sectionKey(section)
+  const { contentId, errorCount, headingId, isOpen, onToggle, sectionId } = useSectionPanel(key)
+  const itemCount = useResumeArrayLength(section.path)
+
+  return (
+    <CollapsibleSectionPanel
+      title={section.title}
+      subtitle={
+        errorCount > 0
+          ? `${itemCount} ${itemCount === 1 ? 'item' : 'itens'} com ajuste`
+          : `${itemCount} ${itemCount === 1 ? 'item' : 'itens'}`
+      }
+      sectionId={sectionId}
+      headingId={headingId}
+      contentId={contentId}
+      isOpen={isOpen}
+      onToggle={onToggle}
+      status={errorCount > 0 ? <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700">Revisão pendente</span> : undefined}
+      actions={
+        <Button
+          variant="outline"
+          size="sm"
+          className="size-8 rounded-full border-border/80 bg-background p-0 text-base leading-none text-muted-foreground shadow-none hover:border-border hover:bg-accent/50 hover:text-foreground"
+          aria-label={`Adicionar ${section.itemTitle.toLocaleLowerCase('pt-BR')}`}
+          onClick={() => onAdd(section.path, section.createItem())}
         >
-          {items.length === 0 ? (
-            <p className="rounded-lg border border-dashed border-border/70 bg-background/70 px-4 py-5 text-sm leading-6 text-muted-foreground">
-              Nenhum item ainda. Use o botão `+` para adicionar o primeiro.
-            </p>
-          ) : (
-            <>
-              <p className="text-[0.82rem] leading-[1.45] text-muted-foreground">
-                Use um item por linha nos campos de lista.
-              </p>
+          +
+        </Button>
+      }
+      contentClassName={
+        itemCount === 0
+          ? 'space-y-4 bg-muted/10 pt-4'
+          : 'space-y-4 border-t border-border/70 bg-muted/10 pt-5'
+      }
+    >
+      {itemCount === 0 ? (
+        <p className="rounded-lg border border-dashed border-border/70 bg-background/70 px-4 py-5 text-sm leading-6 text-muted-foreground">
+          Nenhum item ainda. Use o botão `+` para adicionar o primeiro.
+        </p>
+      ) : (
+        <>
+          <p className="text-[0.82rem] leading-[1.45] text-muted-foreground">
+            Use um item por linha nos campos de lista.
+          </p>
 
-              <div className="grid gap-3">
-                {items.map((item, index) => {
-                  const itemErrorCount = countValidationIssues(validationErrors, `${key}.${index}`)
-
-                  return (
-                    <ItemCard
-                      key={`${section.path.join('.')}.${index}`}
-                      hasErrors={itemErrorCount > 0}
-                      title={section.itemTitle}
-                      index={index}
-                      onRemove={() => onRemove(section.path, index)}
-                    >
-                      <ResumeFieldList
-                        fields={section.fields}
-                        onChange={onChange}
-                        pathPrefix={[...section.path, index]}
-                        validationErrors={validationErrors}
-                        values={item}
-                      />
-                    </ItemCard>
-                  )
-                })}
-              </div>
-            </>
-          )}
-        </CardContent>
-      ) : null}
-    </Card>
+          <div className="grid gap-3">
+            {Array.from({ length: itemCount }, (_, index) => (
+              <ArraySectionItem
+                key={`${section.path.join('.')}.${index}`}
+                index={index}
+                itemTitle={section.itemTitle}
+                path={section.path}
+                fields={section.fields}
+                onRemove={() => onRemove(section.path, index)}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </CollapsibleSectionPanel>
   )
 }

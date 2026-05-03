@@ -42,70 +42,59 @@ export function getAtPath(target: JsonValue | undefined, path: PathPart[]) {
   }, target)
 }
 
+function isJsonObject(value: JsonValue | undefined): value is JsonObject {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function updateAtPath(target: JsonValue | undefined, path: PathPart[], value: JsonValue): JsonValue {
+  const [part, ...rest] = path
+
+  if (part == null) {
+    return value
+  }
+
+  if (typeof part === 'number') {
+    const current = Array.isArray(target) ? target : []
+    const next = current.slice()
+    const branch = current[part]
+
+    next[part] = rest.length > 0 ? updateAtPath(branch, rest, value) : value
+
+    return next
+  }
+
+  const current = isJsonObject(target) ? target : {}
+  const branch = current[part]
+
+  return {
+    ...current,
+    [part]: rest.length > 0 ? updateAtPath(branch, rest, value) : value,
+  }
+}
+
 export function setAtPath(target: JsonObject, path: PathPart[], value: JsonValue) {
-  const next = structuredClone(target) as JsonObject
-  let current: JsonValue = next
-
-  for (let index = 0; index < path.length - 1; index += 1) {
-    const part = path[index]
-    const following = path[index + 1]
-
-    if (Array.isArray(current) && typeof part === 'number') {
-      if (current[part] == null) {
-        current[part] = typeof following === 'number' ? [] : {}
-      }
-      current = current[part] as JsonValue
-      continue
-    }
-
-    if (typeof current === 'object' && current !== null && typeof part === 'string') {
-      const objectCurrent = current as JsonObject
-
-      if (objectCurrent[part] == null) {
-        objectCurrent[part] = typeof following === 'number' ? [] : {}
-      }
-      current = objectCurrent[part] as JsonValue
-    }
-  }
-
-  const last = path[path.length - 1]
-
-  if (Array.isArray(current) && typeof last === 'number') {
-    current[last] = value
-  } else if (typeof current === 'object' && current !== null && typeof last === 'string') {
-    ;(current as JsonObject)[last] = value
-  }
-
-  return next
+  return updateAtPath(target, path, value) as JsonObject
 }
 
 export function insertArrayItem(target: JsonObject, path: string[], item: JsonObject) {
-  const next = structuredClone(target) as JsonObject
-  let current = getAtPath(next, path)
+  const current = getAtPath(target, path)
+  const nextItems = Array.isArray(current) ? [...current, item] : [item]
 
-  if (!Array.isArray(current)) {
-    const seeded = setAtPath(next, path, [])
-    current = getAtPath(seeded, path)
-    if (!Array.isArray(current)) {
-      return seeded
-    }
-    current.push(item)
-    return seeded
-  }
-
-  current.push(item)
-  return next
+  return setAtPath(target, path, nextItems)
 }
 
 export function removeArrayItem(target: JsonObject, path: string[], index: number) {
-  const next = structuredClone(target) as JsonObject
-  const current = getAtPath(next, path)
+  const current = getAtPath(target, path)
 
-  if (Array.isArray(current)) {
-    current.splice(index, 1)
+  if (!Array.isArray(current)) {
+    return target
   }
 
-  return next
+  return setAtPath(
+    target,
+    path,
+    current.filter((_, itemIndex) => itemIndex !== index),
+  )
 }
 
 export function validateResume(resume: JsonObject): ValidationState {

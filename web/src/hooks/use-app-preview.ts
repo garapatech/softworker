@@ -1,32 +1,18 @@
-import { useEffect, useId, useRef } from 'react'
-import { useShallow } from 'zustand/react/shallow'
-import { useFormStore } from '@/stores/form.store'
+import { useEffect } from 'react'
 import { useResumeStore } from '@/stores/resume.store'
 
-export function useAppPreview() {
-  const iframeId = useId()
-  const previewFrameRef = useRef<HTMLIFrameElement>(null)
-  const mode = useFormStore((state) => state.mode)
-  const { language, renderPreview, resumeDraft } = useResumeStore(
-    useShallow((state) => ({
-      language: state.language,
-      renderPreview: state.renderPreview,
-      resumeDraft: state.resumeDraft,
-    })),
-  )
-
+export function PreviewRenderSync() {
   useEffect(() => {
-    void renderPreview()
-  }, [language, renderPreview, resumeDraft])
+    void useResumeStore.getState().renderPreview()
 
-  function handlePrintPdf() {
-    previewFrameRef.current?.contentWindow?.print()
-  }
+    return useResumeStore.subscribe((state, previousState) => {
+      if (state.language === previousState.language && state.resumeDraft === previousState.resumeDraft) {
+        return
+      }
 
-  return {
-    handlePrintPdf,
-    iframeId,
-    mode,
-    previewFrameRef,
-  }
+      void state.renderPreview()
+    })
+  }, [])
+
+  return null
 }

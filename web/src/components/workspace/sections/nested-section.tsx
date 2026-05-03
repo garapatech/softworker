@@ -1,22 +1,16 @@
 import { ResumeFieldList } from '@/components/workspace/fields/resume-field-list'
 import { Badge } from '@/components/ui/badge'
-import type { PathPart, JsonObject, JsonValue } from '@/services/resume.service'
-import { countValidationIssues, type NestedSectionDefinition } from '@/services/resume-form.service'
+import { useValidationIssueCount } from '@/hooks/use-validation-issue-count'
+import { type NestedSectionDefinition } from '@/services/resume-form.service'
 
 export function NestedSection({
-  onChange,
   parentKey,
   section,
-  validationErrors,
-  values,
 }: {
-  onChange: (path: PathPart[], value: JsonValue) => void
   parentKey: string
   section: NestedSectionDefinition
-  validationErrors: Record<string, string[]>
-  values: JsonObject
 }) {
-  const errorCount = countValidationIssues(validationErrors, `${parentKey}.${section.key}`)
+  const errorCount = useValidationIssueCount(`${parentKey}.${section.key}`)
 
   return (
     <section className="rounded-xl border border-border/70 bg-background/80 p-4">
@@ -30,10 +24,7 @@ export function NestedSection({
       </div>
       <ResumeFieldList
         fields={section.fields}
-        onChange={onChange}
         pathPrefix={[parentKey, section.key]}
-        validationErrors={validationErrors}
-        values={values}
       />
     </section>
   )
