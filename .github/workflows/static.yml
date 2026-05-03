@@ -22,33 +22,35 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      WEB_DIR: web
     defaults:
       run:
-        working-directory: web
+        working-directory: ${{ env.WEB_DIR }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: lts/*
           cache: npm
-          cache-dependency-path: web/package-lock.json
+          cache-dependency-path: ${{ env.WEB_DIR }}/package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build with Vite
-        run: npm run build
+        run: npm run build -- --base=/${{ github.event.repository.name }}/
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5 
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: web/dist
+          path: ${{ env.WEB_DIR }}/dist
 
   deploy:
     needs: build
