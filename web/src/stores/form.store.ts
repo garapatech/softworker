@@ -15,6 +15,7 @@ interface FormState {
   jsonStatusMessage: string
   openSections: Set<string>
   setMode: (mode: EditorMode) => void
+  toggleSections: (keys: string[], open: boolean) => void
   toggleSection: (key: string, open: boolean) => void
   syncJsonDraftFromResume: (resumeDraft: JsonObject) => void
   applyJsonDraft: (value: string) => void
@@ -44,6 +45,18 @@ export const useFormStore = create<FormState>()(
           state.openSections.add(key)
         } else {
           state.openSections.delete(key)
+        }
+      })
+    },
+
+    toggleSections: (keys, open) => {
+      set((state) => {
+        for (const key of keys) {
+          if (open) {
+            state.openSections.add(key)
+          } else {
+            state.openSections.delete(key)
+          }
         }
       })
     },

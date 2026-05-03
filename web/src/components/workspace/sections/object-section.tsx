@@ -3,7 +3,7 @@ import { NestedSection } from '@/components/workspace/sections/nested-section'
 import { SectionHeader } from '@/components/workspace/sections/section-header'
 import { Card, CardContent } from '@/components/ui/card'
 import type { PathPart, JsonObject, JsonValue } from '@/services/resume.service'
-import type { ObjectSectionDefinition } from '@/services/resume-form.service'
+import { countValidationIssues, getSectionDomId, type ObjectSectionDefinition } from '@/services/resume-form.service'
 
 export function ObjectSection({
   isOpen,
@@ -21,13 +21,28 @@ export function ObjectSection({
   validationErrors: Record<string, string[]>
 }) {
   const values = (resume[section.key] as JsonObject | undefined) ?? {}
+  const sectionId = getSectionDomId(section.key)
+  const headingId = `${sectionId}-heading`
+  const contentId = `${sectionId}-content`
+  const errorCount = countValidationIssues(validationErrors, section.key)
 
   return (
-    <Card className="overflow-hidden border-border/70 shadow-sm shadow-black/5">
-      <SectionHeader title={section.title} isOpen={isOpen} onToggle={() => onToggle(!isOpen)} />
+    <Card id={sectionId} className="scroll-mt-4 overflow-hidden border-border/70">
+      <SectionHeader
+        title={section.title}
+        subtitle={errorCount > 0 ? `${errorCount} ${errorCount === 1 ? 'ajuste pendente' : 'ajustes pendentes'}` : undefined}
+        headingId={headingId}
+        contentId={contentId}
+        isOpen={isOpen}
+        onToggle={() => onToggle(!isOpen)}
+      />
 
       {isOpen ? (
-        <CardContent className="space-y-4 border-t border-border/70 bg-muted/10 pt-5">
+        <CardContent
+          id={contentId}
+          aria-labelledby={headingId}
+          className="space-y-4 border-t border-border/70 bg-muted/10 pt-5"
+        >
           <ResumeFieldList
             fields={section.fields}
             onChange={onChange}

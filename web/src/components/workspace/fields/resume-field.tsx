@@ -1,5 +1,5 @@
 import { getFieldValue, parseLines } from '@/mappers/resume.mapper'
-import { FieldWrapper } from '@/components/workspace/fields/field-wrapper'
+import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import type { JsonValue, PathPart } from '@/services/resume.service'
@@ -22,13 +22,11 @@ export function ResumeField({
   const currentValue = getFieldValue(value, field)
 
   return (
-    <FieldWrapper
-      id={fieldId}
-      label={field.label}
-      required={field.required}
-      error={error}
-      full={field.full}
-    >
+    <div className={field.full ? 'grid gap-2.5 md:col-span-2' : 'grid gap-2.5'}>
+      <Label htmlFor={fieldId}>
+        {field.label}
+        {field.required ? <span className="ml-1 text-destructive">*</span> : null}
+      </Label>
       {field.type === 'textarea' ? (
         <Textarea
           id={fieldId}
@@ -59,6 +57,8 @@ export function ResumeField({
           className="bg-background"
         />
       ) : null}
-    </FieldWrapper>
+
+      {error ? <p className="text-xs font-medium text-destructive">{error}</p> : null}
+    </div>
   )
 }

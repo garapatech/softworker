@@ -7,7 +7,7 @@ export function WorkspaceHeader() {
   const { language, setLanguage } = useWorkspaceHeader()
 
   return (
-    <header className="grid gap-5 border-b border-border/70 bg-card/80 px-5 py-5 lg:grid-cols-[minmax(0,1fr)_13rem] lg:items-end">
+    <header className="grid gap-5 border-b border-border/70 bg-card px-4 py-5 sm:px-5 lg:grid-cols-[minmax(0,1fr)_14rem] lg:items-end">
       <div className="space-y-3">
         <p className="text-[0.72rem] font-extrabold uppercase tracking-[0.12em] text-primary">SoftWorker</p>
         <div className="space-y-2">
@@ -20,13 +20,13 @@ export function WorkspaceHeader() {
         </div>
       </div>
 
-      <div className="grid gap-2 rounded-lg border border-border/70 bg-background/80 p-3">
-        <Label htmlFor="language-select" className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
+      <div className="grid gap-2 rounded-xl border border-border/70 bg-muted/25 p-3">
+        <Label htmlFor="language-select" className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
           Idioma
         </Label>
         <Select
           id="language-select"
-          className="bg-background"
+          className="min-h-11 border-border/80 bg-card font-medium"
           value={language}
           onChange={(event) => setLanguage(event.target.value as ResumeLanguage)}
         >

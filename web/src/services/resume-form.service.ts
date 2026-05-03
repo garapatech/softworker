@@ -31,14 +31,18 @@ export interface ArraySectionDefinition {
   fields: FieldDefinition[]
 }
 
+export type SectionDefinition = ObjectSectionDefinition | ArraySectionDefinition
+
+export type SectionFilterMode = 'all' | 'open' | 'pending'
+
 export const OBJECT_SECTIONS: ObjectSectionDefinition[] = [
   {
     key: 'basics',
     title: 'Informações básicas',
     fields: [
+      { key: 'image', label: 'Foto', type: 'url' },
       { key: 'name', label: 'Nome', required: true },
       { key: 'label', label: 'Título', required: true },
-      { key: 'image', label: 'Foto', type: 'url' },
       { key: 'email', label: 'E-mail', required: true, type: 'email' },
       { key: 'phone', label: 'Telefone', required: true },
       { key: 'url', label: 'Site', type: 'url' },
@@ -77,8 +81,19 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
     createItem: () => ({ network: '', username: '', url: '' }),
     fields: [
       { key: 'network', label: 'Rede', required: true },
-      { key: 'username', label: 'Usuário', required: true },
       { key: 'url', label: 'URL', required: true, type: 'url' },
+      { key: 'username', label: 'Usuário', required: true },
+    ],
+  },
+  {
+    path: ['skills'],
+    title: 'Habilidades',
+    itemTitle: 'Habilidade',
+    createItem: () => ({ keywords: [], level: '', name: '' }),
+    fields: [
+      { key: 'name', label: 'Nome', required: true },
+      { key: 'level', label: 'Nível' },
+      { key: 'keywords', label: 'Palavras-chave', type: 'list', full: true },
     ],
   },
   {
@@ -98,10 +113,10 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
     }),
     fields: [
       { key: 'name', label: 'Empresa', required: true },
-      { key: 'description', label: 'Descrição curta' },
       { key: 'position', label: 'Cargo', required: true },
-      { key: 'url', label: 'URL', type: 'url' },
       { key: 'location', label: 'Local' },
+      { key: 'url', label: 'URL', type: 'url' },
+      { key: 'description', label: 'Descrição curta' },
       { key: 'startDate', label: 'Início', required: true },
       { key: 'endDate', label: 'Fim' },
       { key: 'summary', label: 'Resumo', type: 'textarea', full: true },
@@ -124,11 +139,40 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
     fields: [
       { key: 'organization', label: 'Organização', required: true },
       { key: 'position', label: 'Posição', required: true },
-      { key: 'url', label: 'URL', type: 'url' },
       { key: 'startDate', label: 'Início', required: true },
       { key: 'endDate', label: 'Fim' },
+      { key: 'url', label: 'URL', type: 'url' },
       { key: 'summary', label: 'Resumo', type: 'textarea', full: true },
       { key: 'highlights', label: 'Destaques', type: 'list', full: true },
+    ],
+  },
+  {
+    path: ['projects'],
+    title: 'Projetos',
+    itemTitle: 'Projeto',
+    createItem: () => ({
+      description: '',
+      endDate: '',
+      entity: '',
+      highlights: [],
+      keywords: [],
+      name: '',
+      roles: [],
+      startDate: '',
+      type: '',
+      url: '',
+    }),
+    fields: [
+      { key: 'name', label: 'Nome', required: true },
+      { key: 'startDate', label: 'Início' },
+      { key: 'endDate', label: 'Fim' },
+      { key: 'entity', label: 'Entidade' },
+      { key: 'type', label: 'Tipo' },
+      { key: 'url', label: 'URL', type: 'url' },
+      { key: 'description', label: 'Descrição', required: true, type: 'textarea', full: true },
+      { key: 'keywords', label: 'Tecnologias', type: 'list', full: true },
+      { key: 'highlights', label: 'Destaques', type: 'list', full: true },
+      { key: 'roles', label: 'Papéis', type: 'list', full: true },
     ],
   },
   {
@@ -149,11 +193,33 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
       { key: 'institution', label: 'Instituição', required: true },
       { key: 'area', label: 'Área', required: true },
       { key: 'studyType', label: 'Tipo de curso', required: true },
-      { key: 'url', label: 'URL', type: 'url' },
       { key: 'startDate', label: 'Início', required: true },
       { key: 'endDate', label: 'Fim' },
+      { key: 'url', label: 'URL', type: 'url' },
       { key: 'score', label: 'Nota' },
       { key: 'courses', label: 'Cursos', type: 'list', full: true },
+    ],
+  },
+  {
+    path: ['certificates'],
+    title: 'Certificados',
+    itemTitle: 'Certificado',
+    createItem: () => ({ date: '', issuer: '', name: '', url: '' }),
+    fields: [
+      { key: 'name', label: 'Nome', required: true },
+      { key: 'issuer', label: 'Emissor' },
+      { key: 'date', label: 'Data' },
+      { key: 'url', label: 'URL', type: 'url' },
+    ],
+  },
+  {
+    path: ['languages'],
+    title: 'Idiomas',
+    itemTitle: 'Idioma',
+    createItem: () => ({ fluency: '', language: '' }),
+    fields: [
+      { key: 'language', label: 'Idioma', required: true },
+      { key: 'fluency', label: 'Fluência' },
     ],
   },
   {
@@ -175,31 +241,10 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
     createItem: () => ({ name: '', publisher: '', releaseDate: '', summary: '', url: '' }),
     fields: [
       { key: 'name', label: 'Nome', required: true },
-      { key: 'publisher', label: 'Publicador', required: true },
       { key: 'releaseDate', label: 'Data de publicação' },
+      { key: 'publisher', label: 'Publicador', required: true },
       { key: 'url', label: 'URL', type: 'url' },
       { key: 'summary', label: 'Resumo', type: 'textarea', full: true },
-    ],
-  },
-  {
-    path: ['skills'],
-    title: 'Habilidades',
-    itemTitle: 'Habilidade',
-    createItem: () => ({ keywords: [], level: '', name: '' }),
-    fields: [
-      { key: 'name', label: 'Nome', required: true },
-      { key: 'level', label: 'Nível' },
-      { key: 'keywords', label: 'Palavras-chave', type: 'list', full: true },
-    ],
-  },
-  {
-    path: ['languages'],
-    title: 'Idiomas',
-    itemTitle: 'Idioma',
-    createItem: () => ({ fluency: '', language: '' }),
-    fields: [
-      { key: 'language', label: 'Idioma', required: true },
-      { key: 'fluency', label: 'Fluência' },
     ],
   },
   {
@@ -222,49 +267,54 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
       { key: 'reference', label: 'Texto', required: true, type: 'textarea', full: true },
     ],
   },
-  {
-    path: ['projects'],
-    title: 'Projetos',
-    itemTitle: 'Projeto',
-    createItem: () => ({
-      description: '',
-      endDate: '',
-      entity: '',
-      highlights: [],
-      keywords: [],
-      name: '',
-      roles: [],
-      startDate: '',
-      type: '',
-      url: '',
-    }),
-    fields: [
-      { key: 'name', label: 'Nome', required: true },
-      { key: 'description', label: 'Descrição', required: true, type: 'textarea', full: true },
-      { key: 'highlights', label: 'Destaques', type: 'list', full: true },
-      { key: 'keywords', label: 'Tecnologias', type: 'list', full: true },
-      { key: 'startDate', label: 'Início' },
-      { key: 'endDate', label: 'Fim' },
-      { key: 'url', label: 'URL', type: 'url' },
-      { key: 'roles', label: 'Papéis', type: 'list', full: true },
-      { key: 'entity', label: 'Entidade' },
-      { key: 'type', label: 'Tipo' },
-    ],
-  },
-  {
-    path: ['certificates'],
-    title: 'Certificados',
-    itemTitle: 'Certificado',
-    createItem: () => ({ date: '', issuer: '', name: '', url: '' }),
-    fields: [
-      { key: 'name', label: 'Nome', required: true },
-      { key: 'date', label: 'Data' },
-      { key: 'url', label: 'URL', type: 'url' },
-      { key: 'issuer', label: 'Emissor' },
-    ],
-  },
+]
+
+export const FORM_SECTIONS: SectionDefinition[] = [
+  OBJECT_SECTIONS[0],
+  ARRAY_SECTIONS[0],
+  ARRAY_SECTIONS[1],
+  ARRAY_SECTIONS[2],
+  ARRAY_SECTIONS[3],
+  ARRAY_SECTIONS[4],
+  ARRAY_SECTIONS[5],
+  ARRAY_SECTIONS[6],
+  ARRAY_SECTIONS[7],
+  ARRAY_SECTIONS[8],
+  ARRAY_SECTIONS[9],
+  ARRAY_SECTIONS[10],
+  OBJECT_SECTIONS[1],
 ]
 
 export function sectionKey(section: Pick<ObjectSectionDefinition, 'key'> | Pick<ArraySectionDefinition, 'path'>) {
   return 'key' in section ? section.key : section.path.join('.')
+}
+
+export function getSectionDomId(key: string) {
+  return `section-${key.replaceAll('.', '-')}`
+}
+
+export function countValidationIssues(validationErrors: Record<string, string[]>, pathPrefix: string) {
+  return Object.entries(validationErrors).reduce((count, [path, messages]) => {
+    if (path === pathPrefix || path.startsWith(`${pathPrefix}.`)) {
+      return count + messages.length
+    }
+
+    return count
+  }, 0)
+}
+
+export function getSectionSearchText(section: SectionDefinition) {
+  if ('key' in section) {
+    return [
+      section.title,
+      ...section.fields.map((field) => field.label),
+      ...(section.nested?.flatMap((nested) => [nested.title, ...nested.fields.map((field) => field.label)]) ?? []),
+    ]
+      .join(' ')
+      .toLocaleLowerCase('pt-BR')
+  }
+
+  return [section.title, section.itemTitle, ...section.fields.map((field) => field.label)]
+    .join(' ')
+    .toLocaleLowerCase('pt-BR')
 }

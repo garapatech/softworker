@@ -1,4 +1,3 @@
-import { ValidationSummary } from '@/components/feedback/validation-summary'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { useStatusAlert } from '@/hooks/use-status-alert'
 
@@ -14,7 +13,15 @@ export function StatusAlert() {
       <Alert variant="destructive">
         <AlertTitle>Status</AlertTitle>
         {message ? <AlertDescription>{message}</AlertDescription> : null}
-        <ValidationSummary issues={validationIssues} />
+        {validationIssues.length > 0 ? (
+          <ul className="mt-3 list-disc space-y-1 pl-4 text-sm text-destructive">
+            {validationIssues.map((issue) => (
+              <li key={`${issue.path}:${issue.message}`}>
+                <strong>{issue.label}</strong>: {issue.message}
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </Alert>
     </div>
   )

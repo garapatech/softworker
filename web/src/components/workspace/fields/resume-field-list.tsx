@@ -1,5 +1,4 @@
 import { ResumeField } from '@/components/workspace/fields/resume-field'
-import { FieldGrid } from '@/components/workspace/grids/field-grid'
 import type { FieldDefinition } from '@/services/resume-form.service'
 import type { JsonObject, JsonValue, PathPart } from '@/services/resume.service'
 
@@ -17,7 +16,7 @@ export function ResumeFieldList({
   values: JsonObject
 }) {
   return (
-    <FieldGrid>
+    <div className="grid gap-3 md:grid-cols-2">
       {fields.map((field) => {
         const path = [...pathPrefix, field.key]
         const pathKey = path.join('.')
@@ -33,6 +32,6 @@ export function ResumeFieldList({
           />
         )
       })}
-    </FieldGrid>
+    </div>
   )
 }

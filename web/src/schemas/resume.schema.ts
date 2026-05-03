@@ -3,13 +3,48 @@ import { z } from 'zod'
 const optionalString = z.string().optional()
 const requiredString = z.string().trim().min(1, 'Campo obrigatório.')
 const optionalUrl = z.string().trim().url('URL inválida.').or(z.literal('')).optional()
-const requiredEmail = z.string().trim().min(1, 'Campo obrigatório.').email('E-mail inválido.')
 const stringList = z.array(z.string())
+const emailSchema = z.email('E-mail inválido.')
+const urlSchema = z.url('URL inválida.')
+
+const requiredEmail = z.string().trim().superRefine((value, ctx) => {
+  if (value.length === 0) {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'Campo obrigatório.',
+    })
+    return
+  }
+
+  if (!emailSchema.safeParse(value).success) {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'E-mail inválido.',
+    })
+  }
+})
+
+const requiredUrl = z.string().trim().superRefine((value, ctx) => {
+  if (value.length === 0) {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'Campo obrigatório.',
+    })
+    return
+  }
+
+  if (!urlSchema.safeParse(value).success) {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'URL inválida.',
+    })
+  }
+})
 
 const basicsProfileSchema = z.object({
   network: requiredString,
   username: requiredString,
-  url: requiredString.url('URL inválida.'),
+  url: requiredUrl,
 })
 
 const basicsLocationSchema = z.object({

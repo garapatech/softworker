@@ -12,11 +12,12 @@ export function useResumeForm() {
       validationErrors: state.validationState.byPath,
     })),
   )
-  const { clearJsonStatus, openSections, toggleSection } = useFormStore(
+  const { clearJsonStatus, openSections, toggleSection, toggleSections } = useFormStore(
     useShallow((state) => ({
       clearJsonStatus: state.clearJsonStatus,
       openSections: state.openSections,
       toggleSection: state.toggleSection,
+      toggleSections: state.toggleSections,
     })),
   )
 
@@ -40,6 +41,7 @@ export function useResumeForm() {
     onChange,
     onRemove,
     onToggle: toggleSection,
+    onToggleMany: toggleSections,
     openSections,
     resume: resumeDraft,
     validationErrors,

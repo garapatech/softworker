@@ -175,10 +175,5 @@
       "url": "https://aws.amazon.com/certification/",
       "issuer": "Amazon Web Services"
     }
-  ],
-  "meta": {
-    "canonical": "https://marinaribeiro.dev/resume-minimal",
-    "version": "v2.4.0",
-    "lastModified": "2026-03-16T10:00:00-03:00"
-  }
+  ]
 }
