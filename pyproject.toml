@@ -9,14 +9,12 @@ authors = [
 ]
 requires-python = ">=3.14"
 dependencies = [
-    "babel>=2.17.0",
-    "jinja2>=3.1.6",
-    "markupsafe>=3.0.3",
-    "pydantic>=2.11.0",
-    "pydantic-settings>=2.11.0",
-    "typer>=0.23.2",
-    "weasyprint>=66.0",
-    "yarl>=1.22.0",
+    "jsonata-python>=0.6.2",
+    "pybars3>=0.9.7",
+    "pydantic>=2.13.3",
+    "pydantic-settings>=2.14.0",
+    "typer>=0.25.1",
+    "weasyprint>=68.1",
 ]
 
 [build-system]
@@ -30,14 +28,15 @@ include-package-data = true
 where = ["src"]
 
 [tool.setuptools.data-files]
-"share/softworker/theme" = [
-    "theme/*.html",
-    "theme/*.css",
-    "theme/*.json",
+"share/softworker/template" = [
+    "template/*.hbs",
+    "template/*.css",
+    "template/*.json",
+    "template/*.jsonata",
 ]
-"share/softworker/theme/partials" = [
-    "theme/partials/*.html",
+"share/softworker/template/partials" = [
+    "template/partials/*.hbs",
 ]
-"share/softworker/theme/views" = [
-    "theme/views/*.html",
+"share/softworker/template/views" = [
+    "template/views/*.hbs",
 ]

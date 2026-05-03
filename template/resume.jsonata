@@ -1,0 +1,292 @@
+(
+  $formatArray := function($value) {
+    $exists($value) and $value != null ? (
+      $type($value) = "array" ? $value : [$value]
+    ) : []
+  };
+
+  $formatFilteredArray := function($value) {
+    $filter($formatArray($value), function($item) {
+      $isNonEmpty($item)
+    })
+  };
+
+  $formatJoin := function($values, $separator) {
+    $join($formatFilteredArray($values), $exists($separator) ? $separator : ", ")
+  };
+
+  $formatDate := function($value) {
+    $isNonEmpty($value) ? (
+      $text := $string($value);
+      $year := $substring($text, 0, 4);
+
+      $length($text) >= 7 ? (
+        $monthNumber := $number($substring($text, 5, 2));
+
+        $monthNumber >= 1 and $monthNumber <= 12
+          ? i18n.months[$monthNumber - 1] & " " & $year
+          : $year
+      ) : $year
+    ) : i18n.present
+  };
+
+  $formatPeriod := function($startDate, $endDate) {
+    $isNonEmpty($startDate) and $isNonEmpty($endDate) and $startDate != $endDate
+      ? $formatDate($startDate) & " — " & $formatDate($endDate) :
+    $isNonEmpty($startDate) and $not($isNonEmpty($endDate))
+      ? $formatDate($startDate) & " — " & i18n.present :
+    $isNonEmpty($startDate)
+      ? $formatDate($startDate) :
+    $isNonEmpty($endDate)
+      ? $formatDate($endDate) :
+    ""
+  };
+
+  $formatUrl := function($value) {
+    $isNonEmpty($value) ? (
+      $url := $string($value);
+      $href := $contains($url, "://") ? $url : "https://" & $url;
+      $raw := $split($split($substringAfter($href, "://"), "?")[0], "#")[0];
+      $withoutWww := $substring($raw, 0, 4) = "www." ? $substring($raw, 4) : $raw;
+      $label := $substring($withoutWww, $length($withoutWww) - 1, 1) = "/"
+        ? $substring($withoutWww, 0, $length($withoutWww) - 1)
+        : $withoutWww;
+
+      {
+        "url": $url,
+        "urlHref": $href,
+        "urlLabel": $label
+      }
+    ) : {}
+  };
+
+  $formatPhone := function($value) {
+    $isNonEmpty($value)
+      ? $replace($replace($replace($replace($string($value), " ", ""), "-", ""), "(", ""), ")", "")
+      : null
+  };
+
+  $formatMap := function($items, $mapper) {
+    $formatArray($map($formatArray($items), $mapper))
+  };
+
+  $formatBlock := function($item, $title, $subtitle, $location, $displayDate, $url) {
+    $merge([
+      $item,
+      {
+        "header": {
+          "title": $title,
+          "subtitle": $subtitle
+        },
+        "details": $merge([
+          {
+            "location": $location,
+            "displayDate": $displayDate
+          },
+          $formatUrl($url)
+        ])
+      }
+    ])
+  };
+
+  $isNonEmpty := function($value) {
+    $exists($value) and $value != null and (
+      $type($value) = "string" ? $trim($value) != "" :
+      $type($value) = "array" ? $count($value) > 0 :
+      true
+    )
+  };
+
+  $isNonEmptyFilteredArray := function($value) {
+    $count($formatFilteredArray($value)) > 0
+  };
+
+  {
+    "i18n": $merge([
+      i18n,
+      {
+        "html_lang": $replace(i18n.babel_locale, "_", "-")
+      }
+    ]),
+
+    "resume": {
+      "basics": $exists(resume.basics) ? (
+        $basics := resume.basics;
+        $location := $basics.location;
+
+        $merge([
+          $basics,
+          {
+            "displayName": $basics.name,
+            "metaDescription": $basics.summary ? $basics.summary : "",
+            "phoneHref": $formatPhone($basics.phone),
+            "locationLine": $exists($location)
+              ? $formatJoin([$location.city, $location.region, $location.countryCode], ", ")
+              : null,
+            "hasAddressBlock": $exists($location) and $isNonEmptyFilteredArray([
+              $location.address,
+              $location.postalCode
+            ]),
+            "addressLines": $isNonEmpty($location.address) ? $split($location.address, "\n") : []
+          },
+          $isNonEmpty($basics.email) ? {
+            "email": $basics.email,
+            "mailHref": "mailto:" & $basics.email
+          } : {},
+          $formatUrl($basics.url),
+          {
+            "profiles": $formatMap(
+              $filter($formatArray($basics.profiles), function($profile) {
+                $isNonEmpty($profile.network) and
+                $isNonEmpty($profile.username) and
+                $isNonEmpty($profile.url)
+              }),
+              function($profile) {
+                $merge([$profile, $formatUrl($profile.url)])
+              }
+            )
+          }
+        ])
+      ) : null,
+
+      "work": $formatMap(resume.work, function($item) {
+        $formatBlock(
+          $item,
+          $item.name,
+          $item.position,
+          $item.location,
+          $formatPeriod($item.startDate, $item.endDate),
+          $item.url
+        )
+      }),
+
+      "volunteer": $formatMap(resume.volunteer, function($item) {
+        $formatBlock(
+          $item,
+          $item.organization,
+          $item.position,
+          null,
+          $formatPeriod($item.startDate, $item.endDate),
+          $item.url
+        )
+      }),
+
+      "education": $formatMap(resume.education, function($item) {(
+        $subtitle := $formatJoin([
+          $item.studyType,
+          $isNonEmpty($item.area) ? i18n.education_in & " " & $item.area : null
+        ], " ");
+
+        $formatBlock(
+          $merge([
+            $item,
+            {
+              "subtitle": $subtitle,
+              "coursesText": $formatJoin($item.courses, ", ")
+            }
+          ]),
+          $item.institution,
+          $subtitle,
+          $item.location,
+          $formatPeriod($item.startDate, $item.endDate),
+          $item.url
+        )
+      )}),
+
+      "awards": $formatMap(resume.awards, function($item) {
+        $formatBlock(
+          $item,
+          $item.title,
+          $item.awarder,
+          null,
+          $isNonEmpty($item.date) ? $formatDate($item.date) : null,
+          null
+        )
+      }),
+
+      "references": $formatMap(resume.references, function($item) {
+        $formatBlock($item, $item.name, null, null, null, null)
+      }),
+
+      "certificates": $formatMap(resume.certificates, function($item) {
+        $merge([
+          $item,
+          {
+            "displayDate": $isNonEmpty($item.date) ? $formatDate($item.date) : null
+          },
+          $formatUrl($item.url)
+        ])
+      }),
+
+      "publications": $formatMap(resume.publications, function($item) {
+        $merge([
+          $item,
+          {
+            "displayDate": $isNonEmpty($item.releaseDate) ? $formatDate($item.releaseDate) : null
+          },
+          $formatUrl($item.url)
+        ])
+      }),
+
+      "projects": $formatMap(
+        $filter($formatArray(resume.projects), function($item) {
+          $isNonEmptyFilteredArray([
+            $item.name,
+            $item.description,
+            $item.highlights,
+            $item.keywords,
+            $item.startDate,
+            $item.endDate,
+            $item.url,
+            $item.roles,
+            $item.entity,
+            $item.type
+          ])
+        }),
+        function($item) {
+          $merge([
+            $item,
+            {
+              "displayTitle": $isNonEmpty($item.name)
+                ? $item.name :
+                $isNonEmpty($item.entity)
+                ? $item.entity :
+                $isNonEmpty($item.type)
+                ? $item.type :
+                i18n.project,
+              "displayDate": $formatPeriod($item.startDate, $item.endDate),
+              "rolesText": $formatJoin($item.roles, ", "),
+              "keywordsText": $formatJoin($item.keywords, ", "),
+              "metaParts": $formatFilteredArray([
+                $item.entity,
+                $formatJoin($item.roles, ", "),
+                $item.type
+              ])
+            },
+            $formatUrl($item.url)
+          ])
+        }
+      ),
+
+      "skills": $formatMap(resume.skills, function($item) {
+        $merge([
+          $item,
+          {
+            "keywordsText": $formatJoin($item.keywords, ", ")
+          }
+        ])
+      }),
+
+      "interests": $formatMap(resume.interests, function($item) {
+        $merge([
+          $item,
+          {
+            "keywordsText": $formatJoin($item.keywords, ", ")
+          }
+        ])
+      }),
+
+      "languages": $formatArray(resume.languages)
+    }
+  }
+)

@@ -1,0 +1,18 @@
+{{#if resume.basics.profiles}}
+<section id="profiles">
+    <h2>{{i18n.sections.profiles}}</h2>
+    <div class="item">
+        {{#each resume.basics.profiles}}
+        <div class="profile-details">
+            <div class="profile-line">
+                <span class="profile-network">{{network}}:</span>
+                <span class="url"><a class="url-link" href="{{urlHref}}">{{urlLabel}}</a></span>
+            </div>
+            <div class="profile-username">
+                {{username}}
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</section>
+{{/if}}

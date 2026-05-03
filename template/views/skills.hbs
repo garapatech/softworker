@@ -1,0 +1,23 @@
+{{#if resume.skills}}
+<section id="skills" class="resume-section" aria-labelledby="skills-heading">
+    <h2 id="skills-heading">{{i18n.sections.skills}}</h2>
+    <ul class="item">
+        {{#each resume.skills}}
+        <li>
+            <span class="list-bullet">• </span>
+            {{#if name}}
+            {{#if level}}
+            <span class="list-text"><strong>{{name}}</strong> ({{level}}){{#if keywordsText}}: {{{keywordsText}}}{{/if}}</span>
+            {{else}}
+            {{#if keywordsText}}
+            <span class="list-text"><strong>{{name}}</strong>: {{{keywordsText}}}</span>
+            {{else}}
+            <span class="list-text"><strong>{{name}}</strong></span>
+            {{/if}}
+            {{/if}}
+            {{/if}}
+        </li>
+        {{/each}}
+    </ul>
+</section>
+{{/if}}

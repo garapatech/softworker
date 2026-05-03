@@ -1,0 +1,14 @@
+{{#if resume.references}}
+<section id="references" class="resume-section" aria-labelledby="references-heading">
+    <h2 id="references-heading">{{i18n.sections.references}}</h2>
+    {{#each resume.references}}
+    <article class="item">
+        <div class="item-topline">
+            {{#with header}}{{> partials/item-header}}{{/with}}
+            {{#with details}}{{> partials/item-details}}{{/with}}
+        </div>
+        <div class="reference-text">“{{reference}}”</div>
+    </article>
+    {{/each}}
+</section>
+{{/if}}

@@ -1,0 +1,28 @@
+{{#if resume.work}}
+<section id="work" class="resume-section" aria-labelledby="work-heading">
+    <h2 id="work-heading">{{i18n.sections.work}}</h2>
+    {{#each resume.work}}
+    <article class="item">
+        <div class="item-topline">
+            {{#with header}}{{> partials/item-header}}{{/with}}
+            {{#with details}}{{> partials/item-details}}{{/with}}
+        </div>
+        {{#if description}}
+        <div class="entry-meta">{{description}}</div>
+        {{/if}}
+        {{#if summary}}
+        <div class="summary">
+            <p>{{{summary}}}</p>
+        </div>
+        {{/if}}
+        {{#if highlights}}
+        <ul class="highlights">
+            {{#each highlights}}
+            <li><span class="list-bullet">• </span><span class="list-text">{{{this}}}</span></li>
+            {{/each}}
+        </ul>
+        {{/if}}
+    </article>
+    {{/each}}
+</section>
+{{/if}}

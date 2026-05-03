@@ -1,0 +1,29 @@
+{{#if resume.certificates}}
+<section id="certifications" class="resume-section" aria-labelledby="certifications-heading">
+    <h2 id="certifications-heading">{{i18n.sections.certifications}}</h2>
+    {{#each resume.certificates}}
+    <article class="item">
+        <div class="item-topline">
+            <header class="item-header">
+                {{#if name}}
+                <div class="item-header-title">{{name}}</div>
+                {{/if}}
+                {{#if issuer}}
+                <div class="item-header-subtitle">{{issuer}}</div>
+                {{/if}}
+            </header>
+            <div class="item-details">
+                {{#if displayDate}}
+                <div class="date">{{displayDate}}</div>
+                {{/if}}
+            </div>
+        </div>
+        {{#if urlHref}}
+        <div class="external-url-line">
+            [<a class="url-link" href="{{urlHref}}">{{urlLabel}}</a>]
+        </div>
+        {{/if}}
+    </article>
+    {{/each}}
+</section>
+{{/if}}

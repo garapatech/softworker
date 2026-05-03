@@ -1,0 +1,17 @@
+<div class="item-details">
+    {{#if location}}
+    <div class="item-details-title">
+        {{location}}
+    </div>
+    {{/if}}
+    {{#if displayDate}}
+    <div class="date">
+        {{displayDate}}
+    </div>
+    {{/if}}
+    {{#if urlHref}}
+    <div class="url">
+        [<a class="url-link" href="{{urlHref}}">{{urlLabel}}</a>]
+    </div>
+    {{/if}}
+</div>

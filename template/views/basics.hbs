@@ -1,0 +1,39 @@
+{{#if resume.basics}}
+<section id="basics" class="resume-section" aria-labelledby="resume-name">
+    <header class="resume-header">
+        {{#if resume.basics.image}}
+        <div class="basics-image-wrap centered">
+            <img class="basics-image" src="{{resume.basics.image}}" alt="{{resume.basics.displayName}}">
+        </div>
+        {{/if}}
+        <h1 id="resume-name">{{resume.basics.displayName}}</h1>
+        <div class="contact centered" role="list" aria-label="{{i18n.contact_info}}">
+            {{#if resume.basics.label}}
+            <span class="vertical-separator" role="listitem">{{resume.basics.label}}</span>
+            {{/if}}
+            {{#if resume.basics.mailHref}}
+            <span class="vertical-separator" role="listitem"><a href="{{resume.basics.mailHref}}">{{resume.basics.email}}</a></span>
+            {{/if}}
+            {{#if resume.basics.phone}}
+            <span class="vertical-separator" role="listitem"><a href="tel:{{resume.basics.phoneHref}}">{{resume.basics.phone}}</a></span>
+            {{/if}}
+            {{#if resume.basics.locationLine}}
+            <span class="vertical-separator" role="listitem">{{resume.basics.locationLine}}</span>
+            {{/if}}
+            {{#if resume.basics.urlHref}}
+            <span class="vertical-separator" role="listitem"><a class="url-link" href="{{resume.basics.urlHref}}">{{resume.basics.urlLabel}}</a></span>
+            {{/if}}
+        </div>
+        {{#if resume.basics.hasAddressBlock}}
+        <address class="address centered">
+            {{#each resume.basics.addressLines}}
+            <div class="address-line">{{this}}</div>
+            {{/each}}
+            {{#if resume.basics.location.postalCode}}
+            <div class="address-postal">{{resume.basics.location.postalCode}}</div>
+            {{/if}}
+        </address>
+        {{/if}}
+    </header>
+</section>
+{{/if}}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="{{i18n.html_lang}}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimal-ui">
+        {{#if resume.basics.name}}
+        <meta name="author" content="{{resume.basics.name}}">
+        {{/if}}
+        {{#if resume.basics.summary}}
+        <meta name="description" content="{{resume.basics.metaDescription}}">
+        {{/if}}
+        <title>{{resume.basics.displayName}}</title>
+        <style>
+{{{css}}}
+        </style>
+    </head>
+    <body>
+        <main id="resume">
+            {{> views/basics}}
+            {{> views/profiles}}
+            {{> views/summary}}
+            {{> views/skills}}
+            {{> views/work}}
+            {{> views/volunteer}}
+            {{> views/projects}}
+            {{> views/education}}
+            {{> views/certifications}}
+            {{> views/languages}}
+            {{> views/awards}}
+            {{> views/publications}}
+            {{> views/interests}}
+            {{> views/references}}
+        </main>
+    </body>
+</html>

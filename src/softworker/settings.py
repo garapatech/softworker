@@ -9,8 +9,9 @@ class Settings(BaseSettings):
 
     # Paths
     ROOT_PATH: Path = Path(__file__).resolve().parents[2]
-    THEME_LOCAL_PATH: Path = ROOT_PATH / "theme"
-    THEME_MODULE_PATH: Path = Path(sysconfig.get_path("data")) / "share" / Path(__file__).resolve().parent.name / "theme"
-    THEME_PATH: Path = THEME_LOCAL_PATH if THEME_LOCAL_PATH.exists() else THEME_MODULE_PATH
+    TEMPLATE_LOCAL_PATH: Path = ROOT_PATH / "template"
+    TEMPLATE_MODULE_PATH: Path = Path(sysconfig.get_path("data")) / "share" / Path(__file__).resolve().parent.name / "template"
+    TEMPLATE_PATH: Path = TEMPLATE_LOCAL_PATH if TEMPLATE_LOCAL_PATH.exists() else TEMPLATE_MODULE_PATH
+    TEMPLATE_CONTEXT_PATH: Path = TEMPLATE_PATH / "resume.jsonata"
 
 settings: Settings = Settings()

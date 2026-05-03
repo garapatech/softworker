@@ -1,9 +1,10 @@
 {
   "pt_BR": {
     "babel_locale": "pt_BR",
+    "months": ["jan.", "fev.", "mar.", "abr.", "mai.", "jun.", "jul.", "ago.", "set.", "out.", "nov.", "dez."],
     "sections": {
       "awards": "Prêmios & Reconhecimentos",
-      "certifications": "Certificações",
+      "certificates": "Certificações",
       "education": "Formação Acadêmica",
       "interests": "Interesses",
       "languages": "Idiomas",
@@ -25,9 +26,10 @@
   },
   "en_US": {
     "babel_locale": "en_US",
+    "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     "sections": {
       "awards": "Awards & Recognition",
-      "certifications": "Certifications",
+      "certificates": "Certificates",
       "education": "Education",
       "interests": "Interests",
       "languages": "Languages",

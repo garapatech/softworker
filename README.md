@@ -13,7 +13,8 @@ Primeira página do PDF gerado com o exemplo principal do projeto:
 ## O que o projeto faz
 
 - Lê currículos no formato JSON Resume.
-- Renderiza o conteúdo em HTML usando templates Jinja.
+- Transforma o JSON Resume em um template context reutilizável com Jsonnet.
+- Renderiza o conteúdo em HTML usando templates Handlebars.
 - Converte o HTML para PDF A4 com WeasyPrint.
 - Gera PDF acessível com `pdf/ua-1`.
 
@@ -61,13 +62,13 @@ uv run python -m softworker docs/examples/resume.json /tmp/resume-en.pdf --resum
 - `docs/examples/resume_full.json`: exemplo mais completo
 - `docs/schema.json`: referência do formato esperado
 - `src/softworker/`: código da CLI, validação e renderização
-- `theme/`: templates HTML, parciais e estilos CSS
+- `template/`: templates Handlebars, Jsonnet do template context, parciais e estilos CSS
 
 ## Como funciona
 
 1. A CLI lê um arquivo JSON com os dados do currículo.
-2. O conteúdo é validado e renderizado com o tema HTML.
-3. O HTML final é convertido em PDF.
+2. O conteúdo é validado e transformado por Jsonnet para o modelo consumido pelo template.
+3. O HTML final é renderizado com Handlebars e convertido em PDF.
 
 ## Uso como biblioteca
 

@@ -232,30 +232,25 @@ a {
     margin-top: 1px;
 }
 
-#profiles .row {
-    box-sizing: border-box;
-    display: table;
-    table-layout: fixed;
-    width: 100%;
-}
-
 #profiles .item {
     box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-#profiles .row + .row {
-    margin-top: 8px;
-}
-
-#profiles .col {
+#profiles .profile-details {
     box-sizing: border-box;
-    display: table-cell;
+    display: block;
+    margin-top: 8px;
     padding-right: 18px;
-    vertical-align: top;
     width: 50%;
 }
 
-#profiles .col:last-child {
+#profiles .profile-details:nth-child(-n + 2) {
+    margin-top: 0;
+}
+
+#profiles .profile-details:nth-child(2n) {
     padding-right: 0;
 }
 
