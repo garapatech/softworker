@@ -1,11 +1,10 @@
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
+import { useWorkspaceHeader } from '@/hooks/use-workspace-header'
 import { PREVIEW_LANGUAGES, type ResumeLanguage } from '@/services/preview.service'
-import { useResumeStore } from '@/stores/resume.store'
 
 export function WorkspaceHeader() {
-  const language = useResumeStore((state) => state.language)
-  const setLanguage = useResumeStore((state) => state.setLanguage)
+  const { language, setLanguage } = useWorkspaceHeader()
 
   return (
     <header className="grid gap-5 border-b border-border/70 bg-card/80 px-5 py-5 lg:grid-cols-[minmax(0,1fr)_13rem] lg:items-end">
@@ -23,7 +22,7 @@ export function WorkspaceHeader() {
 
       <div className="grid gap-2 rounded-lg border border-border/70 bg-background/80 p-3">
         <Label htmlFor="language-select" className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
-          Idioma do preview
+          Idioma
         </Label>
         <Select
           id="language-select"

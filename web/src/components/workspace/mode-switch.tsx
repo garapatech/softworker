@@ -1,9 +1,8 @@
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useFormStore } from '@/stores/form.store'
+import { useWorkspaceMode } from '@/hooks/use-workspace-mode'
 
 export function WorkspaceModeSwitch() {
-  const mode = useFormStore((state) => state.mode)
-  const setMode = useFormStore((state) => state.setMode)
+  const { mode, setMode } = useWorkspaceMode()
 
   return (
     <section className="flex flex-col gap-4 border-b border-border/70 bg-muted/15 px-5 py-4 md:flex-row md:items-center md:justify-between">

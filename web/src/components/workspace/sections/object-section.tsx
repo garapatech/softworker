@@ -1,5 +1,4 @@
-import { ResumeField } from '@/components/workspace/fields/resume-field'
-import { FieldGrid } from '@/components/workspace/grids/field-grid'
+import { ResumeFieldList } from '@/components/workspace/fields/resume-field-list'
 import { NestedSection } from '@/components/workspace/sections/nested-section'
 import { SectionHeader } from '@/components/workspace/sections/section-header'
 import { Card, CardContent } from '@/components/ui/card'
@@ -29,18 +28,13 @@ export function ObjectSection({
 
       {isOpen ? (
         <CardContent className="space-y-4 border-t border-border/70 bg-muted/10 pt-5">
-          <FieldGrid>
-            {section.fields.map((field) => (
-              <ResumeField
-                key={`${section.key}.${field.key}`}
-                field={field}
-                path={[section.key, field.key]}
-                value={values[field.key]}
-                error={validationErrors[[section.key, field.key].join('.')]?.[0]}
-                onChange={onChange}
-              />
-            ))}
-          </FieldGrid>
+          <ResumeFieldList
+            fields={section.fields}
+            onChange={onChange}
+            pathPrefix={[section.key]}
+            validationErrors={validationErrors}
+            values={values}
+          />
 
           {section.nested?.map((nested) => (
             <NestedSection

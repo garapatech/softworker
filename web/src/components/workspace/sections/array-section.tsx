@@ -1,6 +1,5 @@
 import { ItemCard } from '@/components/workspace/cards/item-card'
-import { ResumeField } from '@/components/workspace/fields/resume-field'
-import { FieldGrid } from '@/components/workspace/grids/field-grid'
+import { ResumeFieldList } from '@/components/workspace/fields/resume-field-list'
 import { SectionHeader } from '@/components/workspace/sections/section-header'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -56,18 +55,13 @@ export function ArraySection({
                 index={index}
                 onRemove={() => onRemove(section.path, index)}
               >
-                <FieldGrid>
-                  {section.fields.map((field) => (
-                    <ResumeField
-                      key={`${section.path.join('.')}.${index}.${field.key}`}
-                      field={field}
-                      path={[...section.path, index, field.key]}
-                      value={item[field.key]}
-                      error={validationErrors[[...section.path, String(index), field.key].join('.')]?.[0]}
-                      onChange={onChange}
-                    />
-                  ))}
-                </FieldGrid>
+                <ResumeFieldList
+                  fields={section.fields}
+                  onChange={onChange}
+                  pathPrefix={[...section.path, index]}
+                  validationErrors={validationErrors}
+                  values={item}
+                />
               </ItemCard>
             ))}
           </div>

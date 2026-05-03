@@ -1,10 +1,9 @@
 import { ValidationSummary } from '@/components/feedback/validation-summary'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { useResumeStore } from '@/stores/resume.store'
+import { useStatusAlert } from '@/hooks/use-status-alert'
 
 export function StatusAlert() {
-  const message = useResumeStore((state) => state.previewStatusMessage)
-  const validationIssues = useResumeStore((state) => state.validationState.issues)
+  const { message, validationIssues } = useStatusAlert()
 
   if (!message && validationIssues.length === 0) {
     return null

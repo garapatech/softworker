@@ -2,7 +2,7 @@ import type { RefObject } from 'react'
 import { PreviewActions } from '@/components/preview/preview-actions'
 import { PreviewFrame } from '@/components/preview/preview-frame'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { useResumeStore } from '@/stores/resume.store'
+import { usePreviewPanel } from '@/hooks/use-preview-panel'
 
 export function PreviewPanel({
   iframeId,
@@ -13,8 +13,7 @@ export function PreviewPanel({
   onPrintPdf: () => void
   previewFrameRef: RefObject<HTMLIFrameElement | null>
 }) {
-  const previewHtml = useResumeStore((state) => state.previewHtml)
-  const onDownloadJson = useResumeStore((state) => state.downloadJson)
+  const { onDownloadJson, previewHtml } = usePreviewPanel()
 
   return (
     <Card className="min-h-0 overflow-hidden border-border/70 bg-card/95 shadow-lg shadow-black/5 xl:sticky xl:top-4 xl:grid xl:h-[calc(100vh-2rem)] xl:grid-rows-[auto_minmax(0,1fr)]">

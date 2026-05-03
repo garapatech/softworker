@@ -1,5 +1,4 @@
-import { ResumeField } from '@/components/workspace/fields/resume-field'
-import { FieldGrid } from '@/components/workspace/grids/field-grid'
+import { ResumeFieldList } from '@/components/workspace/fields/resume-field-list'
 import type { PathPart, JsonObject, JsonValue } from '@/services/resume.service'
 import type { NestedSectionDefinition } from '@/services/resume-form.service'
 
@@ -21,18 +20,13 @@ export function NestedSection({
       <div className="mb-3">
         <h3 className="text-[0.94rem] font-extrabold leading-[1.18]">{section.title}</h3>
       </div>
-      <FieldGrid>
-        {section.fields.map((field) => (
-          <ResumeField
-            key={`${parentKey}.${section.key}.${field.key}`}
-            field={field}
-            path={[parentKey, section.key, field.key]}
-            value={values[field.key]}
-            error={validationErrors[[parentKey, section.key, field.key].join('.')]?.[0]}
-            onChange={onChange}
-          />
-        ))}
-      </FieldGrid>
+      <ResumeFieldList
+        fields={section.fields}
+        onChange={onChange}
+        pathPrefix={[parentKey, section.key]}
+        validationErrors={validationErrors}
+        values={values}
+      />
     </section>
   )
 }

@@ -1,14 +1,9 @@
 import { Textarea } from '@/components/ui/textarea'
+import { useSourceEditor } from '@/hooks/use-source-editor'
 import { cn } from '@/lib/utils'
-import { useFormStore } from '@/stores/form.store'
-import { useResumeStore } from '@/stores/resume.store'
 
 export function SourceEditor() {
-  const value = useFormStore((state) => state.jsonDraft)
-  const message = useFormStore((state) => state.jsonStatusMessage)
-  const onChange = useFormStore((state) => state.applyJsonDraft)
-  const validationIssues = useResumeStore((state) => state.validationState.issues)
-  const hasErrors = Boolean(message) || validationIssues.length > 0
+  const { hasErrors, message, onChange, value } = useSourceEditor()
 
   return (
     <section className="grid gap-4 overflow-auto p-4">

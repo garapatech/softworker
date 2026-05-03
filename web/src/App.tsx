@@ -1,4 +1,3 @@
-import { useEffect, useId, useRef } from 'react'
 import { PreviewPanel } from '@/components/preview/preview-panel'
 import { Card } from '@/components/ui/card'
 import { StatusAlert } from '@/components/feedback/status-alert'
@@ -6,24 +5,10 @@ import { ResumeForm } from '@/components/workspace/resume-form'
 import { SourceEditor } from '@/components/workspace/source-editor'
 import { WorkspaceHeader } from '@/components/workspace/header'
 import { WorkspaceModeSwitch } from '@/components/workspace/mode-switch'
-import { useFormStore } from '@/stores/form.store'
-import { useResumeStore } from '@/stores/resume.store'
+import { useAppPreview } from '@/hooks/use-app-preview'
 
 function App() {
-  const iframeId = useId()
-  const previewFrameRef = useRef<HTMLIFrameElement>(null)
-  const mode = useFormStore((state) => state.mode)
-  const language = useResumeStore((state) => state.language)
-  const resumeDraft = useResumeStore((state) => state.resumeDraft)
-  const renderPreview = useResumeStore((state) => state.renderPreview)
-
-  useEffect(() => {
-    void renderPreview()
-  }, [language, renderPreview, resumeDraft])
-
-  function handlePrintPdf() {
-    previewFrameRef.current?.contentWindow?.print()
-  }
+  const { handlePrintPdf, iframeId, mode, previewFrameRef } = useAppPreview()
 
   return (
     <main className="min-h-screen bg-muted/30">
