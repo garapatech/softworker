@@ -28,7 +28,7 @@ h2 {
   border-width: 1px;
   clear: both;
   display: block;
-  margin: 10px 0 2.5px 0;
+  margin: 10px 0 3px 0;
   width: 100%;
 }
 
@@ -331,7 +331,7 @@ a {
 
 #projects .project-meta,
 #projects .project-link {
-  font-size: 9.5px;
+  font-size: 10px;
   margin-top: 3px;
 }
 
@@ -430,7 +430,7 @@ a {
   .resume {
     -webkit-box-shadow: none;
     background: #fff;
-    border: 0px;
+    border: 0;
     box-shadow: none;
     max-width: 100%;
   }
@@ -438,8 +438,8 @@ a {
   body,
   html,
   .resume {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
   }
 
   .controls {
