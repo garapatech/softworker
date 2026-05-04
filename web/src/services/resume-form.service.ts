@@ -40,7 +40,7 @@ export const OBJECT_SECTIONS: ObjectSectionDefinition[] = [
     key: 'basics',
     title: 'Informações básicas',
     fields: [
-      { key: 'image', label: 'Foto', type: 'url' },
+      { key: 'image', label: 'Foto (URL)', type: 'url' },
       { key: 'name', label: 'Nome', required: true },
       { key: 'label', label: 'Título', required: true },
       { key: 'email', label: 'E-mail', required: true, type: 'email' },

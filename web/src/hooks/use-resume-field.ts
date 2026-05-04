@@ -1,4 +1,4 @@
-import { getFieldValue, parseLines } from '@/mappers/resume.mapper'
+import { getFieldValue } from '@/mappers/resume.mapper'
 import { useResumeChange } from '@/hooks/use-resume-change'
 import { useResumeValue } from '@/hooks/use-resume-value'
 import { useValidationError } from '@/hooks/use-validation-error'
@@ -15,14 +15,6 @@ function resolveInputKind(type: FieldDefinition['type']): ResumeFieldInputKind {
   return 'input'
 }
 
-function normalizeFieldValue(type: FieldDefinition['type'], value: string): JsonValue {
-  if (type === 'list') {
-    return parseLines(value)
-  }
-
-  return value
-}
-
 export function useResumeField(field: FieldDefinition, path: PathPart[]) {
   const onChange = useResumeChange()
   const fieldId = path.join('.')
@@ -35,6 +27,6 @@ export function useResumeField(field: FieldDefinition, path: PathPart[]) {
     fieldId,
     inputKind: resolveInputKind(field.type),
     inputType: field.type === 'email' || field.type === 'url' ? field.type : 'text',
-    onValueChange: (nextValue: string) => onChange(path, normalizeFieldValue(field.type, nextValue)),
+    onValueChange: (nextValue: string | string[]) => onChange(path, nextValue as JsonValue),
   }
 }

@@ -1,6 +1,7 @@
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { ResumeListField } from '@/components/workspace/fields/resume-list-field'
 import { useResumeField } from '@/hooks/use-resume-field'
 import type { PathPart } from '@/services/resume.service'
 import type { FieldDefinition } from '@/services/resume-form.service'
@@ -25,10 +26,20 @@ function renderFieldControl({
     )
   }
 
+  if (inputKind === 'list') {
+    return (
+      <ResumeListField
+        fieldId={fieldId}
+        items={Array.isArray(currentValue) ? currentValue : []}
+        onValueChange={onValueChange}
+      />
+    )
+  }
+
   return (
     <Textarea
       id={fieldId}
-      value={currentValue}
+      value={typeof currentValue === 'string' ? currentValue : ''}
       spellCheck={inputKind === 'textarea'}
       onChange={(event) => onValueChange(event.target.value)}
       className="min-h-28 bg-background"

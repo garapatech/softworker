@@ -11,16 +11,9 @@ export interface ValidationState {
   issues: ValidationIssue[]
 }
 
-export function parseLines(value: string) {
-  return value
-    .split('\n')
-    .map((item) => item.trim())
-    .filter(Boolean)
-}
-
 export function getFieldValue(value: unknown, field: { type?: string }) {
   if (field.type === 'list') {
-    return Array.isArray(value) ? value.join('\n') : ''
+    return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
   }
 
   return typeof value === 'string' ? value : ''
