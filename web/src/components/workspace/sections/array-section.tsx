@@ -6,6 +6,8 @@ import { useArraySectionActions } from '@/hooks/use-array-section-actions'
 import { useResumeArrayLength } from '@/hooks/use-resume-array-length'
 import { useSectionPanel } from '@/hooks/use-section-panel'
 import { useValidationIssueCount } from '@/hooks/use-validation-issue-count'
+import { useFormStore } from '@/stores/form.store'
+import { useEffect, useState } from 'react'
 import {
   sectionKey,
   type ArraySectionDefinition,
@@ -16,12 +18,14 @@ function ArraySectionItem({
   itemTitle,
   path,
   fields,
+  isHighlighted,
   onRemove,
 }: {
   index: number
   itemTitle: string
   path: string[]
   fields: ArraySectionDefinition['fields']
+  isHighlighted?: boolean
   onRemove: () => void
 }) {
   const itemErrorCount = useValidationIssueCount(`${path.join('.')}.${index}`)
@@ -29,6 +33,7 @@ function ArraySectionItem({
   return (
     <ItemCard
       hasErrors={itemErrorCount > 0}
+      isHighlighted={isHighlighted}
       title={itemTitle}
       index={index}
       onRemove={onRemove}
@@ -46,6 +51,54 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }) {
   const key = sectionKey(section)
   const { contentId, errorCount, headingId, isOpen, onToggle, sectionId } = useSectionPanel(key)
   const itemCount = useResumeArrayLength(section.path)
+  const toggleSection = useFormStore((state) => state.toggleSection)
+  const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null)
+
+  function focusNewItem(nextIndex: number) {
+    const firstFieldKey = section.fields[0]?.key
+
+    if (!firstFieldKey) {
+      return
+    }
+
+    const elementId = [...section.path, nextIndex, firstFieldKey].join('.')
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const target = document.getElementById(elementId)
+        if (target instanceof HTMLElement) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          target.focus()
+        }
+      })
+    })
+  }
+
+  function handleAddItem() {
+    const nextIndex = itemCount
+
+    if (!isOpen) {
+      toggleSection(key, true)
+    }
+
+    setHighlightedIndex(nextIndex)
+    onAdd(section.path, section.createItem())
+    focusNewItem(nextIndex)
+  }
+
+  useEffect(() => {
+    if (highlightedIndex == null) {
+      return
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setHighlightedIndex(null)
+    }, 1400)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+    }
+  }, [highlightedIndex])
 
   return (
     <CollapsibleSectionPanel
@@ -67,7 +120,7 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }) {
           size="sm"
           className="size-8 rounded-full border-border/80 bg-background p-0 text-base leading-none text-muted-foreground shadow-none hover:border-border hover:bg-accent/50 hover:text-foreground"
           aria-label={`Adicionar ${section.itemTitle.toLocaleLowerCase('pt-BR')}`}
-          onClick={() => onAdd(section.path, section.createItem())}
+          onClick={handleAddItem}
         >
           +
         </Button>
@@ -96,6 +149,7 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }) {
                 itemTitle={section.itemTitle}
                 path={section.path}
                 fields={section.fields}
+                isHighlighted={highlightedIndex === index}
                 onRemove={() => onRemove(section.path, index)}
               />
             ))}

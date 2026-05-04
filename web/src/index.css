@@ -97,3 +97,23 @@
     font-size: 17px;
   }
 }
+
+@keyframes array-item-focus-pop {
+  0% {
+    box-shadow: 0 0 0 0 rgb(16 185 129 / 0);
+  }
+
+  45% {
+    box-shadow: 0 0 0 2px rgb(16 185 129 / 0.02);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgb(16 185 129 / 0);
+  }
+}
+
+@layer utilities {
+  .array-item-focus-pop {
+    animation: array-item-focus-pop 1400ms ease-out;
+  }
+}

@@ -1,26 +1,31 @@
 import type { ReactNode } from 'react'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 export function ItemCard({
   children,
   hasErrors,
   index,
   onRemove,
+  isHighlighted,
   title,
 }: {
   children: ReactNode
   hasErrors?: boolean
+  isHighlighted?: boolean
   index: number
   onRemove: () => void
   title: string
 }) {
   return (
     <article
-      className={
+      className={cn(
+        'rounded-xl border p-4 transition-[box-shadow,transform,border-color,background-color] duration-300 focus-within:ring-2 focus-within:ring-emerald-300/70',
         hasErrors
-          ? 'rounded-xl border border-rose-300/70 bg-rose-50/85 p-4'
-          : 'rounded-xl border border-border/70 bg-background/90 p-4'
-      }
+          ? 'border-rose-300/70 bg-rose-50/85'
+          : 'border-border/70 bg-background/90',
+        isHighlighted && 'array-item-focus-pop border-emerald-300/70 bg-emerald-50/50 shadow-[0_0_0_1px_rgba(16,185,129,0.14)]',
+      )}
     >
       <div className="mb-3 flex flex-col gap-3 border-b pb-3 md:flex-row md:items-center md:justify-between">
         <div className="min-w-0">
