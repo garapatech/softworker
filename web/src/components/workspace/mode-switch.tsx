@@ -17,9 +17,9 @@ export function WorkspaceModeSwitch() {
           Escolha entre formulário estruturado e fonte JSON
         </strong>
       </div>
-      <div className="flex flex-wrap items-center gap-2 self-start rounded-2xl border border-border/70 bg-muted/60 p-2 shadow-none md:self-auto">
+      <div className="flex flex-wrap items-center gap-2 self-start rounded-lg border border-border/70 bg-muted/15 p-3 shadow-none md:self-auto">
         <Tabs value={mode} onValueChange={(value) => setMode(value as 'form' | 'source')}>
-          <TabsList className="grid w-[12.5rem] grid-cols-2 rounded-xl border-border/70 bg-transparent shadow-none">
+          <TabsList className="grid w-[12.5rem] grid-cols-2 rounded-xl border-border/70 bg-background/70 shadow-none">
             <TabsTrigger value="form" title="Abrir formulário">
               Formulário
             </TabsTrigger>
@@ -31,7 +31,7 @@ export function WorkspaceModeSwitch() {
         <Button
           type="button"
           variant="outline"
-          className="!h-9 !w-9 !min-w-0 shrink-0 !rounded-xl border-border/80 bg-background !p-0 text-muted-foreground shadow-none hover:border-border hover:bg-accent/50 hover:text-foreground"
+          className="!h-9 !w-9 !min-w-0 shrink-0 !rounded-lg border-border/80 bg-background !p-0 text-muted-foreground shadow-none hover:border-border hover:bg-accent/50 hover:text-foreground"
           onClick={resetWorkspace}
           aria-label="Resetar progresso"
           title="Resetar progresso"
