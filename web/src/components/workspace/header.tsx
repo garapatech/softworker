@@ -39,7 +39,6 @@ export function WorkspaceHeader() {
           id="language-select"
           className="min-h-11 border-border/80 bg-card font-medium"
           value={language}
-          title="Escolher idioma do currículo"
           onChange={(event) => setLanguage(event.target.value as ResumeLanguage)}
         >
           {PREVIEW_LANGUAGES.map((option) => (

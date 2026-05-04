@@ -4,7 +4,6 @@
     "label": "Desenvolvedora de Software Sênior",
     "email": "marina.ribeiro@exemplo.dev",
     "phone": "+55 11 98888-7766",
-    "url": "https://marinaribeiro.dev",
     "summary": "Desenvolvedora de software com mais de 13 anos de experiência em produtos SaaS, fintech e plataformas internas. Atua em arquitetura, entrega contínua, observabilidade e liderança técnica de times de engenharia.",
     "location": {
       "city": "São Paulo",
@@ -136,7 +135,6 @@
         "Python"
       ],
       "startDate": "2023-01-01",
-      "url": "https://marinaribeiro.dev/projetos/telemetria",
       "roles": [
         "Líder técnica",
         "Arquiteta de solução"
@@ -159,7 +157,6 @@
       ],
       "startDate": "2022-04-01",
       "endDate": "2023-09-01",
-      "url": "https://marinaribeiro.dev/projetos/framework-servicos",
       "roles": [
         "Maintainer",
         "Tech lead"

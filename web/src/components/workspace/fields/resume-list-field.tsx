@@ -108,6 +108,7 @@ export function ResumeListField({
                   onClick={() => handleRemoveItem(index)}
                   className="shrink-0 border-border/90 bg-card text-foreground shadow-sm transition-colors hover:bg-muted"
                   aria-label={`Remover ${item}`}
+                  title={`Remover item: ${item}`}
                 >
                   Remover
                 </Button>

@@ -20,10 +20,10 @@ export function WorkspaceModeSwitch() {
       <div className="flex flex-wrap items-center gap-2 self-start rounded-lg border border-border/70 bg-muted/15 p-3 shadow-none md:self-auto">
         <Tabs value={mode} onValueChange={(value) => setMode(value as 'form' | 'source')}>
           <TabsList className="grid w-[12.5rem] grid-cols-2 rounded-xl border-border/70 bg-background/70 shadow-none">
-            <TabsTrigger value="form" title="Abrir formulário">
+            <TabsTrigger value="form">
               Formulário
             </TabsTrigger>
-            <TabsTrigger value="source" title="Abrir fonte JSON">
+            <TabsTrigger value="source">
               JSON
             </TabsTrigger>
           </TabsList>
