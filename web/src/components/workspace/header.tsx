@@ -20,14 +20,15 @@ export function WorkspaceHeader() {
         </div>
       </div>
 
-      <div className="grid gap-2 rounded-2xl border border-border/70 bg-gradient-to-br from-muted/25 to-card p-3 shadow-sm">
+      <div className="grid gap-2 rounded-2xl border border-border/70 bg-muted/60 p-2.5 shadow-none">
         <Label htmlFor="language-select" className="text-[0.7rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
           Idioma
         </Label>
         <Select
           id="language-select"
-          className="min-h-11 border-border/80 bg-card font-medium"
+          className="min-h-11 border-border/70 bg-transparent font-medium"
           value={language}
+          title="Escolher idioma do currículo"
           onChange={(event) => setLanguage(event.target.value as ResumeLanguage)}
         >
           {PREVIEW_LANGUAGES.map((option) => (

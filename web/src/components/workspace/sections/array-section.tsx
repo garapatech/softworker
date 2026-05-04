@@ -120,6 +120,7 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }) {
           size="sm"
           className="size-8 rounded-full border-border/80 bg-background p-0 text-base leading-none text-muted-foreground shadow-none hover:border-border hover:bg-accent/50 hover:text-foreground"
           aria-label={`Adicionar ${section.itemTitle.toLocaleLowerCase('pt-BR')}`}
+          title={`Adicionar ${section.itemTitle.toLocaleLowerCase('pt-BR')}`}
           onClick={handleAddItem}
         >
           +

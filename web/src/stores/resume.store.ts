@@ -13,12 +13,11 @@ import {
   type PathPart,
 } from '@/services/resume.service'
 import {
-  DEFAULT_LANGUAGE,
-  DEFAULT_RESUME,
   JSON_DOWNLOAD_FILENAME,
   renderResumeDocument,
   type ResumeLanguage,
 } from '@/services/preview.service'
+import { loadWorkspacePersistence } from '@/services/workspace-persistence.service'
 
 function downloadTextFile(filename: string, content: string, type: string) {
   const blob = new Blob([content], { type })
@@ -46,7 +45,8 @@ interface ResumeState {
   downloadJson: () => void
 }
 
-const initialResume = DEFAULT_RESUME
+const initialWorkspace = loadWorkspacePersistence()
+const initialResume = initialWorkspace.resumeDraft
 const initialValidationState = validateResume(initialResume)
 
 function getValidationSnapshot(resumeDraft: JsonObject) {
@@ -75,7 +75,7 @@ export const useResumeStore = create<ResumeState>()(
 
     return {
       resumeDraft: initialResume,
-      language: DEFAULT_LANGUAGE,
+      language: initialWorkspace.language,
       validationState: initialValidationState,
       validationIssueCounts: buildValidationIssueCounts(initialValidationState.byPath),
       previewHtml: '',

@@ -22,6 +22,7 @@ export function PreviewPanel() {
             size="sm"
             className="h-10 w-full rounded-xl border-border/80 bg-card px-3.5 text-[0.92rem] font-medium text-muted-foreground shadow-none hover:border-border hover:bg-muted/60 hover:text-foreground sm:w-auto"
             onClick={onDownloadJson}
+            title="Baixar JSON"
           >
             <span aria-hidden="true" className="text-base leading-none">
               {'{ }'}
@@ -33,6 +34,7 @@ export function PreviewPanel() {
             size="sm"
             className="h-10 w-full rounded-xl px-4 text-[0.92rem] font-semibold shadow-none sm:w-auto"
             onClick={onPrintPdf}
+            title="Baixar PDF"
           >
             <span aria-hidden="true" className="text-base leading-none">
               ↓

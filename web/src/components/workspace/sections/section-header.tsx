@@ -45,6 +45,7 @@ export function SectionHeader({
           aria-controls={contentId}
           aria-expanded={isOpen}
           aria-labelledby={headingId}
+          title={isOpen ? 'Recolher seção' : 'Expandir seção'}
           onClick={onToggle}
         >
           <span

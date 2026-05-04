@@ -1,11 +1,14 @@
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
 import { useWorkspaceMode } from '@/hooks/use-workspace-mode'
+import { useWorkspaceReset } from '@/hooks/use-workspace-reset'
 
 export function WorkspaceModeSwitch() {
   const { mode, setMode } = useWorkspaceMode()
+  const resetWorkspace = useWorkspaceReset()
 
   return (
-    <section className="flex flex-col gap-4 border-b border-border/70 bg-card px-4 py-4 sm:px-5 md:flex-row md:items-center md:justify-between">
+    <section className="flex flex-col gap-3 border-b border-border/70 bg-card px-4 py-4 sm:px-5 md:flex-row md:items-center md:justify-between">
       <div className="min-w-0">
         <span className="block text-[0.7rem] font-extrabold uppercase tracking-[0.08em] text-primary">
           Modo de edição
@@ -14,16 +17,30 @@ export function WorkspaceModeSwitch() {
           Escolha entre formulário estruturado e fonte JSON
         </strong>
       </div>
-      <Tabs value={mode} onValueChange={(value) => setMode(value as 'form' | 'source')} className="self-start md:self-auto">
-        <TabsList className="grid w-[12.5rem] grid-cols-2 rounded-2xl border-border/70 bg-muted/60 shadow-none">
-          <TabsTrigger value="form">
-            Formulário
-          </TabsTrigger>
-          <TabsTrigger value="source">
-            JSON
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <div className="flex flex-wrap items-center gap-2 self-start rounded-2xl border border-border/70 bg-muted/60 p-2 shadow-none md:self-auto">
+        <Tabs value={mode} onValueChange={(value) => setMode(value as 'form' | 'source')}>
+          <TabsList className="grid w-[12.5rem] grid-cols-2 rounded-xl border-border/70 bg-transparent shadow-none">
+            <TabsTrigger value="form" title="Abrir formulário">
+              Formulário
+            </TabsTrigger>
+            <TabsTrigger value="source" title="Abrir fonte JSON">
+              JSON
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+        <Button
+          type="button"
+          variant="outline"
+          className="!h-9 !w-9 !min-w-0 shrink-0 !rounded-xl border-border/80 bg-background !p-0 text-muted-foreground shadow-none hover:border-border hover:bg-accent/50 hover:text-foreground"
+          onClick={resetWorkspace}
+          aria-label="Resetar progresso"
+          title="Resetar progresso"
+        >
+          <span aria-hidden="true" className="text-[1.15rem] leading-none">
+            ↻
+          </span>
+        </Button>
+      </div>
     </section>
   )
 }
