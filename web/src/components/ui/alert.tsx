@@ -9,7 +9,7 @@ export function Alert({
   return (
     <div
       className={cn(
-        'relative w-full rounded-lg border px-4 py-3 text-sm',
+        'relative w-full rounded-lg border px-4 py-3 text-[0.92rem] leading-6',
         variant === 'destructive'
           ? 'border-destructive/30 bg-destructive/10 text-destructive'
           : 'bg-card text-card-foreground',
@@ -25,5 +25,5 @@ export function AlertTitle({ className, ...props }: HTMLAttributes<HTMLHeadingEl
 }
 
 export function AlertDescription({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('text-sm [&_p]:leading-relaxed', className)} {...props} />
+  return <div className={cn('text-[0.92rem] leading-6 [&_p]:leading-relaxed', className)} {...props} />
 }

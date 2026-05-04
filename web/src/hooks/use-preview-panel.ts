@@ -1,5 +1,5 @@
-import { useId, useRef } from 'react'
 import { useShallow } from 'zustand/react/shallow'
+import { useId, useRef } from 'react'
 import { useResumeStore } from '@/stores/resume.store'
 
 export function usePreviewPanel() {
@@ -13,6 +13,7 @@ export function usePreviewPanel() {
   )
 
   function onPrintPdf() {
+    previewFrameRef.current?.contentWindow?.focus()
     previewFrameRef.current?.contentWindow?.print()
   }
 

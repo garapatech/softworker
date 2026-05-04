@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
@@ -46,6 +47,7 @@
 }
 
 @theme inline {
+  --font-sans: "DM Sans", sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -71,15 +73,27 @@
 }
 
 @layer base {
+  html {
+    font-size: 16.25px;
+    text-rendering: optimizeLegibility;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
 
   body {
     @apply min-h-screen bg-background font-sans text-foreground antialiased;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv03";
   }
 
   #root {
     @apply min-h-screen;
+  }
+}
+
+@media (min-width: 1280px) {
+  html {
+    font-size: 17px;
   }
 }

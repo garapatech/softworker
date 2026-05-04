@@ -420,11 +420,10 @@ a {
   margin-top: 3px;
 }
 
-/* Set some print settings. */
 @media print {
   @page {
+    size: A4 portrait;
     margin: 10mm 25mm;
-    size: portrait;
   }
 
   .resume {

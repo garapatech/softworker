@@ -18,14 +18,14 @@ export function ItemCard({
     <article
       className={
         hasErrors
-          ? 'rounded-xl border border-rose-200 bg-rose-50/50 p-4'
+          ? 'rounded-xl border border-rose-300/70 bg-rose-50/85 p-4'
           : 'rounded-xl border border-border/70 bg-background/90 p-4'
       }
     >
       <div className="mb-3 flex flex-col gap-3 border-b pb-3 md:flex-row md:items-center md:justify-between">
         <div className="min-w-0">
-          <h3 className="text-[0.94rem] font-extrabold leading-[1.18]">{title}</h3>
-          <p className="mt-1 text-xs text-muted-foreground">Item {index + 1}</p>
+          <h3 className="text-[0.92rem] font-extrabold leading-[1.18]">{title}</h3>
+          <p className="mt-1 text-[0.72rem] text-muted-foreground">Item {index + 1}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Button

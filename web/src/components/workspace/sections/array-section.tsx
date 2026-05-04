@@ -84,7 +84,7 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }) {
         </p>
       ) : (
         <>
-          <p className="text-[0.82rem] leading-[1.45] text-muted-foreground">
+          <p className="text-[0.8rem] leading-[1.45] text-muted-foreground">
             Use um item por linha nos campos de lista.
           </p>
 

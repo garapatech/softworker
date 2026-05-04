@@ -31,8 +31,8 @@ export function SectionHeader({
         onClick={onToggle}
       >
         <div className="min-w-0 flex-1" id={headingId}>
-          <h2 className="text-[0.97rem] font-extrabold leading-[1.18]">{title}</h2>
-          {subtitle ? <p className="mt-1 text-[0.82rem] leading-[1.45] text-muted-foreground">{subtitle}</p> : null}
+          <h2 className="text-[0.95rem] font-extrabold leading-[1.18]">{title}</h2>
+          {subtitle ? <p className="mt-1 text-[0.8rem] leading-[1.45] text-muted-foreground">{subtitle}</p> : null}
           {status ? <div className="mt-2 flex flex-wrap gap-2">{status}</div> : null}
         </div>
       </button>

@@ -14,7 +14,7 @@ const variantClasses: Record<ButtonVariant, string> = {
 
 const sizeClasses: Record<ButtonSize, string> = {
   default: 'h-9 px-4 py-2',
-  sm: 'h-8 rounded-md px-3 text-xs',
+  sm: 'h-8 rounded-md px-3 text-[0.88rem]',
   lg: 'h-10 rounded-md px-6',
   icon: 'size-9',
 }
@@ -35,7 +35,7 @@ export function Button({
     <button
       type={type}
       className={cn(
-        'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-[0.92rem] font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
         variantClasses[variant],
         sizeClasses[size],
         className,
