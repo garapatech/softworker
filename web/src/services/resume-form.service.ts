@@ -1,6 +1,6 @@
 import type { JsonObject } from '@/services/resume.service'
 
-export type FieldType = 'email' | 'list' | 'text' | 'textarea' | 'url'
+export type FieldType = 'date' | 'email' | 'list' | 'phone' | 'text' | 'textarea' | 'url'
 
 export interface FieldDefinition {
   key: string
@@ -40,11 +40,11 @@ export const OBJECT_SECTIONS: ObjectSectionDefinition[] = [
     key: 'basics',
     title: 'Informações básicas',
     fields: [
-      { key: 'image', label: 'Foto (URL)', type: 'url' },
+      { key: 'image', label: 'Foto', type: 'url' },
       { key: 'name', label: 'Nome', required: true },
       { key: 'label', label: 'Título', required: true },
       { key: 'email', label: 'E-mail', required: true, type: 'email' },
-      { key: 'phone', label: 'Telefone', required: true },
+      { key: 'phone', label: 'Telefone', required: true, type: 'phone' },
       { key: 'url', label: 'Site', type: 'url' },
       { key: 'summary', label: 'Resumo', type: 'textarea', full: true },
     ],
@@ -68,7 +68,7 @@ export const OBJECT_SECTIONS: ObjectSectionDefinition[] = [
     fields: [
       { key: 'canonical', label: 'Canonical', type: 'url' },
       { key: 'version', label: 'Versão' },
-      { key: 'lastModified', label: 'Última atualização' },
+      { key: 'lastModified', label: 'Última atualização', type: 'date' },
     ],
   },
 ]
@@ -117,8 +117,8 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
       { key: 'location', label: 'Local' },
       { key: 'url', label: 'URL', type: 'url' },
       { key: 'description', label: 'Descrição curta' },
-      { key: 'startDate', label: 'Início', required: true },
-      { key: 'endDate', label: 'Fim' },
+      { key: 'startDate', label: 'Início', required: true, type: 'date' },
+      { key: 'endDate', label: 'Fim', type: 'date' },
       { key: 'summary', label: 'Resumo', type: 'textarea', full: true },
       { key: 'highlights', label: 'Destaques', type: 'list', full: true },
     ],
@@ -139,8 +139,8 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
     fields: [
       { key: 'organization', label: 'Organização', required: true },
       { key: 'position', label: 'Posição', required: true },
-      { key: 'startDate', label: 'Início', required: true },
-      { key: 'endDate', label: 'Fim' },
+      { key: 'startDate', label: 'Início', required: true, type: 'date' },
+      { key: 'endDate', label: 'Fim', type: 'date' },
       { key: 'url', label: 'URL', type: 'url' },
       { key: 'summary', label: 'Resumo', type: 'textarea', full: true },
       { key: 'highlights', label: 'Destaques', type: 'list', full: true },
@@ -164,8 +164,8 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
     }),
     fields: [
       { key: 'name', label: 'Nome', required: true },
-      { key: 'startDate', label: 'Início' },
-      { key: 'endDate', label: 'Fim' },
+      { key: 'startDate', label: 'Início', type: 'date' },
+      { key: 'endDate', label: 'Fim', type: 'date' },
       { key: 'entity', label: 'Entidade' },
       { key: 'type', label: 'Tipo' },
       { key: 'url', label: 'URL', type: 'url' },
@@ -193,8 +193,8 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
       { key: 'institution', label: 'Instituição', required: true },
       { key: 'area', label: 'Área', required: true },
       { key: 'studyType', label: 'Tipo de curso', required: true },
-      { key: 'startDate', label: 'Início', required: true },
-      { key: 'endDate', label: 'Fim' },
+      { key: 'startDate', label: 'Início', required: true, type: 'date' },
+      { key: 'endDate', label: 'Fim', type: 'date' },
       { key: 'url', label: 'URL', type: 'url' },
       { key: 'score', label: 'Nota' },
       { key: 'courses', label: 'Cursos', type: 'list', full: true },
@@ -208,7 +208,7 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
     fields: [
       { key: 'name', label: 'Nome', required: true },
       { key: 'issuer', label: 'Emissor' },
-      { key: 'date', label: 'Data' },
+      { key: 'date', label: 'Data', type: 'date' },
       { key: 'url', label: 'URL', type: 'url' },
     ],
   },
@@ -229,7 +229,7 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
     createItem: () => ({ awarder: '', date: '', summary: '', title: '' }),
     fields: [
       { key: 'title', label: 'Título', required: true },
-      { key: 'date', label: 'Data' },
+      { key: 'date', label: 'Data', type: 'date' },
       { key: 'awarder', label: 'Concedido por' },
       { key: 'summary', label: 'Resumo', type: 'textarea', full: true },
     ],
@@ -241,7 +241,7 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
     createItem: () => ({ name: '', publisher: '', releaseDate: '', summary: '', url: '' }),
     fields: [
       { key: 'name', label: 'Nome', required: true },
-      { key: 'releaseDate', label: 'Data de publicação' },
+      { key: 'releaseDate', label: 'Data de publicação', type: 'date' },
       { key: 'publisher', label: 'Publicador', required: true },
       { key: 'url', label: 'URL', type: 'url' },
       { key: 'summary', label: 'Resumo', type: 'textarea', full: true },
@@ -287,7 +287,10 @@ const FORM_SECTION_ORDER: readonly string[] = [
 ] as const
 
 const SECTION_DEFINITIONS_BY_KEY: Map<string, ObjectSectionDefinition | ArraySectionDefinition> = new Map(
-  [...OBJECT_SECTIONS, ...ARRAY_SECTIONS].map((section) => [sectionKey(section), section]),
+  [...OBJECT_SECTIONS, ...ARRAY_SECTIONS].map((section) => [
+    'key' in section ? section.key : section.path.join('.'),
+    section,
+  ]),
 )
 
 export const FORM_SECTIONS: SectionDefinition[] = FORM_SECTION_ORDER.map((key) => {
@@ -299,10 +302,6 @@ export const FORM_SECTIONS: SectionDefinition[] = FORM_SECTION_ORDER.map((key) =
 
   return section
 })
-
-export function sectionKey(section: Pick<ObjectSectionDefinition, 'key'> | Pick<ArraySectionDefinition, 'path'>): string {
-  return 'key' in section ? section.key : section.path.join('.')
-}
 
 export function buildValidationIssueCounts(validationErrors: Record<string, string[]>): ValidationIssueCounts {
   const issueCounts: ValidationIssueCounts = {}

@@ -21,6 +21,8 @@ export function PreviewPanel(): ReactElement {
     windowRef?.print()
   }
 
+  const hasPreviewHtml: boolean = previewHtml.trim().length > 0
+
   return (
     <Card className="min-h-0 overflow-hidden border-border/80 bg-card xl:sticky xl:top-4 xl:grid xl:h-[calc(100vh-2rem)] xl:grid-rows-[auto_minmax(0,1fr)]">
       <CardHeader className="gap-4 border-b border-border/70 bg-card p-4 sm:p-5 md:flex-row md:items-start md:justify-between">
@@ -57,7 +59,13 @@ export function PreviewPanel(): ReactElement {
         </div>
       </CardHeader>
       <CardContent className="h-full overflow-auto overscroll-contain bg-muted/30 p-2.5 sm:p-4">
-        <PreviewFrame iframeId={iframeId} previewFrameRef={previewFrameRef} previewHtml={previewHtml} />
+        {hasPreviewHtml ? (
+          <PreviewFrame iframeId={iframeId} previewFrameRef={previewFrameRef} previewHtml={previewHtml} />
+        ) : (
+          <div className="flex min-h-[34vh] w-full items-center justify-center rounded-[1.25rem] border border-dashed border-border/70 bg-background/80 px-6 py-10 text-center text-sm text-muted-foreground sm:min-h-[42vh] lg:min-h-[52vh] xl:min-h-[calc(100vh-18rem)]">
+            A pré-visualização aparece aqui assim que o currículo for renderizado.
+          </div>
+        )}
       </CardContent>
     </Card>
   )

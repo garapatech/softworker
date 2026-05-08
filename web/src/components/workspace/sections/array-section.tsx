@@ -1,14 +1,11 @@
 import { ResumeFieldList } from '@/components/workspace/fields/resume-field-list'
 import { CollapsibleSectionPanel } from '@/components/workspace/sections/collapsible-section-panel'
 import { Button } from '@/components/ui/button'
+import { getAtPath } from '@/services/resume.service'
+import type { ArraySectionDefinition } from '@/services/resume-form.service'
 import { useFormStore } from '@/stores/form.store'
 import { useResumeStore } from '@/stores/resume.store'
 import { useEffect, useState, type ReactElement } from 'react'
-import {
-  sectionKey,
-  type ArraySectionDefinition,
-} from '@/services/resume-form.service'
-import { getAtPath } from '@/services/resume.service'
 
 function ArraySectionItem({
   index,
@@ -60,7 +57,7 @@ function ArraySectionItem({
 }
 
 export function ArraySection({ section }: { section: ArraySectionDefinition }): ReactElement {
-  const key = sectionKey(section)
+  const key = section.path.join('.')
   const sectionId = `section-${key.replaceAll('.', '-')}`
   const headingId = `${sectionId}-heading`
   const contentId = `${sectionId}-content`

@@ -28,28 +28,18 @@ const partialFiles = import.meta.glob('@template/**/*.hbs', {
 const previewTranslations = JSON.parse(rawI18n) as Record<string, JsonObject>
 const resumeTransformExpression = jsonata(rawTransform)
 
-function registerPreviewPartials(files: Record<string, string>): void {
-  for (const [path, source] of Object.entries(files)) {
-    const name = path.replace(/^.*\/template\//, '').replace(/\.hbs$/, '')
+for (const [path, source] of Object.entries(partialFiles)) {
+  const name = path.replace(/^.*\/template\//, '').replace(/\.hbs$/, '')
 
-    if (name === 'index') {
-      continue
-    }
-
+  if (name !== 'index') {
     Handlebars.registerPartial(name, source)
   }
 }
 
-registerPreviewPartials(partialFiles)
-
 const resumeTemplate = Handlebars.compile(rawTemplate)
 
-function resolveTranslations(language: ResumeLanguage): JsonObject {
-  return previewTranslations[language] ?? previewTranslations[DEFAULT_LANGUAGE]
-}
-
 export async function renderResumeDocument(resume: JsonObject, language: ResumeLanguage): Promise<string> {
-  const i18n = resolveTranslations(language)
+  const i18n = previewTranslations[language] ?? previewTranslations[DEFAULT_LANGUAGE]
   const context = (await resumeTransformExpression.evaluate({
     i18n,
     resume,

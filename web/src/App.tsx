@@ -7,7 +7,7 @@ import { ArraySection } from '@/components/workspace/sections/array-section'
 import { ObjectSection } from '@/components/workspace/sections/object-section'
 import { SourceEditor } from '@/components/workspace/source-editor'
 import { useEffect, type ReactElement } from 'react'
-import { FORM_SECTIONS, sectionKey } from '@/services/resume-form.service'
+import { FORM_SECTIONS } from '@/services/resume-form.service'
 import { saveWorkspacePersistence } from '@/services/workspace-persistence.service'
 import { useFormStore, type FormState } from '@/stores/form.store'
 import { useResumeStore, type ResumeState } from '@/stores/resume.store'
@@ -68,7 +68,7 @@ function App(): ReactElement {
                 'key' in section ? (
                   <ObjectSection key={section.key} section={section} />
                 ) : (
-                  <ArraySection key={sectionKey(section)} section={section} />
+                  <ArraySection key={section.path.join('.')} section={section} />
                 ),
               )}
             </div>

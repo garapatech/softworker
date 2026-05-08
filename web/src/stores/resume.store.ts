@@ -49,26 +49,15 @@ const initialWorkspace = loadWorkspacePersistence()
 const initialResume = initialWorkspace.resumeDraft
 const initialValidationState = validateResume(initialResume)
 
-function getValidationSnapshot(resumeDraft: JsonObject): {
-  validationIssueCounts: ValidationIssueCounts
-  validationState: ValidationState
-} {
-  const validationState = validateResume(resumeDraft)
-
-  return {
-    validationState,
-    validationIssueCounts: buildValidationIssueCounts(validationState.byPath),
-  }
-}
-
 export const useResumeStore = create<ResumeState>()(
   immer((set, get) => {
     const commitResumeDraft = (resumeDraft: JsonObject): void => {
-      const validation = getValidationSnapshot(resumeDraft)
+      const validationState = validateResume(resumeDraft)
 
       set(() => ({
         resumeDraft,
-        ...validation,
+        validationState,
+        validationIssueCounts: buildValidationIssueCounts(validationState.byPath),
       }))
     }
 

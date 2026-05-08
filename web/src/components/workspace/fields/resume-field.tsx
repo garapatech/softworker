@@ -22,6 +22,7 @@ export function ResumeField({
   const fieldId = path.join('.')
   const value = useResumeStore((state) => getAtPath(state.resumeDraft, path))
   const error = useResumeStore((state) => state.validationState.byPath[fieldId]?.[0])
+
   const currentValue =
     field.type === 'list'
       ? Array.isArray(value)
@@ -43,6 +44,7 @@ export function ResumeField({
         <Input
           id={fieldId}
           type={inputType}
+          placeholder={field.type === 'date' ? 'yyyy-mm-dd' : field.type === 'url' ? 'https://' : undefined}
           value={typeof currentValue === 'string' ? currentValue : ''}
           onChange={(event: ChangeEvent<HTMLInputElement>): void => {
             updateField(path, event.target.value as JsonValue)
