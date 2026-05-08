@@ -1,66 +1,72 @@
 import { ResumeFieldList } from '@/components/workspace/fields/resume-field-list'
 import { CollapsibleSectionPanel } from '@/components/workspace/sections/collapsible-section-panel'
 import { Badge } from '@/components/ui/badge'
-import type { NestedSectionDefinition, ObjectSectionDefinition } from '@/services/resume-form.service'
-import { getUiStrings } from '@/services/ui-i18n.service'
+import type {
+  NestedSectionDefinition,
+  ObjectSectionDefinition,
+  ValidationIssueCounts,
+} from '@/services/resume-form.service'
+import { formatCountLabel, type UiStrings } from '@/services/ui-i18n.service'
 import { useFormStore } from '@/stores/form.store'
-import { useResumeStore } from '@/stores/resume.store'
 import type { ReactElement } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
 function NestedSection({
   parentKey,
+  validationIssueCounts,
   section,
+  ui,
 }: {
   parentKey: string
+  validationIssueCounts: ValidationIssueCounts
   section: NestedSectionDefinition
+  ui: UiStrings
 }): ReactElement {
-  const errorCount = useResumeStore((state) => state.validationIssueCounts[`${parentKey}.${section.key}`] ?? 0)
-  const language = useResumeStore((state) => state.language)
+  const errorCount = validationIssueCounts[`${parentKey}.${section.key}`] ?? 0
 
   return (
     <section className="rounded-xl border border-border/70 bg-background/80 p-4">
       <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
         <h3 className="text-[0.92rem] font-extrabold leading-[1.18]">{section.title}</h3>
         {errorCount > 0 ? (
-          <Badge className="border-rose-200 bg-rose-50 text-rose-700">
-            {errorCount} {language === 'en_US' ? (errorCount === 1 ? 'issue' : 'issues') : errorCount === 1 ? 'ajuste' : 'ajustes'}
+          <Badge className="whitespace-nowrap border-rose-200 bg-rose-50 text-rose-700">
+            {formatCountLabel(errorCount, ui.validationIssueOne, ui.validationIssueOther)}
           </Badge>
         ) : null}
       </div>
       <ResumeFieldList
         fields={section.fields}
         pathPrefix={[parentKey, section.key]}
+        ui={ui}
       />
     </section>
   )
 }
 
-export function ObjectSection({ section }: { section: ObjectSectionDefinition }): ReactElement {
+export function ObjectSection({
+  section,
+  ui,
+  validationIssueCounts,
+}: {
+  section: ObjectSectionDefinition
+  ui: UiStrings
+  validationIssueCounts: ValidationIssueCounts
+}): ReactElement {
   const sectionId = `section-${section.key.replaceAll('.', '-')}`
   const headingId = `${sectionId}-heading`
   const contentId = `${sectionId}-content`
-  const errorCount = useResumeStore((state) => state.validationIssueCounts[section.key] ?? 0)
-  const isOpen = useFormStore((state) => state.openSections.has(section.key))
-  const toggleSection = useFormStore((state) => state.toggleSection)
-  const language = useResumeStore((state) => state.language)
-  const ui = getUiStrings(language)
+  const errorCount = validationIssueCounts[section.key] ?? 0
+  const { isOpen, toggleSection } = useFormStore(
+    useShallow((state) => ({
+      isOpen: state.openSections.has(section.key),
+      toggleSection: state.toggleSection,
+    })),
+  )
 
   return (
     <CollapsibleSectionPanel
       title={section.title}
-      subtitle={
-        errorCount > 0
-          ? `${errorCount} ${
-              language === 'en_US'
-                ? errorCount === 1
-                  ? 'pending fix'
-                  : 'pending fixes'
-                : errorCount === 1
-                  ? ui.validationAdjustOne
-                  : ui.validationAdjustOther
-            }`
-          : undefined
-      }
+      subtitle={errorCount > 0 ? formatCountLabel(errorCount, ui.validationAdjustOne, ui.validationAdjustOther) : undefined}
       sectionId={sectionId}
       headingId={headingId}
       contentId={contentId}
@@ -71,13 +77,16 @@ export function ObjectSection({ section }: { section: ObjectSectionDefinition })
       <ResumeFieldList
         fields={section.fields}
         pathPrefix={[section.key]}
+        ui={ui}
       />
 
       {section.nested?.map((nested) => (
         <NestedSection
           key={`${section.key}.${nested.key}`}
           parentKey={section.key}
+          validationIssueCounts={validationIssueCounts}
           section={nested}
+          ui={ui}
         />
       ))}
     </CollapsibleSectionPanel>

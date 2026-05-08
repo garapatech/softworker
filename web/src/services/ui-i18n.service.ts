@@ -10,7 +10,7 @@ import type {
 } from '@/services/resume-form.service'
 import { ARRAY_SECTIONS, FORM_SECTION_ORDER, OBJECT_SECTIONS } from '@/services/resume-form.service'
 
-type UiStrings = {
+export type UiStrings = {
   addItemAria: string
   addItemTitle: string
   arrayItemCountOne: string
@@ -31,6 +31,8 @@ type UiStrings = {
   modeLabel: string
   modeForm: string
   modeSource: string
+  workspaceDescription: string
+  workspaceTitle: string
   previewEyebrow: string
   previewDescription: string
   previewEmpty: string
@@ -40,10 +42,14 @@ type UiStrings = {
   resetAriaLabel: string
   resetConfirm: string
   resetTitle: string
+  sourceEditorAriaLabel: string
   sourceInvalidJsonPrefix: string
   statusTitle: string
+  validationIssueOne: string
+  validationIssueOther: string
   validationAdjustOne: string
   validationAdjustOther: string
+  reviewPendingLabel: string
 }
 
 const UI_STRINGS: Record<ResumeLanguage, UiStrings> = {
@@ -71,6 +77,8 @@ const UI_STRINGS: Record<ResumeLanguage, UiStrings> = {
     modeLabel: 'Modo de edição',
     modeForm: 'Formulário',
     modeSource: 'JSON',
+    workspaceDescription: 'Edite os dados e acompanhe o documento final sem sair da mesma tela.',
+    workspaceTitle: 'Editor de currículos',
     previewEyebrow: 'Pré-visualização',
     previewDescription: 'A visualização acompanha o estado válido mais recente do currículo.',
     previewEmpty: 'A pré-visualização aparece aqui assim que o currículo for renderizado.',
@@ -80,10 +88,14 @@ const UI_STRINGS: Record<ResumeLanguage, UiStrings> = {
     resetAriaLabel: 'Resetar progresso',
     resetConfirm: 'Resetar o progresso salvo deste currículo?',
     resetTitle: 'Resetar progresso',
+    sourceEditorAriaLabel: 'Fonte JSON do currículo',
     sourceInvalidJsonPrefix: 'JSON inválido:',
     statusTitle: 'Status',
+    validationIssueOne: 'issue',
+    validationIssueOther: 'issues',
     validationAdjustOne: 'ajuste pendente',
     validationAdjustOther: 'ajustes pendentes',
+    reviewPendingLabel: 'Revisão pendente',
   },
   en_US: {
     addItemAria: 'Add {item}',
@@ -109,6 +121,8 @@ const UI_STRINGS: Record<ResumeLanguage, UiStrings> = {
     modeLabel: 'Edit mode',
     modeForm: 'Form',
     modeSource: 'JSON',
+    workspaceDescription: 'Edit the data and track the final document without leaving the same screen.',
+    workspaceTitle: 'Resume editor',
     previewEyebrow: 'Preview',
     previewDescription: 'The preview follows the latest valid state of the resume.',
     previewEmpty: 'The preview appears here as soon as the resume is rendered.',
@@ -118,10 +132,14 @@ const UI_STRINGS: Record<ResumeLanguage, UiStrings> = {
     resetAriaLabel: 'Reset progress',
     resetConfirm: 'Reset the saved progress for this resume?',
     resetTitle: 'Reset progress',
+    sourceEditorAriaLabel: 'Resume JSON source',
     sourceInvalidJsonPrefix: 'Invalid JSON:',
     statusTitle: 'Status',
+    validationIssueOne: 'issue',
+    validationIssueOther: 'issues',
     validationAdjustOne: 'pending fix',
     validationAdjustOther: 'pending fixes',
+    reviewPendingLabel: 'Pending review',
   },
 }
 
@@ -139,6 +157,25 @@ void i18next.use(initReactI18next).init({
 
 export function syncI18nLanguage(language: ResumeLanguage): Promise<void> {
   return i18next.changeLanguage(language).then(() => undefined)
+}
+
+export function formatCountLabel(count: number, singular: string, plural: string): string {
+  return `${count} ${count === 1 ? singular : plural}`
+}
+
+export function getLanguageLocale(language: ResumeLanguage): string {
+  return language === 'en_US' ? 'en-US' : 'pt-BR'
+}
+
+export function lowercaseForLanguage(value: string, language: ResumeLanguage): string {
+  return value.toLocaleLowerCase(getLanguageLocale(language))
+}
+
+export function formatTemplate(template: string, values: Record<string, string>): string {
+  return Object.entries(values).reduce(
+    (result, [placeholder, value]) => result.replaceAll(`{${placeholder}}`, value),
+    template,
+  )
 }
 
 const SECTION_TITLES: Record<ResumeLanguage, Record<string, string>> = {
@@ -360,6 +397,13 @@ const VALIDATION_MESSAGES: Record<ResumeLanguage, Record<string, string>> = {
   },
 }
 
+const SECTION_DEFINITIONS_BY_KEY: Map<string, ObjectSectionDefinition | ArraySectionDefinition> = new Map(
+  [...OBJECT_SECTIONS, ...ARRAY_SECTIONS].map((section) => [
+    'key' in section ? section.key : section.path.join('.'),
+    section,
+  ]),
+)
+
 function translateKey(language: ResumeLanguage, key: string): string {
   return FIELD_LABELS[language][key] ?? SECTION_TITLES[language][key] ?? key
 }
@@ -426,6 +470,8 @@ export function getUiStrings(language: ResumeLanguage): UiStrings {
     modeLabel: t('modeLabel'),
     modeForm: t('modeForm'),
     modeSource: t('modeSource'),
+    workspaceDescription: t('workspaceDescription'),
+    workspaceTitle: t('workspaceTitle'),
     previewEyebrow: t('previewEyebrow'),
     previewDescription: t('previewDescription'),
     previewEmpty: t('previewEmpty'),
@@ -435,8 +481,12 @@ export function getUiStrings(language: ResumeLanguage): UiStrings {
     resetAriaLabel: t('resetAriaLabel'),
     resetConfirm: t('resetConfirm'),
     resetTitle: t('resetTitle'),
+    sourceEditorAriaLabel: t('sourceEditorAriaLabel'),
     sourceInvalidJsonPrefix: t('sourceInvalidJsonPrefix'),
     statusTitle: t('statusTitle'),
+    reviewPendingLabel: t('reviewPendingLabel'),
+    validationIssueOne: t('validationIssueOne'),
+    validationIssueOther: t('validationIssueOther'),
     validationAdjustOne: t('validationAdjustOne'),
     validationAdjustOther: t('validationAdjustOther'),
   }
@@ -446,27 +496,26 @@ export function getTranslatedSectionLabel(language: ResumeLanguage, key: string)
   return translateKey(language, key)
 }
 
+function formatPathPart(language: ResumeLanguage, part: string): string {
+  if (/^\d+$/.test(part)) {
+    return `item ${Number(part) + 1}`
+  }
+
+  if (language !== 'en_US') {
+    return part
+  }
+
+  const translated = translateKey(language, part)
+
+  return translated === part ? part : translated
+}
+
 export function getTranslatedPathLabel(language: ResumeLanguage, pathParts: string[]): string {
   if (pathParts.length === 0) {
     return language === 'en_US' ? 'resume' : 'currículo'
   }
 
-  if (language !== 'en_US') {
-    return pathParts
-      .map((part) => ( /^\d+$/.test(part) ? `item ${Number(part) + 1}` : part))
-      .join(' / ')
-  }
-
-  return pathParts
-    .map((part) => {
-      if (/^\d+$/.test(part)) {
-        return `item ${Number(part) + 1}`
-      }
-
-      const translated = translateKey(language, part)
-      return translated === part ? part : translated
-    })
-    .join(' / ')
+  return pathParts.map((part) => formatPathPart(language, part)).join(' / ')
 }
 
 export function translateValidationMessage(message: string, language: ResumeLanguage): string {
@@ -474,30 +523,15 @@ export function translateValidationMessage(message: string, language: ResumeLang
 }
 
 export function getFormSections(language: ResumeLanguage): SectionDefinition[] {
-  const sectionsByKey = new Map<string, ObjectSectionDefinition | ArraySectionDefinition>(
-    [...OBJECT_SECTIONS, ...ARRAY_SECTIONS].map((section) => [
-      'key' in section ? section.key : section.path.join('.'),
-      section,
-    ]),
-  )
-
-  if (language !== 'en_US') {
-    return FORM_SECTION_ORDER.map((key) => {
-      const section = sectionsByKey.get(key)
-
-      if (!section) {
-        throw new Error(`Section not found for key "${key}".`)
-      }
-
-      return section
-    })
-  }
-
   return FORM_SECTION_ORDER.map((key) => {
-    const section = sectionsByKey.get(key)
+    const section = SECTION_DEFINITIONS_BY_KEY.get(key)
 
     if (!section) {
       throw new Error(`Section not found for key "${key}".`)
+    }
+
+    if (language !== 'en_US') {
+      return section
     }
 
     return 'key' in section ? translateObjectSection(section, language) : translateArraySection(section, language)

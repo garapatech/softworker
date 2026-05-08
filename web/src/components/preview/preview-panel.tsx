@@ -2,21 +2,17 @@ import { PreviewFrame } from '@/components/preview/preview-frame'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useId, useRef, type ReactElement } from 'react'
-import { useShallow } from 'zustand/react/shallow'
-import { useResumeStore } from '@/stores/resume.store'
-import { getUiStrings } from '@/services/ui-i18n.service'
+import { type UiStrings } from '@/services/ui-i18n.service'
 
-export function PreviewPanel(): ReactElement {
+type PreviewPanelProps = {
+  downloadJson: () => void
+  previewHtml: string
+  ui: UiStrings
+}
+
+export function PreviewPanel({ downloadJson, previewHtml, ui }: PreviewPanelProps): ReactElement {
   const iframeId: string = useId()
   const previewFrameRef: React.RefObject<HTMLIFrameElement | null> = useRef<HTMLIFrameElement>(null)
-  const { language, onDownloadJson, previewHtml } = useResumeStore(
-    useShallow((state) => ({
-      language: state.language,
-      onDownloadJson: state.downloadJson,
-      previewHtml: state.previewHtml,
-    })),
-  )
-  const ui = getUiStrings(language)
 
   function onPrintPdf(): void {
     const windowRef: Window | null | undefined = previewFrameRef.current?.contentWindow
@@ -43,7 +39,7 @@ export function PreviewPanel(): ReactElement {
             variant="outline"
             size="sm"
             className="h-10 w-full rounded-xl border-border/80 bg-card px-3.5 text-[0.92rem] font-medium text-muted-foreground shadow-none hover:border-border hover:bg-muted/60 hover:text-foreground sm:w-auto"
-            onClick={onDownloadJson}
+            onClick={downloadJson}
           >
             <span aria-hidden="true" className="text-base leading-none">
               {'{ }'}
@@ -65,7 +61,12 @@ export function PreviewPanel(): ReactElement {
       </CardHeader>
       <CardContent className="h-full overflow-auto overscroll-contain bg-muted/30 p-2.5 sm:p-4">
         {hasPreviewHtml ? (
-          <PreviewFrame iframeId={iframeId} previewFrameRef={previewFrameRef} previewHtml={previewHtml} />
+          <PreviewFrame
+            iframeId={iframeId}
+            previewFrameRef={previewFrameRef}
+            previewHtml={previewHtml}
+            ui={ui}
+          />
         ) : (
           <div className="flex min-h-[34vh] w-full items-center justify-center rounded-[1.25rem] border border-dashed border-border/70 bg-background/80 px-6 py-10 text-center text-sm text-muted-foreground sm:min-h-[42vh] lg:min-h-[52vh] xl:min-h-[calc(100vh-18rem)]">
             {ui.previewEmpty}

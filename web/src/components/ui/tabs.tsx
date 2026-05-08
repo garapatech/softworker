@@ -18,7 +18,7 @@ function useTabsContext(): TabsContextValue {
   return context
 }
 
-export function Tabs({
+export function Tabs<T extends string>({
   children,
   className,
   onValueChange,
@@ -26,11 +26,11 @@ export function Tabs({
 }: {
   children: ReactNode
   className?: string
-  onValueChange: (value: string) => void
-  value: string
+  onValueChange: (value: T) => void
+  value: T
 }): ReactElement {
   return (
-    <TabsContext.Provider value={{ value, onValueChange }}>
+    <TabsContext.Provider value={{ value, onValueChange: onValueChange as (value: string) => void }}>
       <div className={className}>{children}</div>
     </TabsContext.Provider>
   )

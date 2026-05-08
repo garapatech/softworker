@@ -2,11 +2,12 @@ import { ResumeFieldList } from '@/components/workspace/fields/resume-field-list
 import { CollapsibleSectionPanel } from '@/components/workspace/sections/collapsible-section-panel'
 import { Button } from '@/components/ui/button'
 import { getAtPath } from '@/services/resume.service'
-import type { ArraySectionDefinition } from '@/services/resume-form.service'
-import { getUiStrings } from '@/services/ui-i18n.service'
+import type { ArraySectionDefinition, ValidationIssueCounts } from '@/services/resume-form.service'
+import { formatCountLabel, formatTemplate, type UiStrings } from '@/services/ui-i18n.service'
 import { useFormStore } from '@/stores/form.store'
 import { useResumeStore } from '@/stores/resume.store'
-import { useEffect, useState, type ReactElement } from 'react'
+import { useState, type AnimationEvent, type ReactElement } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
 function ArraySectionItem({
   index,
@@ -14,19 +15,21 @@ function ArraySectionItem({
   path,
   fields,
   isHighlighted,
+  onAnimationEnd,
   onRemove,
+  itemErrorCount,
+  ui,
 }: {
   index: number
   itemTitle: string
   path: string[]
   fields: ArraySectionDefinition['fields']
   isHighlighted?: boolean
+  onAnimationEnd?: (event: AnimationEvent<HTMLElement>) => void
   onRemove: () => void
+  itemErrorCount: number
+  ui: UiStrings
 }): ReactElement {
-  const itemErrorCount = useResumeStore((state) => state.validationIssueCounts[`${path.join('.')}.${index}`] ?? 0)
-  const language = useResumeStore((state) => state.language)
-  const ui = getUiStrings(language)
-
   return (
     <article
       className={[
@@ -34,6 +37,7 @@ function ArraySectionItem({
         itemErrorCount > 0 ? 'border-rose-300/70 bg-rose-50/85' : 'border-border/70 bg-background/90',
         isHighlighted ? 'array-item-focus-pop border-emerald-300/70 bg-emerald-50/50 shadow-[0_0_0_1px_rgba(16,185,129,0.14)]' : '',
       ].join(' ')}
+      onAnimationEnd={onAnimationEnd}
     >
       <div className="mb-3 flex flex-col gap-3 border-b pb-3 md:flex-row md:items-center md:justify-between">
         <div className="min-w-0">
@@ -54,27 +58,45 @@ function ArraySectionItem({
       <ResumeFieldList
         fields={fields}
         pathPrefix={[...path, index]}
+        ui={ui}
       />
     </article>
   )
 }
 
-export function ArraySection({ section }: { section: ArraySectionDefinition }): ReactElement {
+export function ArraySection({
+  section,
+  ui,
+  validationIssueCounts,
+  itemTitleLowercase,
+}: {
+  section: ArraySectionDefinition
+  ui: UiStrings
+  validationIssueCounts: ValidationIssueCounts
+  itemTitleLowercase: string
+}): ReactElement {
   const key = section.path.join('.')
   const sectionId = `section-${key.replaceAll('.', '-')}`
   const headingId = `${sectionId}-heading`
   const contentId = `${sectionId}-content`
-  const errorCount = useResumeStore((state) => state.validationIssueCounts[key] ?? 0)
-  const isOpen = useFormStore((state) => state.openSections.has(key))
-  const toggleSection = useFormStore((state) => state.toggleSection)
-  const itemCount = useResumeStore((state) => {
-    const value = getAtPath(state.resumeDraft, section.path)
-    return Array.isArray(value) ? value.length : 0
-  })
-  const addArrayItem = useResumeStore((state) => state.addArrayItem)
-  const removeArrayItem = useResumeStore((state) => state.removeArrayItem)
-  const language = useResumeStore((state) => state.language)
-  const ui = getUiStrings(language)
+  const { addArrayItem, errorCount, itemCount, removeArrayItem } = useResumeStore(
+    useShallow((state) => {
+      const value = getAtPath(state.resumeDraft, section.path)
+
+      return {
+        addArrayItem: state.addArrayItem,
+        errorCount: state.validationIssueCounts[key] ?? 0,
+        itemCount: Array.isArray(value) ? value.length : 0,
+        removeArrayItem: state.removeArrayItem,
+      }
+    }),
+  )
+  const { isOpen, toggleSection } = useFormStore(
+    useShallow((state) => ({
+      isOpen: state.openSections.has(key),
+      toggleSection: state.toggleSection,
+    })),
+  )
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null)
 
   function focusNewItem(nextIndex: number): void {
@@ -109,24 +131,10 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }): 
     focusNewItem(nextIndex)
   }
 
-  useEffect(() => {
-    if (highlightedIndex == null) {
-      return
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      setHighlightedIndex(null)
-    }, 1400)
-
-    return () => {
-      window.clearTimeout(timeoutId)
-    }
-  }, [highlightedIndex])
-
   return (
     <CollapsibleSectionPanel
       title={section.title}
-      subtitle={`${itemCount} ${itemCount === 1 ? ui.arrayItemCountOne : ui.arrayItemCountOther}`}
+      subtitle={formatCountLabel(itemCount, ui.arrayItemCountOne, ui.arrayItemCountOther)}
       sectionId={sectionId}
       headingId={headingId}
       contentId={contentId}
@@ -134,8 +142,8 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }): 
       onToggle={() => toggleSection(key, !isOpen)}
       status={
         errorCount > 0 ? (
-          <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700">
-            {language === 'en_US' ? 'Pending review' : 'Revisão pendente'}
+          <span className="whitespace-nowrap rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700">
+            {ui.reviewPendingLabel}
           </span>
         ) : undefined
       }
@@ -144,8 +152,8 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }): 
           variant="outline"
           size="sm"
           className="size-8 rounded-full border-border/80 bg-background p-0 text-base leading-none text-muted-foreground shadow-none hover:border-border hover:bg-accent/50 hover:text-foreground"
-          aria-label={ui.addItemAria.replace('{item}', section.itemTitle.toLocaleLowerCase(language === 'en_US' ? 'en-US' : 'pt-BR'))}
-          title={ui.addItemTitle.replace('{item}', section.itemTitle.toLocaleLowerCase(language === 'en_US' ? 'en-US' : 'pt-BR'))}
+          aria-label={formatTemplate(ui.addItemAria, { item: itemTitleLowercase })}
+          title={formatTemplate(ui.addItemTitle, { item: itemTitleLowercase })}
           onClick={handleAddItem}
         >
           +
@@ -176,7 +184,16 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }): 
                 path={section.path}
                 fields={section.fields}
                 isHighlighted={highlightedIndex === index}
+                itemErrorCount={validationIssueCounts[`${section.path.join('.')}.${index}`] ?? 0}
+                onAnimationEnd={(event): void => {
+                  if (event.currentTarget !== event.target) {
+                    return
+                  }
+
+                  setHighlightedIndex((current) => (current === index ? null : current))
+                }}
                 onRemove={() => removeArrayItem(section.path, index)}
+                ui={ui}
               />
             ))}
           </div>

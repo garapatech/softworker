@@ -2,13 +2,12 @@ import { enableMapSet } from 'immer'
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { formatJson, type JsonObject } from '@/services/resume.service'
-import { loadWorkspacePersistence } from '@/services/workspace-persistence.service'
+import { DEFAULT_RESUME } from '@/services/preview.service'
+import { initialWorkspacePersistence } from '@/services/workspace-persistence.service'
 
 enableMapSet()
 
 export type EditorMode = 'form' | 'source'
-
-const initialWorkspace = loadWorkspacePersistence()
 
 export interface FormState {
   mode: EditorMode
@@ -21,12 +20,13 @@ export interface FormState {
   setJsonDraft: (value: string) => void
   setJsonStatusMessage: (message: string) => void
   clearJsonStatus: () => void
+  resetToDefaults: () => void
 }
 
 export const useFormStore = create<FormState>()(
   immer((set) => ({
-    mode: initialWorkspace.mode,
-    jsonDraft: initialWorkspace.jsonDraft,
+    mode: initialWorkspacePersistence.mode,
+    jsonDraft: initialWorkspacePersistence.jsonDraft,
     jsonStatusMessage: '',
     openSections: new Set<string>(),
 
@@ -67,6 +67,15 @@ export const useFormStore = create<FormState>()(
     clearJsonStatus: (): void => {
       set((state) => {
         state.jsonStatusMessage = ''
+      })
+    },
+
+    resetToDefaults: (): void => {
+      set((state) => {
+        state.mode = 'form'
+        state.jsonDraft = formatJson(DEFAULT_RESUME)
+        state.jsonStatusMessage = ''
+        state.openSections = new Set<string>()
       })
     },
   })),

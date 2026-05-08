@@ -1,24 +1,32 @@
 import { useEffect, useRef, useState, type ReactElement, type RefObject } from 'react'
-import { useResumeStore } from '@/stores/resume.store'
-import { getUiStrings } from '@/services/ui-i18n.service'
+import { type UiStrings } from '@/services/ui-i18n.service'
 
 const A4_WIDTH: number = 794
+const A4_HEIGHT: number = 1123
 const BOTTOM_GAP: number = 32
+
+function getContentHeight(documentRef: Document): number {
+  return Math.max(
+    A4_HEIGHT,
+    documentRef.documentElement.scrollHeight,
+    documentRef.body?.scrollHeight ?? 0,
+  )
+}
 
 export function PreviewFrame({
   iframeId,
   previewFrameRef,
   previewHtml,
+  ui,
 }: {
   iframeId: string
   previewFrameRef: RefObject<HTMLIFrameElement | null>
   previewHtml: string
+  ui: UiStrings
 }): ReactElement {
   const containerRef: RefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null)
-  const [contentHeight, setContentHeight] = useState<number>(1123)
+  const [contentHeight, setContentHeight] = useState<number>(A4_HEIGHT)
   const [scale, setScale] = useState<number>(1)
-  const language = useResumeStore((state) => state.language)
-  const ui = getUiStrings(language)
 
   useEffect(() => {
     const element: HTMLDivElement | null = containerRef.current
@@ -48,13 +56,7 @@ export function PreviewFrame({
       return
     }
 
-    const nextHeight: number = Math.max(
-      1123,
-      documentRef.documentElement.scrollHeight,
-      documentRef.body?.scrollHeight ?? 0,
-    )
-
-    setContentHeight(nextHeight)
+    setContentHeight(getContentHeight(documentRef))
   }
 
   return (

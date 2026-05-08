@@ -18,12 +18,6 @@ function toPathLabel(path: string[], language: ResumeLanguage): string {
     return language === 'en_US' ? 'resume' : 'currículo'
   }
 
-  if (language !== 'en_US') {
-    return path
-      .map((part) => (/^\d+$/.test(part) ? `item ${Number(part) + 1}` : part))
-      .join(' / ')
-  }
-
   return getTranslatedPathLabel(language, path)
 }
 

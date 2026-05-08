@@ -1,20 +1,26 @@
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
-import { DEFAULT_LANGUAGE, DEFAULT_RESUME } from '@/services/preview.service'
-import { buildValidationIssueCounts } from '@/services/resume-form.service'
-import { clearWorkspacePersistence } from '@/services/workspace-persistence.service'
-import { formatJson, validateResume } from '@/services/resume.service'
-import { getUiStrings } from '@/services/ui-i18n.service'
-import { useFormStore, type EditorMode } from '@/stores/form.store'
+import { type UiStrings } from '@/services/ui-i18n.service'
+import { resetWorkspaceToDefaults } from '@/services/workspace-reset.service'
+import { useFormStore } from '@/stores/form.store'
 import { useResumeStore } from '@/stores/resume.store'
 import type { ReactElement } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
-export function WorkspaceModeSwitch(): ReactElement {
-  const mode = useFormStore((state) => state.mode)
-  const setMode = useFormStore((state) => state.setMode)
-  const syncJsonDraftFromResume = useFormStore((state) => state.syncJsonDraftFromResume)
-  const language = useResumeStore((state) => state.language)
-  const ui = getUiStrings(language)
+export function WorkspaceModeSwitch({ ui }: { ui: UiStrings }): ReactElement {
+  const { mode, setMode, syncJsonDraftFromResume } = useFormStore(
+    useShallow((state) => ({
+      mode: state.mode,
+      setMode: state.setMode,
+      syncJsonDraftFromResume: state.syncJsonDraftFromResume,
+    })),
+  )
+  const { resumeDraft, renderPreview } = useResumeStore(
+    useShallow((state) => ({
+      resumeDraft: state.resumeDraft,
+      renderPreview: state.renderPreview,
+    })),
+  )
 
   return (
     <section className="flex flex-col gap-3 border-b border-border/70 bg-card px-4 py-4 sm:px-5 md:flex-row md:items-center md:justify-between">
@@ -29,12 +35,11 @@ export function WorkspaceModeSwitch(): ReactElement {
       <div className="flex w-full items-center gap-2 rounded-lg border border-border/70 bg-muted/15 p-2.5 shadow-none sm:w-auto sm:p-3">
         <Tabs
           value={mode}
-          onValueChange={(value: string): void => {
-            const nextMode = value as EditorMode
+          onValueChange={(nextMode): void => {
             setMode(nextMode)
 
             if (nextMode === 'source') {
-              syncJsonDraftFromResume(useResumeStore.getState().resumeDraft)
+              syncJsonDraftFromResume(resumeDraft)
             }
           }}
           className="min-w-0 flex-1"
@@ -61,27 +66,7 @@ export function WorkspaceModeSwitch(): ReactElement {
               }
             }
 
-            clearWorkspacePersistence()
-
-            const validationState = validateResume(DEFAULT_RESUME, DEFAULT_LANGUAGE)
-
-            useResumeStore.setState({
-              language: DEFAULT_LANGUAGE,
-              previewHtml: '',
-              previewStatusMessage: '',
-              resumeDraft: DEFAULT_RESUME,
-              validationIssueCounts: buildValidationIssueCounts(validationState.byPath),
-              validationState,
-            })
-
-            useFormStore.setState({
-              jsonDraft: formatJson(DEFAULT_RESUME),
-              jsonStatusMessage: '',
-              mode: 'form',
-              openSections: new Set<string>(),
-            })
-
-            await useResumeStore.getState().renderPreview()
+            await resetWorkspaceToDefaults(renderPreview)
           }}
           aria-label={ui.resetAriaLabel}
           title={ui.resetTitle}

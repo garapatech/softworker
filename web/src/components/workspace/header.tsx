@@ -1,20 +1,19 @@
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
-import type { ChangeEvent, ReactElement } from 'react'
-import { useShallow } from 'zustand/react/shallow'
-import { PREVIEW_LANGUAGES, type ResumeLanguage } from '@/services/preview.service'
-import { getUiStrings } from '@/services/ui-i18n.service'
-import { useResumeStore } from '@/stores/resume.store'
+import type { ReactElement } from 'react'
+import { PREVIEW_LANGUAGES } from '@/services/preview.service'
+import type { ResumeLanguage } from '@/services/preview.service'
+import { type UiStrings } from '@/services/ui-i18n.service'
 
-export function WorkspaceHeader(): ReactElement {
-  const { language, setLanguage } = useResumeStore(
-    useShallow((state) => ({
-      language: state.language,
-      setLanguage: state.setLanguage,
-      })),
-  )
-  const ui = getUiStrings(language)
-
+export function WorkspaceHeader({
+  language,
+  setLanguage,
+  ui,
+}: {
+  language: ResumeLanguage
+  setLanguage: (language: ResumeLanguage) => void
+  ui: UiStrings
+}): ReactElement {
   return (
     <header className="grid gap-4 border-b border-border/70 bg-card px-4 py-5 sm:px-5 lg:grid-cols-[minmax(0,1fr)_minmax(14rem,18rem)] lg:items-end">
       <div className="space-y-3">
@@ -32,12 +31,10 @@ export function WorkspaceHeader(): ReactElement {
         </a>
         <div className="space-y-2">
           <h1 className="text-[clamp(1.45rem,1.75vw,1.9rem)] font-extrabold leading-[1.04] tracking-[-0.03em] text-balance">
-            {language === 'en_US' ? 'Resume editor' : 'Editor de currículos'}
+            {ui.workspaceTitle}
           </h1>
           <p className="max-w-2xl text-[0.9rem] leading-6 text-muted-foreground sm:text-[0.92rem]">
-            {language === 'en_US'
-              ? 'Edit the data and track the final document without leaving the same screen.'
-              : 'Edite os dados e acompanhe o documento final sem sair da mesma tela.'}
+            {ui.workspaceDescription}
           </p>
         </div>
       </div>
@@ -50,7 +47,7 @@ export function WorkspaceHeader(): ReactElement {
           id="language-select"
           className="min-h-11 border-border/80 bg-card font-medium"
           value={language}
-          onChange={(event: ChangeEvent<HTMLSelectElement>): void => setLanguage(event.target.value as ResumeLanguage)}
+          onValueChange={setLanguage}
         >
           {PREVIEW_LANGUAGES.map((option) => (
             <option key={option.value} value={option.value}>

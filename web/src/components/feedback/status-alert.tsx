@@ -1,18 +1,15 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { ReactElement } from 'react'
-import { useShallow } from 'zustand/react/shallow'
-import { useResumeStore } from '@/stores/resume.store'
-import { getUiStrings } from '@/services/ui-i18n.service'
+import { type UiStrings } from '@/services/ui-i18n.service'
+import type { ValidationIssue } from '@/mappers/resume.mapper'
 
-export function StatusAlert(): ReactElement | null {
-  const { message, validationIssues } = useResumeStore(
-    useShallow((state) => ({
-      message: state.previewStatusMessage,
-      validationIssues: state.validationState.issues,
-      })),
-  )
-  const language = useResumeStore((state) => state.language)
-  const ui = getUiStrings(language)
+type StatusAlertProps = {
+  message: string
+  ui: UiStrings
+  validationIssues: ValidationIssue[]
+}
+
+export function StatusAlert({ message, ui, validationIssues }: StatusAlertProps): ReactElement | null {
 
   if (!message && validationIssues.length === 0) {
     return null

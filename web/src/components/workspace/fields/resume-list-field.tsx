@@ -2,8 +2,7 @@ import { useState, type ChangeEvent, type ClipboardEvent, type KeyboardEvent, ty
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
-import { getUiStrings } from '@/services/ui-i18n.service'
-import { useResumeStore } from '@/stores/resume.store'
+import { formatTemplate, type UiStrings } from '@/services/ui-i18n.service'
 
 function parseListInput(value: string): string[] {
   return value
@@ -16,14 +15,14 @@ export function ResumeListField({
   fieldId,
   items,
   onValueChange,
+  ui,
 }: {
   fieldId: string
   items: string[]
   onValueChange: (items: string[]) => void
+  ui: UiStrings
 }): ReactElement {
   const [draftValue, setDraftValue] = useState('')
-  const language = useResumeStore((state) => state.language)
-  const ui = getUiStrings(language)
 
   function appendItems(rawValue: string): boolean {
     const nextItems = parseListInput(rawValue)
@@ -111,8 +110,8 @@ export function ResumeListField({
                   size="sm"
                   onClick={() => handleRemoveItem(index)}
                   className="shrink-0 border-border/90 bg-card text-foreground shadow-sm transition-colors hover:bg-muted"
-                  aria-label={ui.listRemoveAriaPrefix.replace('{item}', item)}
-                  title={ui.listRemoveAriaPrefix.replace('{item}', item)}
+                  aria-label={formatTemplate(ui.listRemoveAriaPrefix, { item })}
+                  title={formatTemplate(ui.listRemoveAriaPrefix, { item })}
                 >
                   {ui.listRemoveButton}
                 </Button>

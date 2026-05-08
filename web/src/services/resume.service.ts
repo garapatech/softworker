@@ -15,14 +15,18 @@ export function formatJson(value: JsonObject): string {
   return JSON.stringify(value, null, 2)
 }
 
-export function parseResumeJson(value: string, language: ResumeLanguage): JsonObject {
-  const parsed: JsonValue = JSON.parse(value) as JsonValue
+export function parseJsonObject(value: string, errorMessage: string): JsonObject {
+  const parsed: unknown = JSON.parse(value)
 
-  if (!parsed || Array.isArray(parsed) || typeof parsed !== 'object') {
-    throw new Error(language === 'en_US' ? 'JSON must be an object.' : 'JSON precisa ser um objeto.')
+  if (!isJsonRecord(parsed)) {
+    throw new Error(errorMessage)
   }
 
-  return parsed as JsonObject
+  return parsed
+}
+
+export function parseResumeJson(value: string, language: ResumeLanguage): JsonObject {
+  return parseJsonObject(value, language === 'en_US' ? 'JSON must be an object.' : 'JSON precisa ser um objeto.')
 }
 
 export function getAtPath(target: JsonValue | undefined, path: PathPart[]): JsonValue | undefined {
@@ -74,7 +78,13 @@ function updateAtPath(target: JsonValue | undefined, path: PathPart[], value: Js
 }
 
 export function setAtPath(target: JsonObject, path: PathPart[], value: JsonValue): JsonObject {
-  return updateAtPath(target, path, value) as JsonObject
+  const nextValue: JsonValue = updateAtPath(target, path, value)
+
+  if (!isJsonRecord(nextValue)) {
+    throw new Error('setAtPath must resolve to a JSON object.')
+  }
+
+  return nextValue
 }
 
 export function insertArrayItem(target: JsonObject, path: string[], item: JsonObject): JsonObject {

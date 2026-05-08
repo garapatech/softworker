@@ -1,9 +1,11 @@
 import { cn } from '@/lib/utils'
-import { parseResumeJson } from '@/services/resume.service'
-import { getUiStrings } from '@/services/ui-i18n.service'
+import { type ResumeLanguage } from '@/services/preview.service'
+import type { JsonObject } from '@/services/resume.service'
+import { parseSourceDraft } from '@/services/source-editor.service'
+import { type UiStrings } from '@/services/ui-i18n.service'
 import { useFormStore } from '@/stores/form.store'
-import { useResumeStore } from '@/stores/resume.store'
-import { useMemo, useState, type ChangeEvent, type ReactElement, type ReactNode } from 'react'
+import { useState, type ChangeEvent, type ReactElement, type ReactNode } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
 const WORKSPACE_PANEL_HEIGHT_CLASS =
   'min-h-[42vh] sm:min-h-[50vh] lg:min-h-[58vh] xl:min-h-[calc(100vh-15rem)]'
@@ -74,21 +76,39 @@ function highlightJsonSource(source: string): ReactNode[] {
   return nodes
 }
 
-export function SourceEditor(): ReactElement {
-  const value = useFormStore((state) => state.jsonDraft)
-  const message = useFormStore((state) => state.jsonStatusMessage)
-  const clearJsonStatus = useFormStore((state) => state.clearJsonStatus)
-  const setJsonDraft = useFormStore((state) => state.setJsonDraft)
-  const setJsonStatusMessage = useFormStore((state) => state.setJsonStatusMessage)
-  const setResumeDraft = useResumeStore((state) => state.setResumeDraft)
-  const validationIssueCount = useResumeStore((state) => state.validationState.issues.length)
-  const language = useResumeStore((state) => state.language)
-  const ui = getUiStrings(language)
+interface SourceEditorProps {
+  language: ResumeLanguage
+  setResumeDraft: (resumeDraft: JsonObject) => void
+  ui: UiStrings
+  hasValidationIssues: boolean
+}
+
+export function SourceEditor({
+  language,
+  setResumeDraft,
+  ui,
+  hasValidationIssues,
+}: SourceEditorProps): ReactElement {
+  const {
+    clearJsonStatus,
+    message,
+    setJsonDraft,
+    setJsonStatusMessage,
+    value,
+  } = useFormStore(
+    useShallow((state) => ({
+      clearJsonStatus: state.clearJsonStatus,
+      message: state.jsonStatusMessage,
+      setJsonDraft: state.setJsonDraft,
+      setJsonStatusMessage: state.setJsonStatusMessage,
+      value: state.jsonDraft,
+    })),
+  )
   const [scrollTop, setScrollTop] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
 
-  const hasErrors = Boolean(message) || validationIssueCount > 0
-  const highlightedJson = useMemo(() => highlightJsonSource(value), [value])
+  const hasErrors = Boolean(message) || hasValidationIssues
+  const highlightedJson = highlightJsonSource(value)
 
   return (
     <section className="grid min-h-0 gap-4 overflow-auto p-3 sm:p-4">
@@ -122,7 +142,7 @@ export function SourceEditor(): ReactElement {
 
         <textarea
           id="resume-source"
-          aria-label={language === 'en_US' ? 'Resume JSON source' : 'Fonte JSON do currículo'}
+          aria-label={ui.sourceEditorAriaLabel}
           spellCheck={false}
           value={value}
           onScroll={(event): void => {
@@ -133,14 +153,15 @@ export function SourceEditor(): ReactElement {
             const nextValue = event.target.value
 
             setJsonDraft(nextValue)
+            const { errorMessage, resumeDraft } = parseSourceDraft(nextValue, language)
 
-            try {
-              setResumeDraft(parseResumeJson(nextValue, language))
+            if (resumeDraft !== null) {
+              setResumeDraft(resumeDraft)
               clearJsonStatus()
-            } catch (error) {
-              const errorMessage = error instanceof Error ? error.message : 'JSON inválido.'
-              setJsonStatusMessage(`${ui.sourceInvalidJsonPrefix} ${errorMessage}`)
+              return
             }
+
+            setJsonStatusMessage(`${ui.sourceInvalidJsonPrefix} ${errorMessage}`)
           }}
           className="relative z-10 h-full w-full resize-none overflow-auto bg-transparent px-4 py-3 font-mono text-[0.8rem] leading-6 text-transparent caret-emerald-300 outline-none selection:bg-emerald-400/25 selection:text-transparent"
           style={{

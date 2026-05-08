@@ -13,7 +13,9 @@ export interface WorkspacePersistenceSnapshot {
 
 const STORAGE_KEY = 'softworker.workspace.v1'
 
-function readRawSnapshot(): Partial<WorkspacePersistenceSnapshot> | null {
+export const initialWorkspacePersistence = loadWorkspacePersistence()
+
+function readRawSnapshot(): Record<string, unknown> | null {
   if (typeof window === 'undefined') {
     return null
   }
@@ -25,7 +27,7 @@ function readRawSnapshot(): Partial<WorkspacePersistenceSnapshot> | null {
       return null
     }
 
-    const parsed = JSON.parse(rawValue) as Partial<WorkspacePersistenceSnapshot>
+    const parsed: unknown = JSON.parse(rawValue)
 
     return isJsonRecord(parsed) ? parsed : null
   } catch {

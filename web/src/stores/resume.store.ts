@@ -14,10 +14,12 @@ import {
 } from '@/services/resume.service'
 import {
   JSON_DOWNLOAD_FILENAME,
+  DEFAULT_LANGUAGE,
+  DEFAULT_RESUME,
   renderResumeDocument,
   type ResumeLanguage,
 } from '@/services/preview.service'
-import { loadWorkspacePersistence } from '@/services/workspace-persistence.service'
+import { initialWorkspacePersistence } from '@/services/workspace-persistence.service'
 
 function downloadTextFile(filename: string, content: string, type: string): void {
   const blob = new Blob([content], { type })
@@ -38,6 +40,7 @@ export interface ResumeState {
   previewStatusMessage: string
   setLanguage: (language: ResumeLanguage) => void
   setResumeDraft: (next: JsonObject) => void
+  resetToDefaults: () => void
   updateField: (path: PathPart[], value: JsonValue) => void
   addArrayItem: (path: string[], item: JsonObject) => void
   removeArrayItem: (path: string[], index: number) => void
@@ -45,19 +48,29 @@ export interface ResumeState {
   downloadJson: () => void
 }
 
-const initialWorkspace = loadWorkspacePersistence()
-const initialResume = initialWorkspace.resumeDraft
-const initialValidationState = validateResume(initialResume, initialWorkspace.language)
+const initialResume = initialWorkspacePersistence.resumeDraft
+
+function buildValidatedResumeState(resumeDraft: JsonObject, language: ResumeLanguage): {
+  validationIssueCounts: ValidationIssueCounts
+  validationState: ValidationState
+} {
+  const validationState = validateResume(resumeDraft, language)
+
+  return {
+    validationIssueCounts: buildValidationIssueCounts(validationState.byPath),
+    validationState,
+  }
+}
 
 export const useResumeStore = create<ResumeState>()(
   immer((set, get) => {
     const commitResumeDraft = (resumeDraft: JsonObject): void => {
-      const validationState = validateResume(resumeDraft, get().language)
+      const { validationIssueCounts, validationState } = buildValidatedResumeState(resumeDraft, get().language)
 
       set(() => ({
         resumeDraft,
         validationState,
-        validationIssueCounts: buildValidationIssueCounts(validationState.byPath),
+        validationIssueCounts,
       }))
     }
 
@@ -67,25 +80,37 @@ export const useResumeStore = create<ResumeState>()(
 
     return {
       resumeDraft: initialResume,
-      language: initialWorkspace.language,
-      validationState: initialValidationState,
-      validationIssueCounts: buildValidationIssueCounts(initialValidationState.byPath),
+      language: initialWorkspacePersistence.language,
+      ...buildValidatedResumeState(initialResume, initialWorkspacePersistence.language),
       previewHtml: '',
       previewStatusMessage: '',
 
       setLanguage: (language: ResumeLanguage): void => {
         const resumeDraft = get().resumeDraft
-        const validationState = validateResume(resumeDraft, language)
+        const { validationIssueCounts, validationState } = buildValidatedResumeState(resumeDraft, language)
 
         set(() => ({
           language,
           validationState,
-          validationIssueCounts: buildValidationIssueCounts(validationState.byPath),
+          validationIssueCounts,
         }))
       },
 
       setResumeDraft: (next: JsonObject): void => {
         commitResumeDraft(next)
+      },
+
+      resetToDefaults: (): void => {
+        const { validationIssueCounts, validationState } = buildValidatedResumeState(DEFAULT_RESUME, DEFAULT_LANGUAGE)
+
+        set(() => ({
+          language: DEFAULT_LANGUAGE,
+          previewHtml: '',
+          previewStatusMessage: '',
+          resumeDraft: DEFAULT_RESUME,
+          validationIssueCounts,
+          validationState,
+        }))
       },
 
       updateField: (path: PathPart[], value: JsonValue): void => {

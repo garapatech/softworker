@@ -42,8 +42,12 @@ export function CollapsibleSectionPanel({
         >
           <div className="min-w-0 flex-1" id={headingId}>
             <h2 className="text-[0.95rem] font-extrabold leading-[1.18]">{title}</h2>
-            {subtitle ? <p className="mt-1 text-[0.8rem] leading-[1.45] text-muted-foreground">{subtitle}</p> : null}
-            {status ? <div className="mt-2 flex flex-wrap gap-2">{status}</div> : null}
+            <div className="mt-1 min-h-[1.5rem]">
+              {subtitle ? <p className="text-[0.8rem] leading-[1.45] text-muted-foreground">{subtitle}</p> : null}
+            </div>
+            <div className="mt-2 min-h-[2rem]">
+              {status ? <div className="flex flex-wrap gap-2">{status}</div> : null}
+            </div>
           </div>
         </button>
 
