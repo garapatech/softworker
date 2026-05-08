@@ -1,13 +1,18 @@
 import { z } from 'zod'
 
-const optionalString = z.string().optional()
-const requiredString = z.string().trim().min(1, 'Campo obrigatório.')
-const optionalUrl = z.string().trim().url('URL inválida.').or(z.literal('')).optional()
-const stringList = z.array(z.string())
-const emailSchema = z.email('E-mail inválido.')
-const urlSchema = z.url('URL inválida.')
+const optionalString: z.ZodOptional<z.ZodString> = z.string().optional()
+const requiredString: z.ZodString = z.string().trim().min(1, 'Campo obrigatório.')
+const optionalUrl: z.ZodTypeAny = z
+  .string()
+  .trim()
+  .url('URL inválida.')
+  .or(z.literal(''))
+  .optional()
+const stringList: z.ZodArray<z.ZodString> = z.array(z.string())
+const emailSchema: z.ZodEmail = z.email('E-mail inválido.')
+const urlSchema: z.ZodURL = z.url('URL inválida.')
 
-const requiredEmail = z.string().trim().superRefine((value, ctx) => {
+const requiredEmail: z.ZodTypeAny = z.string().trim().superRefine((value, ctx) => {
   if (value.length === 0) {
     ctx.addIssue({
       code: 'custom',
@@ -24,7 +29,7 @@ const requiredEmail = z.string().trim().superRefine((value, ctx) => {
   }
 })
 
-const requiredUrl = z.string().trim().superRefine((value, ctx) => {
+const requiredUrl: z.ZodTypeAny = z.string().trim().superRefine((value, ctx) => {
   if (value.length === 0) {
     ctx.addIssue({
       code: 'custom',
@@ -41,13 +46,13 @@ const requiredUrl = z.string().trim().superRefine((value, ctx) => {
   }
 })
 
-const basicsProfileSchema = z.object({
+const basicsProfileSchema: z.ZodTypeAny = z.object({
   network: requiredString,
   username: requiredString,
   url: requiredUrl,
 })
 
-const basicsLocationSchema = z.object({
+const basicsLocationSchema: z.ZodTypeAny = z.object({
   address: optionalString,
   postalCode: optionalString,
   city: requiredString,
@@ -55,7 +60,7 @@ const basicsLocationSchema = z.object({
   countryCode: optionalString,
 })
 
-const basicsSchema = z.object({
+const basicsSchema: z.ZodTypeAny = z.object({
   name: requiredString,
   label: requiredString,
   image: optionalUrl,
@@ -67,7 +72,7 @@ const basicsSchema = z.object({
   profiles: z.array(basicsProfileSchema).optional(),
 })
 
-const workSchema = z.object({
+const workSchema: z.ZodTypeAny = z.object({
   name: requiredString,
   description: optionalString,
   position: requiredString,
@@ -79,7 +84,7 @@ const workSchema = z.object({
   highlights: stringList.optional(),
 })
 
-const volunteerSchema = z.object({
+const volunteerSchema: z.ZodTypeAny = z.object({
   organization: requiredString,
   position: requiredString,
   url: optionalUrl,
@@ -89,7 +94,7 @@ const volunteerSchema = z.object({
   highlights: stringList.optional(),
 })
 
-const educationSchema = z.object({
+const educationSchema: z.ZodTypeAny = z.object({
   institution: requiredString,
   area: requiredString,
   studyType: requiredString,
@@ -100,14 +105,14 @@ const educationSchema = z.object({
   courses: stringList.optional(),
 })
 
-const awardSchema = z.object({
+const awardSchema: z.ZodTypeAny = z.object({
   title: requiredString,
   date: optionalString,
   awarder: optionalString,
   summary: optionalString,
 })
 
-const publicationSchema = z.object({
+const publicationSchema: z.ZodTypeAny = z.object({
   name: requiredString,
   publisher: requiredString,
   releaseDate: optionalString,
@@ -115,28 +120,28 @@ const publicationSchema = z.object({
   summary: optionalString,
 })
 
-const skillSchema = z.object({
+const skillSchema: z.ZodTypeAny = z.object({
   name: requiredString,
   level: optionalString,
   keywords: stringList.optional(),
 })
 
-const languageSchema = z.object({
+const languageSchema: z.ZodTypeAny = z.object({
   language: requiredString,
   fluency: optionalString,
 })
 
-const interestSchema = z.object({
+const interestSchema: z.ZodTypeAny = z.object({
   name: requiredString,
   keywords: stringList.optional(),
 })
 
-const referenceSchema = z.object({
+const referenceSchema: z.ZodTypeAny = z.object({
   name: requiredString,
   reference: requiredString,
 })
 
-const projectSchema = z.object({
+const projectSchema: z.ZodTypeAny = z.object({
   name: requiredString,
   description: requiredString,
   highlights: stringList.optional(),
@@ -149,20 +154,20 @@ const projectSchema = z.object({
   type: optionalString,
 })
 
-const certificateSchema = z.object({
+const certificateSchema: z.ZodTypeAny = z.object({
   name: requiredString,
   date: optionalString,
   url: optionalUrl,
   issuer: optionalString,
 })
 
-const metaSchema = z.object({
+const metaSchema: z.ZodTypeAny = z.object({
   canonical: optionalUrl,
   version: optionalString,
   lastModified: optionalString,
 })
 
-export const resumeSchema = z.object({
+export const resumeSchema: z.ZodTypeAny = z.object({
   basics: basicsSchema,
   meta: metaSchema.optional(),
   work: z.array(workSchema).optional(),

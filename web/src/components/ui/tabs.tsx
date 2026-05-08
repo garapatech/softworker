@@ -1,4 +1,4 @@
-import { createContext, useContext, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from 'react'
+import { createContext, useContext, type ButtonHTMLAttributes, type HTMLAttributes, type ReactElement, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 interface TabsContextValue {
@@ -8,7 +8,7 @@ interface TabsContextValue {
 
 const TabsContext = createContext<TabsContextValue | null>(null)
 
-function useTabsContext() {
+function useTabsContext(): TabsContextValue {
   const context = useContext(TabsContext)
 
   if (!context) {
@@ -28,7 +28,7 @@ export function Tabs({
   className?: string
   onValueChange: (value: string) => void
   value: string
-}) {
+}): ReactElement {
   return (
     <TabsContext.Provider value={{ value, onValueChange }}>
       <div className={className}>{children}</div>
@@ -36,7 +36,7 @@ export function Tabs({
   )
 }
 
-export function TabsList({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function TabsList({ className, ...props }: HTMLAttributes<HTMLDivElement>): ReactElement {
   return (
     <div
       className={cn(
@@ -53,7 +53,7 @@ export function TabsTrigger({
   className,
   value,
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & { value: string }) {
+}: ButtonHTMLAttributes<HTMLButtonElement> & { value: string }): ReactElement {
   const context = useTabsContext()
   const active = context.value === value
 

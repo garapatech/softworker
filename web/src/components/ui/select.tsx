@@ -1,7 +1,8 @@
 import type { SelectHTMLAttributes } from 'react'
+import type { ReactElement } from 'react'
 import { cn } from '@/lib/utils'
 
-export function Select({ children, className, ...props }: SelectHTMLAttributes<HTMLSelectElement>) {
+export function Select({ children, className, ...props }: SelectHTMLAttributes<HTMLSelectElement>): ReactElement {
   return (
     <div className="group relative rounded-xl border border-border/80 bg-card shadow-sm transition-[border-color,box-shadow] hover:border-border focus-within:border-border focus-within:ring-2 focus-within:ring-ring/20">
       <select

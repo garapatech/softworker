@@ -1,7 +1,8 @@
 import type { HTMLAttributes } from 'react'
+import type { ReactElement } from 'react'
 import { cn } from '@/lib/utils'
 
-export function Badge({ className, ...props }: HTMLAttributes<HTMLSpanElement>) {
+export function Badge({ className, ...props }: HTMLAttributes<HTMLSpanElement>): ReactElement {
   return (
     <span
       className={cn(

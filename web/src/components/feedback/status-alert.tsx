@@ -1,8 +1,15 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { useStatusAlert } from '@/hooks/use-status-alert'
+import type { ReactElement } from 'react'
+import { useShallow } from 'zustand/react/shallow'
+import { useResumeStore } from '@/stores/resume.store'
 
-export function StatusAlert() {
-  const { message, validationIssues } = useStatusAlert()
+export function StatusAlert(): ReactElement | null {
+  const { message, validationIssues } = useResumeStore(
+    useShallow((state) => ({
+      message: state.previewStatusMessage,
+      validationIssues: state.validationState.issues,
+    })),
+  )
 
   if (!message && validationIssues.length === 0) {
     return null

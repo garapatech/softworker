@@ -1,5 +1,6 @@
-import { formatJson, type JsonObject } from '@/services/resume.service'
-import { DEFAULT_LANGUAGE, DEFAULT_RESUME, type ResumeLanguage } from '@/services/preview.service'
+import { formatJson, isJsonRecord, type JsonObject } from '@/services/resume.service'
+import { DEFAULT_LANGUAGE, DEFAULT_RESUME } from '@/services/preview.service'
+import type { ResumeLanguage } from '@/services/preview.service'
 
 export type WorkspaceMode = 'form' | 'source'
 
@@ -11,10 +12,6 @@ export interface WorkspacePersistenceSnapshot {
 }
 
 const STORAGE_KEY = 'softworker.workspace.v1'
-
-function isJsonObject(value: unknown): value is JsonObject {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-}
 
 function readRawSnapshot(): Partial<WorkspacePersistenceSnapshot> | null {
   if (typeof window === 'undefined') {
@@ -30,15 +27,15 @@ function readRawSnapshot(): Partial<WorkspacePersistenceSnapshot> | null {
 
     const parsed = JSON.parse(rawValue) as Partial<WorkspacePersistenceSnapshot>
 
-    return isJsonObject(parsed) ? parsed : null
+    return isJsonRecord(parsed) ? parsed : null
   } catch {
     return null
   }
 }
 
-export function loadWorkspacePersistence() {
+export function loadWorkspacePersistence(): WorkspacePersistenceSnapshot {
   const snapshot = readRawSnapshot()
-  const resumeDraft = isJsonObject(snapshot?.resumeDraft) ? snapshot.resumeDraft : DEFAULT_RESUME
+  const resumeDraft = isJsonRecord(snapshot?.resumeDraft) ? snapshot.resumeDraft : DEFAULT_RESUME
   const mode = snapshot?.mode === 'source' ? 'source' : 'form'
 
   return {
@@ -49,7 +46,7 @@ export function loadWorkspacePersistence() {
   } satisfies WorkspacePersistenceSnapshot
 }
 
-export function saveWorkspacePersistence(snapshot: WorkspacePersistenceSnapshot) {
+export function saveWorkspacePersistence(snapshot: WorkspacePersistenceSnapshot): void {
   if (typeof window === 'undefined') {
     return
   }
@@ -61,7 +58,7 @@ export function saveWorkspacePersistence(snapshot: WorkspacePersistenceSnapshot)
   }
 }
 
-export function clearWorkspacePersistence() {
+export function clearWorkspacePersistence(): void {
   if (typeof window === 'undefined') {
     return
   }

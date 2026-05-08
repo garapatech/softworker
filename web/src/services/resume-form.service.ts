@@ -269,7 +269,7 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
   },
 ]
 
-const FORM_SECTION_ORDER = [
+const FORM_SECTION_ORDER: readonly string[] = [
   'basics',
   'basics.profiles',
   'skills',
@@ -286,12 +286,12 @@ const FORM_SECTION_ORDER = [
   'meta',
 ] as const
 
-const SECTION_DEFINITIONS_BY_KEY = new Map(
+const SECTION_DEFINITIONS_BY_KEY: Map<string, ObjectSectionDefinition | ArraySectionDefinition> = new Map(
   [...OBJECT_SECTIONS, ...ARRAY_SECTIONS].map((section) => [sectionKey(section), section]),
 )
 
 export const FORM_SECTIONS: SectionDefinition[] = FORM_SECTION_ORDER.map((key) => {
-  const section = SECTION_DEFINITIONS_BY_KEY.get(key)
+  const section: ObjectSectionDefinition | ArraySectionDefinition | undefined = SECTION_DEFINITIONS_BY_KEY.get(key)
 
   if (!section) {
     throw new Error(`Seção de formulário não encontrada para a chave "${key}".`)
@@ -300,12 +300,8 @@ export const FORM_SECTIONS: SectionDefinition[] = FORM_SECTION_ORDER.map((key) =
   return section
 })
 
-export function sectionKey(section: Pick<ObjectSectionDefinition, 'key'> | Pick<ArraySectionDefinition, 'path'>) {
+export function sectionKey(section: Pick<ObjectSectionDefinition, 'key'> | Pick<ArraySectionDefinition, 'path'>): string {
   return 'key' in section ? section.key : section.path.join('.')
-}
-
-export function getSectionDomId(key: string) {
-  return `section-${key.replaceAll('.', '-')}`
 }
 
 export function buildValidationIssueCounts(validationErrors: Record<string, string[]>): ValidationIssueCounts {
@@ -316,17 +312,13 @@ export function buildValidationIssueCounts(validationErrors: Record<string, stri
       continue
     }
 
-    const segments = path.split('.')
+    const segments: string[] = path.split('.')
 
-    for (let index = 0; index < segments.length; index += 1) {
-      const prefix = segments.slice(0, index + 1).join('.')
+    for (let index: number = 0; index < segments.length; index += 1) {
+      const prefix: string = segments.slice(0, index + 1).join('.')
       issueCounts[prefix] = (issueCounts[prefix] ?? 0) + messages.length
     }
   }
 
   return issueCounts
-}
-
-export function getValidationIssueCount(issueCounts: ValidationIssueCounts, path: string) {
-  return issueCounts[path] ?? 0
 }

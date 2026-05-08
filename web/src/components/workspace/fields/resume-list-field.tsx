@@ -1,9 +1,9 @@
-import { useState, type ClipboardEvent, type KeyboardEvent } from 'react'
+import { useState, type ChangeEvent, type ClipboardEvent, type KeyboardEvent, type ReactElement } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 
-function parseListInput(value: string) {
+function parseListInput(value: string): string[] {
   return value
     .split(/\r?\n|,/)
     .map((item) => item.trim())
@@ -18,10 +18,10 @@ export function ResumeListField({
   fieldId: string
   items: string[]
   onValueChange: (items: string[]) => void
-}) {
+}): ReactElement {
   const [draftValue, setDraftValue] = useState('')
 
-  function appendItems(rawValue: string) {
+  function appendItems(rawValue: string): boolean {
     const nextItems = parseListInput(rawValue)
 
     if (nextItems.length === 0) {
@@ -33,7 +33,7 @@ export function ResumeListField({
     return true
   }
 
-  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>): void {
     if (event.key !== 'Enter') {
       return
     }
@@ -42,7 +42,7 @@ export function ResumeListField({
     appendItems(draftValue)
   }
 
-  function handlePaste(event: ClipboardEvent<HTMLInputElement>) {
+  function handlePaste(event: ClipboardEvent<HTMLInputElement>): void {
     const pastedText = event.clipboardData.getData('text')
 
     if (!/[\n,]/.test(pastedText)) {
@@ -59,7 +59,7 @@ export function ResumeListField({
     appendItems(nextDraftValue)
   }
 
-  function handleRemoveItem(index: number) {
+  function handleRemoveItem(index: number): void {
     onValueChange(items.filter((_, itemIndex) => itemIndex !== index))
   }
 
@@ -76,7 +76,7 @@ export function ResumeListField({
           <Input
             id={fieldId}
             value={draftValue}
-            onChange={(event) => setDraftValue(event.target.value)}
+            onChange={(event: ChangeEvent<HTMLInputElement>): void => setDraftValue(event.target.value)}
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
             spellCheck={false}

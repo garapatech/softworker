@@ -10,12 +10,12 @@ export interface JsonObject {
 
 export type PathPart = number | string
 
-export function formatJson(value: JsonObject) {
+export function formatJson(value: JsonObject): string {
   return JSON.stringify(value, null, 2)
 }
 
-export function parseResumeJson(value: string) {
-  const parsed = JSON.parse(value) as JsonValue
+export function parseResumeJson(value: string): JsonObject {
+  const parsed: JsonValue = JSON.parse(value) as JsonValue
 
   if (!parsed || Array.isArray(parsed) || typeof parsed !== 'object') {
     throw new Error('O JSON precisa ser um objeto.')
@@ -24,7 +24,7 @@ export function parseResumeJson(value: string) {
   return parsed as JsonObject
 }
 
-export function getAtPath(target: JsonValue | undefined, path: PathPart[]) {
+export function getAtPath(target: JsonValue | undefined, path: PathPart[]): JsonValue | undefined {
   return path.reduce<JsonValue | undefined>((value, part) => {
     if (value == null) {
       return undefined
@@ -42,7 +42,7 @@ export function getAtPath(target: JsonValue | undefined, path: PathPart[]) {
   }, target)
 }
 
-function isJsonObject(value: JsonValue | undefined): value is JsonObject {
+export function isJsonRecord(value: unknown): value is JsonObject {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
@@ -54,17 +54,17 @@ function updateAtPath(target: JsonValue | undefined, path: PathPart[], value: Js
   }
 
   if (typeof part === 'number') {
-    const current = Array.isArray(target) ? target : []
-    const next = current.slice()
-    const branch = current[part]
+    const current: JsonValue[] = Array.isArray(target) ? target : []
+    const next: JsonValue[] = current.slice()
+    const branch: JsonValue | undefined = current[part]
 
     next[part] = rest.length > 0 ? updateAtPath(branch, rest, value) : value
 
     return next
   }
 
-  const current = isJsonObject(target) ? target : {}
-  const branch = current[part]
+  const current: JsonObject = isJsonRecord(target) ? target : {}
+  const branch: JsonValue | undefined = current[part]
 
   return {
     ...current,
@@ -72,19 +72,19 @@ function updateAtPath(target: JsonValue | undefined, path: PathPart[], value: Js
   }
 }
 
-export function setAtPath(target: JsonObject, path: PathPart[], value: JsonValue) {
+export function setAtPath(target: JsonObject, path: PathPart[], value: JsonValue): JsonObject {
   return updateAtPath(target, path, value) as JsonObject
 }
 
-export function insertArrayItem(target: JsonObject, path: string[], item: JsonObject) {
-  const current = getAtPath(target, path)
-  const nextItems = Array.isArray(current) ? [...current, item] : [item]
+export function insertArrayItem(target: JsonObject, path: string[], item: JsonObject): JsonObject {
+  const current: JsonValue | undefined = getAtPath(target, path)
+  const nextItems: JsonValue[] = Array.isArray(current) ? [...current, item] : [item]
 
   return setAtPath(target, path, nextItems)
 }
 
-export function removeArrayItem(target: JsonObject, path: string[], index: number) {
-  const current = getAtPath(target, path)
+export function removeArrayItem(target: JsonObject, path: string[], index: number): JsonObject {
+  const current: JsonValue | undefined = getAtPath(target, path)
 
   if (!Array.isArray(current)) {
     return target

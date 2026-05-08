@@ -1,11 +1,12 @@
 import type { HTMLAttributes } from 'react'
+import type { ReactElement } from 'react'
 import { cn } from '@/lib/utils'
 
 export function Alert({
   className,
   variant = 'default',
   ...props
-}: HTMLAttributes<HTMLDivElement> & { variant?: 'default' | 'destructive' }) {
+}: HTMLAttributes<HTMLDivElement> & { variant?: 'default' | 'destructive' }): ReactElement {
   return (
     <div
       className={cn(
@@ -20,10 +21,10 @@ export function Alert({
   )
 }
 
-export function AlertTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) {
+export function AlertTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>): ReactElement {
   return <h5 className={cn('mb-1 font-medium leading-none tracking-tight', className)} {...props} />
 }
 
-export function AlertDescription({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function AlertDescription({ className, ...props }: HTMLAttributes<HTMLDivElement>): ReactElement {
   return <div className={cn('text-[0.92rem] leading-6 [&_p]:leading-relaxed', className)} {...props} />
 }

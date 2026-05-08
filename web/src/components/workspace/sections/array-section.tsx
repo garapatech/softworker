@@ -1,17 +1,14 @@
-import { ItemCard } from '@/components/workspace/cards/item-card'
 import { ResumeFieldList } from '@/components/workspace/fields/resume-field-list'
 import { CollapsibleSectionPanel } from '@/components/workspace/sections/collapsible-section-panel'
 import { Button } from '@/components/ui/button'
-import { useArraySectionActions } from '@/hooks/use-array-section-actions'
-import { useResumeArrayLength } from '@/hooks/use-resume-array-length'
-import { useSectionPanel } from '@/hooks/use-section-panel'
-import { useValidationIssueCount } from '@/hooks/use-validation-issue-count'
 import { useFormStore } from '@/stores/form.store'
-import { useEffect, useState } from 'react'
+import { useResumeStore } from '@/stores/resume.store'
+import { useEffect, useState, type ReactElement } from 'react'
 import {
   sectionKey,
   type ArraySectionDefinition,
 } from '@/services/resume-form.service'
+import { getAtPath } from '@/services/resume.service'
 
 function ArraySectionItem({
   index,
@@ -27,34 +24,58 @@ function ArraySectionItem({
   fields: ArraySectionDefinition['fields']
   isHighlighted?: boolean
   onRemove: () => void
-}) {
-  const itemErrorCount = useValidationIssueCount(`${path.join('.')}.${index}`)
+}): ReactElement {
+  const itemErrorCount = useResumeStore((state) => state.validationIssueCounts[`${path.join('.')}.${index}`] ?? 0)
 
   return (
-    <ItemCard
-      hasErrors={itemErrorCount > 0}
-      isHighlighted={isHighlighted}
-      title={itemTitle}
-      index={index}
-      onRemove={onRemove}
+    <article
+      className={[
+        'rounded-xl border p-4 transition-[box-shadow,transform,border-color,background-color] duration-300 focus-within:ring-2 focus-within:ring-emerald-300/70',
+        itemErrorCount > 0 ? 'border-rose-300/70 bg-rose-50/85' : 'border-border/70 bg-background/90',
+        isHighlighted ? 'array-item-focus-pop border-emerald-300/70 bg-emerald-50/50 shadow-[0_0_0_1px_rgba(16,185,129,0.14)]' : '',
+      ].join(' ')}
     >
+      <div className="mb-3 flex flex-col gap-3 border-b pb-3 md:flex-row md:items-center md:justify-between">
+        <div className="min-w-0">
+          <h3 className="break-words text-[0.92rem] font-extrabold leading-[1.18]">{itemTitle}</h3>
+          <p className="mt-1 text-[0.72rem] text-muted-foreground">Item {index + 1}</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2 md:justify-end">
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-border bg-muted/40 text-foreground hover:bg-muted/70"
+            onClick={onRemove}
+          >
+            Remover
+          </Button>
+        </div>
+      </div>
       <ResumeFieldList
         fields={fields}
         pathPrefix={[...path, index]}
       />
-    </ItemCard>
+    </article>
   )
 }
 
-export function ArraySection({ section }: { section: ArraySectionDefinition }) {
-  const { onAdd, onRemove } = useArraySectionActions()
+export function ArraySection({ section }: { section: ArraySectionDefinition }): ReactElement {
   const key = sectionKey(section)
-  const { contentId, errorCount, headingId, isOpen, onToggle, sectionId } = useSectionPanel(key)
-  const itemCount = useResumeArrayLength(section.path)
+  const sectionId = `section-${key.replaceAll('.', '-')}`
+  const headingId = `${sectionId}-heading`
+  const contentId = `${sectionId}-content`
+  const errorCount = useResumeStore((state) => state.validationIssueCounts[key] ?? 0)
+  const isOpen = useFormStore((state) => state.openSections.has(key))
   const toggleSection = useFormStore((state) => state.toggleSection)
+  const itemCount = useResumeStore((state) => {
+    const value = getAtPath(state.resumeDraft, section.path)
+    return Array.isArray(value) ? value.length : 0
+  })
+  const addArrayItem = useResumeStore((state) => state.addArrayItem)
+  const removeArrayItem = useResumeStore((state) => state.removeArrayItem)
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null)
 
-  function focusNewItem(nextIndex: number) {
+  function focusNewItem(nextIndex: number): void {
     const firstFieldKey = section.fields[0]?.key
 
     if (!firstFieldKey) {
@@ -74,7 +95,7 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }) {
     })
   }
 
-  function handleAddItem() {
+  function handleAddItem(): void {
     const nextIndex = itemCount
 
     if (!isOpen) {
@@ -82,7 +103,7 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }) {
     }
 
     setHighlightedIndex(nextIndex)
-    onAdd(section.path, section.createItem())
+    addArrayItem(section.path, section.createItem())
     focusNewItem(nextIndex)
   }
 
@@ -112,7 +133,7 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }) {
       headingId={headingId}
       contentId={contentId}
       isOpen={isOpen}
-      onToggle={onToggle}
+      onToggle={() => toggleSection(key, !isOpen)}
       status={errorCount > 0 ? <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700">Revisão pendente</span> : undefined}
       actions={
         <Button
@@ -151,7 +172,7 @@ export function ArraySection({ section }: { section: ArraySectionDefinition }) {
                 path={section.path}
                 fields={section.fields}
                 isHighlighted={highlightedIndex === index}
-                onRemove={() => onRemove(section.path, index)}
+                onRemove={() => removeArrayItem(section.path, index)}
               />
             ))}
           </div>

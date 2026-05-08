@@ -19,7 +19,7 @@ import {
 } from '@/services/preview.service'
 import { loadWorkspacePersistence } from '@/services/workspace-persistence.service'
 
-function downloadTextFile(filename: string, content: string, type: string) {
+function downloadTextFile(filename: string, content: string, type: string): void {
   const blob = new Blob([content], { type })
   const url = URL.createObjectURL(blob)
   const anchor = document.createElement('a')
@@ -29,7 +29,7 @@ function downloadTextFile(filename: string, content: string, type: string) {
   URL.revokeObjectURL(url)
 }
 
-interface ResumeState {
+export interface ResumeState {
   resumeDraft: JsonObject
   language: ResumeLanguage
   validationState: ValidationState
@@ -49,7 +49,10 @@ const initialWorkspace = loadWorkspacePersistence()
 const initialResume = initialWorkspace.resumeDraft
 const initialValidationState = validateResume(initialResume)
 
-function getValidationSnapshot(resumeDraft: JsonObject) {
+function getValidationSnapshot(resumeDraft: JsonObject): {
+  validationIssueCounts: ValidationIssueCounts
+  validationState: ValidationState
+} {
   const validationState = validateResume(resumeDraft)
 
   return {
@@ -60,7 +63,7 @@ function getValidationSnapshot(resumeDraft: JsonObject) {
 
 export const useResumeStore = create<ResumeState>()(
   immer((set, get) => {
-    const commitResumeDraft = (resumeDraft: JsonObject) => {
+    const commitResumeDraft = (resumeDraft: JsonObject): void => {
       const validation = getValidationSnapshot(resumeDraft)
 
       set(() => ({
@@ -69,7 +72,7 @@ export const useResumeStore = create<ResumeState>()(
       }))
     }
 
-    const updateResumeDraft = (transform: (resumeDraft: JsonObject) => JsonObject) => {
+    const updateResumeDraft = (transform: (resumeDraft: JsonObject) => JsonObject): void => {
       commitResumeDraft(transform(get().resumeDraft))
     }
 
@@ -81,29 +84,29 @@ export const useResumeStore = create<ResumeState>()(
       previewHtml: '',
       previewStatusMessage: '',
 
-      setLanguage: (language) => {
+      setLanguage: (language: ResumeLanguage): void => {
         set(() => ({
           language,
         }))
       },
 
-      setResumeDraft: (next) => {
+      setResumeDraft: (next: JsonObject): void => {
         commitResumeDraft(next)
       },
 
-      updateField: (path, value) => {
+      updateField: (path: PathPart[], value: JsonValue): void => {
         updateResumeDraft((resumeDraft) => setAtPath(resumeDraft, path, value))
       },
 
-      addArrayItem: (path, item) => {
+      addArrayItem: (path: string[], item: JsonObject): void => {
         updateResumeDraft((resumeDraft) => insertArrayItem(resumeDraft, path, item))
       },
 
-      removeArrayItem: (path, index) => {
+      removeArrayItem: (path: string[], index: number): void => {
         updateResumeDraft((resumeDraft) => removeArrayItem(resumeDraft, path, index))
       },
 
-      renderPreview: async () => {
+      renderPreview: async (): Promise<void> => {
         const { language, resumeDraft } = get()
 
         try {
@@ -122,7 +125,7 @@ export const useResumeStore = create<ResumeState>()(
         }
       },
 
-      downloadJson: () => {
+      downloadJson: (): void => {
         const { resumeDraft } = get()
         downloadTextFile(JSON_DOWNLOAD_FILENAME, formatJson(resumeDraft), 'application/json;charset=utf-8')
       },

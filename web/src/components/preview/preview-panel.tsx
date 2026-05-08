@@ -1,14 +1,29 @@
 import { PreviewFrame } from '@/components/preview/preview-frame'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { usePreviewPanel } from '@/hooks/use-preview-panel'
+import { useId, useRef, type ReactElement } from 'react'
+import { useShallow } from 'zustand/react/shallow'
+import { useResumeStore } from '@/stores/resume.store'
 
-export function PreviewPanel() {
-  const { iframeId, onDownloadJson, onPrintPdf, previewFrameRef, previewHtml } = usePreviewPanel()
+export function PreviewPanel(): ReactElement {
+  const iframeId: string = useId()
+  const previewFrameRef: React.RefObject<HTMLIFrameElement | null> = useRef<HTMLIFrameElement>(null)
+  const { onDownloadJson, previewHtml } = useResumeStore(
+    useShallow((state) => ({
+      onDownloadJson: state.downloadJson,
+      previewHtml: state.previewHtml,
+    })),
+  )
+
+  function onPrintPdf(): void {
+    const windowRef: Window | null | undefined = previewFrameRef.current?.contentWindow
+    windowRef?.focus()
+    windowRef?.print()
+  }
 
   return (
     <Card className="min-h-0 overflow-hidden border-border/80 bg-card xl:sticky xl:top-4 xl:grid xl:h-[calc(100vh-2rem)] xl:grid-rows-[auto_minmax(0,1fr)]">
-      <CardHeader className="gap-4 border-b border-border/70 bg-card p-4 sm:p-6 md:flex-row md:items-start md:justify-between">
+      <CardHeader className="gap-4 border-b border-border/70 bg-card p-4 sm:p-5 md:flex-row md:items-start md:justify-between">
         <div>
           <p className="text-[0.7rem] font-extrabold uppercase tracking-[0.08em] text-primary">Pré-visualização</p>
           <CardTitle className="mt-1 text-[1.05rem] font-extrabold tracking-[-0.02em] sm:text-[1.15rem]">Currículo em PDF</CardTitle>
@@ -41,7 +56,7 @@ export function PreviewPanel() {
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="h-full overflow-auto overscroll-contain bg-muted/30 p-3 sm:p-4">
+      <CardContent className="h-full overflow-auto overscroll-contain bg-muted/30 p-2.5 sm:p-4">
         <PreviewFrame iframeId={iframeId} previewFrameRef={previewFrameRef} previewHtml={previewHtml} />
       </CardContent>
     </Card>

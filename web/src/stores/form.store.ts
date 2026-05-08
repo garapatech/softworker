@@ -10,7 +10,7 @@ export type EditorMode = 'form' | 'source'
 
 const initialWorkspace = loadWorkspacePersistence()
 
-interface FormState {
+export interface FormState {
   mode: EditorMode
   jsonDraft: string
   jsonStatusMessage: string
@@ -30,13 +30,13 @@ export const useFormStore = create<FormState>()(
     jsonStatusMessage: '',
     openSections: new Set<string>(),
 
-    setMode: (mode) => {
+    setMode: (mode: EditorMode): void => {
       set((state) => {
         state.mode = mode
       })
     },
 
-    toggleSection: (key, open) => {
+    toggleSection: (key: string, open: boolean): void => {
       set((state) => {
         if (open) {
           state.openSections.add(key)
@@ -46,25 +46,25 @@ export const useFormStore = create<FormState>()(
       })
     },
 
-    syncJsonDraftFromResume: (resumeDraft) => {
+    syncJsonDraftFromResume: (resumeDraft: JsonObject): void => {
       set((state) => {
         state.jsonDraft = formatJson(resumeDraft)
       })
     },
 
-    setJsonDraft: (value) => {
+    setJsonDraft: (value: string): void => {
       set((state) => {
         state.jsonDraft = value
       })
     },
 
-    setJsonStatusMessage: (message) => {
+    setJsonStatusMessage: (message: string): void => {
       set((state) => {
         state.jsonStatusMessage = message
       })
     },
 
-    clearJsonStatus: () => {
+    clearJsonStatus: (): void => {
       set((state) => {
         state.jsonStatusMessage = ''
       })

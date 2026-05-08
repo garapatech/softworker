@@ -1,11 +1,17 @@
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
-import { useWorkspaceMode } from '@/hooks/use-workspace-mode'
-import { useWorkspaceReset } from '@/hooks/use-workspace-reset'
+import { DEFAULT_LANGUAGE, DEFAULT_RESUME } from '@/services/preview.service'
+import { buildValidationIssueCounts } from '@/services/resume-form.service'
+import { clearWorkspacePersistence } from '@/services/workspace-persistence.service'
+import { formatJson, validateResume } from '@/services/resume.service'
+import { useFormStore, type EditorMode } from '@/stores/form.store'
+import { useResumeStore } from '@/stores/resume.store'
+import type { ReactElement } from 'react'
 
-export function WorkspaceModeSwitch() {
-  const { mode, setMode } = useWorkspaceMode()
-  const resetWorkspace = useWorkspaceReset()
+export function WorkspaceModeSwitch(): ReactElement {
+  const mode = useFormStore((state) => state.mode)
+  const setMode = useFormStore((state) => state.setMode)
+  const syncJsonDraftFromResume = useFormStore((state) => state.syncJsonDraftFromResume)
 
   return (
     <section className="flex flex-col gap-3 border-b border-border/70 bg-card px-4 py-4 sm:px-5 md:flex-row md:items-center md:justify-between">
@@ -13,17 +19,28 @@ export function WorkspaceModeSwitch() {
         <span className="block text-[0.7rem] font-extrabold uppercase tracking-[0.08em] text-primary">
           Modo de edição
         </span>
-        <strong className="mt-1 block text-[0.92rem] font-semibold leading-6 text-foreground">
+        <strong className="mt-1 block text-[0.88rem] font-semibold leading-5 text-foreground sm:text-[0.92rem] sm:leading-6">
           Escolha entre formulário estruturado e fonte JSON
         </strong>
       </div>
-      <div className="flex flex-wrap items-center gap-2 self-start rounded-lg border border-border/70 bg-muted/15 p-3 shadow-none md:self-auto">
-        <Tabs value={mode} onValueChange={(value) => setMode(value as 'form' | 'source')}>
-          <TabsList className="grid w-[12.5rem] grid-cols-2 rounded-xl border-border/70 bg-background/70 shadow-none">
-            <TabsTrigger value="form">
+      <div className="flex w-full items-center gap-2 rounded-lg border border-border/70 bg-muted/15 p-2.5 shadow-none sm:w-auto sm:p-3">
+        <Tabs
+          value={mode}
+          onValueChange={(value: string): void => {
+            const nextMode = value as EditorMode
+            setMode(nextMode)
+
+            if (nextMode === 'source') {
+              syncJsonDraftFromResume(useResumeStore.getState().resumeDraft)
+            }
+          }}
+          className="min-w-0 flex-1"
+        >
+          <TabsList className="grid h-11 w-full min-w-0 grid-cols-2 rounded-xl border-border/70 bg-background/70 shadow-none sm:h-10 sm:w-[12.5rem]">
+            <TabsTrigger value="form" className="px-2 text-[0.8rem] leading-none sm:px-3 sm:text-[0.9rem]">
               Formulário
             </TabsTrigger>
-            <TabsTrigger value="source">
+            <TabsTrigger value="source" className="px-2 text-[0.8rem] leading-none sm:px-3 sm:text-[0.9rem]">
               JSON
             </TabsTrigger>
           </TabsList>
@@ -31,12 +48,42 @@ export function WorkspaceModeSwitch() {
         <Button
           type="button"
           variant="outline"
-          className="!h-9 !w-9 !min-w-0 shrink-0 !rounded-lg border-border/80 bg-background !p-0 text-muted-foreground shadow-none hover:border-border hover:bg-accent/50 hover:text-foreground"
-          onClick={resetWorkspace}
+          className="!h-11 !w-11 !min-w-0 shrink-0 !rounded-lg border-border/80 bg-background !p-0 text-muted-foreground shadow-none hover:border-border hover:bg-accent/50 hover:text-foreground sm:!h-9 sm:!w-9"
+          onClick={async (): Promise<void> => {
+            if (typeof window !== 'undefined') {
+              const confirmed = window.confirm('Resetar o progresso salvo deste currículo?')
+
+              if (!confirmed) {
+                return
+              }
+            }
+
+            clearWorkspacePersistence()
+
+            const validationState = validateResume(DEFAULT_RESUME)
+
+            useResumeStore.setState({
+              language: DEFAULT_LANGUAGE,
+              previewHtml: '',
+              previewStatusMessage: '',
+              resumeDraft: DEFAULT_RESUME,
+              validationIssueCounts: buildValidationIssueCounts(validationState.byPath),
+              validationState,
+            })
+
+            useFormStore.setState({
+              jsonDraft: formatJson(DEFAULT_RESUME),
+              jsonStatusMessage: '',
+              mode: 'form',
+              openSections: new Set<string>(),
+            })
+
+            await useResumeStore.getState().renderPreview()
+          }}
           aria-label="Resetar progresso"
           title="Resetar progresso"
         >
-          <span aria-hidden="true" className="text-[1.15rem] leading-none">
+          <span aria-hidden="true" className="text-[1.05rem] leading-none sm:text-[1.15rem]">
             ↻
           </span>
         </Button>
