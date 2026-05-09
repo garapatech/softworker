@@ -1,0 +1,44 @@
+{
+  "name": "workspace",
+
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+
+  "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind",
+    "source=${localEnv:HOME}/.codex,target=/home/vscode/.codex,type=bind"
+  ],
+
+  "runArgs": [
+    "--security-opt=label=disable"
+  ],
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "24"
+    },
+
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.14"
+    },
+
+    "ghcr.io/va-h/devcontainers-features/uv:1": {},
+
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+
+  "postCreateCommand": "sudo apt update && sudo apt install -y libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 && sudo apt install -y fonts-noto fonts-noto-core fonts-noto-extra fonts-noto-cjk fonts-noto-color-emoji && uv tool install weasyprint",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+
+  "remoteUser": "vscode"
+}
