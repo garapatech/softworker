@@ -29,12 +29,22 @@ export function CollapsibleSectionPanel({
   subtitle,
   title,
 }: CollapsibleSectionPanelProps): ReactElement {
+  const hasSecondaryContent = Boolean(subtitle || status)
+
   return (
     <Card id={sectionId} className="scroll-mt-4 overflow-hidden border-border/70">
-      <div className="flex items-center gap-3 border-b border-border/70 bg-muted/15 px-4 py-3.5">
+      <div
+        className={[
+          'flex flex-col gap-2 border-b border-border/70 bg-muted/15 px-4 py-3 sm:flex-row sm:justify-between',
+          hasSecondaryContent ? 'sm:items-start' : 'sm:items-center',
+        ].join(' ')}
+      >
         <button
           type="button"
-          className="group flex min-w-0 flex-1 cursor-pointer items-center gap-4 rounded-lg text-left transition-colors hover:text-foreground"
+          className={[
+            'group flex min-w-0 flex-1 cursor-pointer gap-3 rounded-lg text-left transition-colors hover:text-foreground sm:gap-4',
+            hasSecondaryContent ? 'items-start' : 'items-center',
+          ].join(' ')}
           aria-controls={contentId}
           aria-expanded={isOpen}
           aria-labelledby={headingId}
@@ -42,16 +52,14 @@ export function CollapsibleSectionPanel({
         >
           <div className="min-w-0 flex-1" id={headingId}>
             <h2 className="text-[0.95rem] font-extrabold leading-[1.18]">{title}</h2>
-            <div className="mt-1 min-h-[1.5rem]">
-              {subtitle ? <p className="text-[0.8rem] leading-[1.45] text-muted-foreground">{subtitle}</p> : null}
-            </div>
-            <div className="mt-2 min-h-[2rem]">
-              {status ? <div className="flex flex-wrap gap-2">{status}</div> : null}
-            </div>
+            {subtitle ? (
+              <p className="mt-1 text-[0.8rem] leading-[1.45] text-muted-foreground">{subtitle}</p>
+            ) : null}
+            {status ? <div className="mt-1 flex flex-wrap gap-2">{status}</div> : null}
           </div>
         </button>
 
-        <div className="flex shrink-0 items-center gap-2">
+        <div className={cn('flex shrink-0 items-center gap-2', hasSecondaryContent ? 'self-start sm:self-center' : 'self-center')}>
           {actions}
           <button
             type="button"
@@ -78,7 +86,7 @@ export function CollapsibleSectionPanel({
         <CardContent
           id={contentId}
           aria-labelledby={headingId}
-          className={cn(contentClassName)}
+          className={cn('px-4 py-4 sm:px-5 sm:py-5', contentClassName)}
         >
           {children}
         </CardContent>
