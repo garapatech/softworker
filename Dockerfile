@@ -21,14 +21,15 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PATH="/app/.venv/bin:$PATH"
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
+    && apt-get install -y \
         libpango-1.0-0 \
-        libpangocairo-1.0-0 \
-        libcairo2 \
-        libgdk-pixbuf-2.0-0 \
-        libglib2.0-0 \
-        libffi8 \
-        shared-mime-info \
+        libpangoft2-1.0-0 \
+        libharfbuzz-subset0 \
+        fonts-noto \
+        fonts-noto-core \
+        fonts-noto-extra \
+        fonts-noto-cjk \
+        fonts-noto-color-emoji \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

@@ -8,6 +8,7 @@ on:
       - "docker/**"
       - "src/**"
       - "template/**"
+      - "Dockerfile"
       - "pyproject.toml"
       - "uv.lock"
   workflow_dispatch:
