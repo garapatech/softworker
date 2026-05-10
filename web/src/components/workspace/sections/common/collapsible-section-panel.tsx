@@ -31,21 +31,17 @@ export function CollapsibleSectionPanel({
   subtitle,
   title,
 }: CollapsibleSectionPanelProps): React.JSX.Element {
-  const hasSecondaryContent = Boolean(subtitle || status)
-
   return (
     <Card id={sectionId} className="scroll-mt-4 overflow-hidden border-border/70">
       <div
         className={cn(
-          'flex flex-col gap-2 border-b border-border/70 bg-muted/15 px-4 py-3 sm:flex-row sm:justify-between',
-          hasSecondaryContent ? 'sm:items-start' : 'sm:items-center',
+          'flex flex-row items-center justify-between gap-3 border-b border-border/70 bg-muted/15 px-4 py-3 sm:gap-4',
         )}
       >
         <button
           type="button"
           className={cn(
-            'group flex min-w-0 flex-1 cursor-pointer gap-3 rounded-lg text-left transition-colors hover:text-foreground sm:gap-4',
-            hasSecondaryContent ? 'items-start' : 'items-center',
+            'group flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-lg text-left transition-colors hover:text-foreground sm:gap-4',
           )}
           aria-controls={contentId}
           aria-expanded={isOpen}
@@ -59,7 +55,11 @@ export function CollapsibleSectionPanel({
           </div>
         </button>
 
-        <div className={cn('flex shrink-0 items-center gap-2', hasSecondaryContent ? 'self-start sm:self-center' : 'self-center')}>
+        <div
+          className={cn(
+            'flex shrink-0 items-center justify-end gap-2',
+          )}
+        >
           {actions}
           <button
             type="button"
