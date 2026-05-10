@@ -237,7 +237,9 @@ export const ARRAY_SECTIONS: ArraySectionDefinition[] = [
   },
 ]
 
-export const FORM_SECTIONS: SectionDefinition[] = [...OBJECT_SECTIONS, ...ARRAY_SECTIONS]
+const [BASICS_SECTION, META_SECTION] = OBJECT_SECTIONS
+
+export const FORM_SECTIONS: SectionDefinition[] = [BASICS_SECTION, ...ARRAY_SECTIONS, META_SECTION]
 
 export function buildValidationIssueCounts(issues: Record<string, string[]>): ValidationIssueCounts {
   const result: ValidationIssueCounts = {}
