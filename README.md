@@ -21,15 +21,14 @@ Primeira página do PDF gerado com o exemplo principal do projeto:
 ## Requisitos
 
 - Python 3.14+
-- `uv`
 - Dependências nativas do WeasyPrint instaladas no sistema
 
 ## Uso rápido
 
-Instale as dependências do projeto:
+Instale a biblioteca via `pip`:
 
 ```bash
-uv sync
+pip install softworker
 ```
 
 Gere o PDF usando o exemplo principal:
