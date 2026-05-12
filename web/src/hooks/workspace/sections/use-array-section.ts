@@ -28,6 +28,21 @@ type UseArraySectionResult = {
 
 const EMPTY_JSON_ARRAY: JsonValue[] = []
 
+function countValidationIssuesForPrefix(
+  counts: Record<string, number>,
+  prefix: string,
+): number {
+  const childPrefix = `${prefix}.`
+
+  return Object.entries(counts).reduce((total, [path, count]) => {
+    if (path === prefix || path.startsWith(childPrefix)) {
+      return total + count
+    }
+
+    return total
+  }, 0)
+}
+
 export function useArraySection(section: ArraySectionDefinition, workspace: WorkspaceViewModel): UseArraySectionResult {
   const key = getSectionKey(section.path)
   const items = useWorkspaceStore((state: WorkspaceStore) => {
@@ -39,8 +54,10 @@ export function useArraySection(section: ArraySectionDefinition, workspace: Work
   const addArrayItem = useWorkspaceStore((state: WorkspaceStore) => state.addArrayItem)
   const removeArrayItem = useWorkspaceStore((state: WorkspaceStore) => state.removeArrayItem)
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null)
-  const sectionErrorCount = workspace.validationIssueCounts[key] ?? 0
-  const itemErrorCounts = items.map((_, index) => workspace.validationIssueCounts[`${key}.${index}`] ?? 0)
+  const sectionErrorCount = countValidationIssuesForPrefix(workspace.validationIssueCounts, key)
+  const itemErrorCounts = items.map((_, index) =>
+    countValidationIssuesForPrefix(workspace.validationIssueCounts, `${key}.${index}`),
+  )
   const itemTitleLowercase = workspace.lowercaseForLanguage(section.itemTitle, workspace.language)
   const subtitle = formatCountLabel(items.length, workspace.ui.arrayItemCountOne, workspace.ui.arrayItemCountOther)
   const addItemAriaLabel = formatTemplate(workspace.ui.addItemAria, { item: itemTitleLowercase })

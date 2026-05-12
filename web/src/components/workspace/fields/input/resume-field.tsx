@@ -8,11 +8,12 @@ import { ResumeFieldControl } from '@/components/workspace/fields/input/resume-f
 
 type ResumeFieldProps = {
   field: FieldDefinition
+  autoFocus?: boolean
   path: PathPart[]
   workspace: WorkspaceViewModel
 }
 
-export function ResumeField({ field, path, workspace }: ResumeFieldProps): React.JSX.Element {
+export function ResumeField({ field, autoFocus = false, path, workspace }: ResumeFieldProps): React.JSX.Element {
   const { error, fieldId, inputType, listItems, placeholder, textValue, updateListValue, updateTextValue } =
     useResumeField(field, path, workspace)
 
@@ -30,6 +31,7 @@ export function ResumeField({ field, path, workspace }: ResumeFieldProps): React
           listItems={listItems}
           placeholder={placeholder}
           textValue={textValue}
+          autoFocus={autoFocus}
           updateListValue={updateListValue}
           updateTextValue={updateTextValue}
           workspace={workspace}

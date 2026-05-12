@@ -24,7 +24,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps): React.JSX.E
         <button
           type="button"
           onClick={reset}
-          className="mt-6 inline-flex h-10 items-center justify-center rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+          className="mt-6 inline-flex h-10 cursor-pointer items-center justify-center rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
         >
           Tentar novamente
         </button>

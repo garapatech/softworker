@@ -6,12 +6,19 @@ import { ResumeListFieldItem } from '@/components/workspace/fields/list/resume-l
 
 type ResumeListFieldProps = {
   fieldId: string
+  autoFocus?: boolean
   items: string[]
   onValueChange: (items: string[]) => void
   workspace: WorkspaceViewModel
 }
 
-export function ResumeListField({ fieldId, items, onValueChange, workspace }: ResumeListFieldProps): React.JSX.Element {
+export function ResumeListField({
+  fieldId,
+  autoFocus = false,
+  items,
+  onValueChange,
+  workspace,
+}: ResumeListFieldProps): React.JSX.Element {
   const { draftValue, getRemoveAriaLabel, handleKeyDown, handlePaste, handleRemoveItem, setDraftValue } = useListFieldInput(
     items,
     onValueChange,
@@ -29,6 +36,7 @@ export function ResumeListField({ fieldId, items, onValueChange, workspace }: Re
       <div className="grid gap-3">
         <input
           id={fieldId}
+          autoFocus={autoFocus}
           value={draftValue}
           onChange={(event) => setDraftValue(event.target.value)}
           onKeyDown={handleKeyDown}

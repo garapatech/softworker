@@ -7,6 +7,7 @@ import { ResumeListField } from '@/components/workspace/fields/list/resume-list-
 type ResumeFieldControlProps = {
   field: FieldDefinition
   fieldId: string
+  autoFocus?: boolean
   inputType: 'date' | 'email' | 'text' | 'url'
   listItems: string[]
   placeholder: string | undefined
@@ -19,6 +20,7 @@ type ResumeFieldControlProps = {
 export function ResumeFieldControl({
   field,
   fieldId,
+  autoFocus = false,
   inputType,
   listItems,
   placeholder,
@@ -31,6 +33,7 @@ export function ResumeFieldControl({
     return (
       <textarea
         id={fieldId}
+        autoFocus={autoFocus}
         value={textValue}
         spellCheck={true}
         onChange={(event) => {
@@ -46,6 +49,7 @@ export function ResumeFieldControl({
       <ResumeListField
         fieldId={fieldId}
         items={listItems}
+        autoFocus={autoFocus}
         workspace={workspace}
         onValueChange={(nextValue) => {
           updateListValue(nextValue)
@@ -58,6 +62,7 @@ export function ResumeFieldControl({
     <input
       id={fieldId}
       type={inputType}
+      autoFocus={autoFocus}
       placeholder={placeholder}
       value={textValue}
       onChange={(event) => {

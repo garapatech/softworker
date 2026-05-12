@@ -8,17 +8,23 @@ import { ResumeField } from '@/components/workspace/fields/input/resume-field'
 
 type ResumeFieldListProps = {
   fields: FieldDefinition[]
+  autoFocusFirstField?: boolean
   pathPrefix: PathPart[]
   workspace: WorkspaceViewModel
 }
 
-export function ResumeFieldList({ fields, pathPrefix, workspace }: ResumeFieldListProps): React.JSX.Element {
+export function ResumeFieldList({
+  fields,
+  autoFocusFirstField = false,
+  pathPrefix,
+  workspace,
+}: ResumeFieldListProps): React.JSX.Element {
   return (
     <div className="grid gap-3 md:grid-cols-2">
-      {fields.map((field) => {
+      {fields.map((field, index) => {
         const path = [...pathPrefix, field.key]
 
-        return <ResumeField key={getPathKey(path)} field={field} path={path} workspace={workspace} />
+        return <ResumeField key={getPathKey(path)} field={field} path={path} workspace={workspace} autoFocus={autoFocusFirstField && index === 0} />
       })}
     </div>
   )

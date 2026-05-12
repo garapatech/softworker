@@ -48,7 +48,7 @@ function ArraySection({
       actions={
         <button
           type="button"
-          className="inline-flex size-8 items-center justify-center rounded-full border border-border/80 bg-background text-lg leading-none text-muted-foreground transition-colors hover:border-border hover:bg-accent/50 hover:text-foreground"
+          className="inline-flex size-8 cursor-pointer items-center justify-center rounded-full border border-border/80 bg-background text-lg leading-none text-muted-foreground transition-colors hover:border-border hover:bg-accent/50 hover:text-foreground"
           aria-label={addItemAriaLabel}
           title={addItemTitle}
           onClick={handleAddItem}
@@ -72,6 +72,7 @@ function ArraySection({
                 index={index}
                 itemErrorCount={itemErrorCounts[index] ?? 0}
                 isHighlighted={highlightedIndex === index}
+                shouldFocus={highlightedIndex === index}
                 onAnimationEnd={handleItemAnimationEnd}
                 onRemove={removeItem}
                 section={section}

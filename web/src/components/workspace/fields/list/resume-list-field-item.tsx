@@ -34,7 +34,7 @@ export function ResumeListFieldItem({
       </div>
       <button
         type="button"
-        className="shrink-0 rounded-full border border-border/90 bg-card px-3.5 py-1.5 text-sm text-foreground shadow-sm transition-colors hover:bg-muted"
+        className="shrink-0 cursor-pointer rounded-full border border-border/90 bg-card px-3.5 py-1.5 text-sm text-foreground shadow-sm transition-colors hover:bg-muted"
         onClick={() => onRemove(index)}
         aria-label={removeAriaLabel}
         title={removeAriaLabel}
